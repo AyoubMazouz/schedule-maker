@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    body {
+        @apply bg-light text-dark font-mono scroll-smooth
+    }
+}
+
+@layer components {
+    
+
+    /* Buttons */
+    .btn {
+        @apply bg-primary text-white border-indigo-600 border-2 rounded shadow pr-4 py-0.5 font-semibold capitalize cursor-pointer disabled:opacity-50 flex gap-x-1 items-center pl-1
+    }
+    .btn-secondary {
+        @apply  text-primary border-primary border-2 rounded shadow px-4 py-0.5 font-semibold capitalize cursor-pointer disabled:opacity-50 flex gap-x-1 items-center pl-1
+    }
+    .btn-success {
+        @apply  bg-emerald-500 text-white border-emerald-800 border-2 rounded shadow px-4 py-0.5 font-semibold capitalize  cursor-pointer disabled:opacity-50 flex gap-x-1 items-center pl-1
+    }
+    .btn-warn {
+        @apply  bg-amber-500 text-white border-orange-800 border-2 rounded shadow px-4 py-0.5 font-semibold capitalize cursor-pointer disabled:opacity-50 flex gap-x-1 items-center pl-1
+    }
+    .btn-danger {
+        @apply  bg-red-500 text-white border-rose-800 border-2 rounded shadow px-4 py-0.5 font-semibold capitalize cursor-pointer disabled:opacity-50 flex gap-x-1 items-center pl-1
+    }
+
+    .icon {
+        @apply text-3xl
+    }
+
+    .menu {
+        @apply absolute w-[11rem] bg-light border-2 border-dark/25 rounded-lg shadow-lg flex flex-col overflow-hidden z-20
+    }
+    .menu-item {
+        @apply p-2 hover:bg-primary hover:text-light border-b-2 border-dark/25 w-full text-start disabled:bg-secondary disabled:hover:text-dark disabled:line-through flex gap-x-2 items-center
+    }
+    
+    /* Form */
+
+    .input {
+        @apply px-2 py-1 font-semibold bg-light ring-dark/25 ring-2 rounded focus:outline-none focus:ring-primary focus:text-primary
+    }
+
+    .input-label {
+        @apply capitalize
+    }
+
+}
+
+@layer utilities{
+
+    /* Alert */
+
+    .alert-success {
+        @apply bg-emerald-500 text-white border-emerald-800
+    }
+    .alert-warn {
+        @apply bg-amber-500 text-white border-yellow-700
+    }
+    .alert-danger {
+        @apply bg-red-500 text-white border-rose-800
+    }
+}
