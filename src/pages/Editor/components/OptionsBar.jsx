@@ -39,29 +39,14 @@ const OptionBar = () => {
     }, []);
 
     const saveHandler = async () => {
-        if (!name) {
-            setModel({
-                type: "newdoc",
-                func: (newName) => addNewDocument(data, newName),
-            });
-        } else if (await documentExists(name)) {
-            addNewDocument(data, name);
-            setAlert({ type: "success", message: "Saved Successfuly!" });
-        } else {
-            setModel({
-                type: "newdoc",
-                func: (newName) => addNewDocument(data, newName),
-            });
-        }
         setCurrMenu(null);
+        await addNewDocument(data, name);
+        setAlert({ type: "success", message: "Saved Successfuly!" });
     };
 
     const exitHandler = async () => {
         setModel({
             type: "exit",
-            message: "Do you want to save before exiting?",
-            func: addNewDocument,
-            data,
         });
         setCurrMenu(null);
     };
@@ -81,6 +66,11 @@ const OptionBar = () => {
         });
         setCurrMenu(null);
     };
+    const newDocHandler = (e) => {
+        setModel({
+            type: "newdoc",
+        });
+    };
 
     return (
         <div className="sticky top-0 z-30 flex w-full justify-between p-2">
@@ -98,7 +88,7 @@ const OptionBar = () => {
                             <IcSave className="icon" />
                             <span>Save</span>
                         </button>
-                        <button className="menu-item" onClick={() => loadNew()}>
+                        <button className="menu-item" onClick={newDocHandler}>
                             <IcPlus className="icon" />
                             <span>New</span>
                         </button>

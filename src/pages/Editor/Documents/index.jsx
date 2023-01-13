@@ -11,25 +11,17 @@ import {
     IcMore,
     IcPlus,
     IcRefresh,
-    IcRemove,
 } from "../../../components/icons";
 import { downloadShedual } from "../download";
 
 const Documents = () => {
-    const {
-        getAllDocuments,
-        deleteDocument,
-        renameDocument,
-        importDocument,
-        exportDocument,
-    } = useEditor();
-    const { loadNew, setModel, setData, data, setAlert } = useGlobalContext();
+    const { getAllDocuments, importDocument, exportDocument } = useEditor();
+    const { setModel, setData, data, setAlert } = useGlobalContext();
 
     const [documents, setDocuments] = React.useState([]);
 
-    const update = () => getAllDocuments().then((docs) => setDocuments(docs));
     React.useEffect(() => {
-        update();
+        getAllDocuments(setDocuments);
     }, []);
 
     const menuRef = React.useRef(null);
@@ -48,19 +40,14 @@ const Documents = () => {
         setModel({
             type: "deldoc",
             name,
-            func: () => {
-                deleteDocument(name);
-                update();
-            },
         });
         setCurrMenu(null);
     };
 
-    const renameHandler = (name) => {
+    const renameHandler = (docName) => {
         setModel({
-            type: "renamedoc",
-            name,
-            func: (newName) => renameDocument(name, newName),
+            type: "rendoc",
+            docName,
         });
         setCurrMenu(null);
     };
@@ -80,15 +67,18 @@ const Documents = () => {
         setCurrMenu(null);
     };
 
+    const newDocHandler = (e) => {
+        setModel({
+            type: "newdoc",
+        });
+    };
+
     return (
         <div className="flex justify-center">
             <div className="w-full max-w-[1400px]">
                 <div className="m-2 flex justify-between rounded-lg border-2 border-dark/25 p-2">
                     <div className="flex gap-x-4">
-                        <button
-                            className="btn-success"
-                            onClick={() => loadNew()}
-                        >
+                        <button className="btn-success" onClick={newDocHandler}>
                             <IcPlus className="icon" />
                             <span>New</span>
                         </button>
@@ -105,7 +95,7 @@ const Documents = () => {
                             <span>Import</span>
                         </div>
                     </div>
-                    <button className="btn-secondary" onClick={() => update()}>
+                    <button className="btn-secondary" onClick={() => ""}>
                         <IcRefresh className="icon" />
                         <span>refresh</span>
                     </button>
@@ -118,74 +108,80 @@ const Documents = () => {
                     <div className="col-span-3 font-semibold">ModifiedAt</div>
                     <div></div>
                 </div>
-                {documents.map((doc, docIndex) => (
-                    <div
-                        className={`group grid grid-cols-10 px-4 text-center ${
-                            docIndex % 2 === 0 && "bg-dark/5"
-                        } hover:bg-secondary`}
-                    >
-                        <Link
-                            to={"/editor/documents/" + doc.name}
-                            className="col-span-9 grid grid-cols-3"
+                <div className="mx-2 rounded-lg border-2 border-dark/25 shadow-lg">
+                    {documents.map((doc, docIndex) => (
+                        <div
+                            className={`group grid grid-cols-10 px-4 text-center ${
+                                docIndex % 2 === 0 && "bg-dark/5"
+                            } hover:bg-secondary`}
                         >
-                            <div className="text-left group-hover:underline">
-                                {doc.name}
-                            </div>
-                            <div className="">
-                                {doc.createdAt.toDate().toDateString()}
-                            </div>
-                            <div className="">
-                                {doc.modifiedAt.toDate().toDateString()}
-                            </div>
-                        </Link>
-                        <div className="relative flex gap-x-2 text-end">
-                            <button onClick={(e) => setCurrMenu(doc.name)}>
-                                <IcMore
-                                    className={
-                                        currMenu === doc.name
-                                            ? "icon rotate-90 text-secondary transition-all duration-300"
-                                            : "icon"
-                                    }
-                                />
-                            </button>
-                            {currMenu === doc.name && (
-                                <div
-                                    ref={menuRef}
-                                    className="menu top-[0%] left-[0%] translate-x-[-100%]"
-                                >
-                                    <button
-                                        className="menu-item"
-                                        onClick={() => renameHandler(doc.name)}
-                                    >
-                                        <IcEdit className="icon" />
-                                        <span>rename</span>
-                                    </button>
-                                    <button
-                                        className="menu-item"
-                                        onClick={exportHandler}
-                                    >
-                                        <IcExport className="icon" />
-                                        <span>Export</span>
-                                    </button>
-                                    <button
-                                        className="menu-item"
-                                        onClick={downloadHandler}
-                                    >
-                                        <IcDownload className="icon" />
-                                        <span>Download</span>
-                                    </button>
-                                    <button
-                                        className="menu-item"
-                                        onClick={() => deleteHandler(doc.name)}
-                                    >
-                                        <IcDelete className="icon" />{" "}
-                                        <span>delete</span>
-                                    </button>
+                            <Link
+                                to={"/editor/" + doc.name}
+                                className="col-span-9 grid grid-cols-3"
+                            >
+                                <div className="text-left group-hover:underline">
+                                    {doc.name}
                                 </div>
-                            )}
+                                <div className="">
+                                    {doc.createdAt.toDate().toDateString()}
+                                </div>
+                                <div className="">
+                                    {doc.modifiedAt.toDate().toDateString()}
+                                </div>
+                            </Link>
+                            <div className="relative flex gap-x-2 text-end">
+                                <button onClick={(e) => setCurrMenu(doc.name)}>
+                                    <IcMore
+                                        className={
+                                            currMenu === doc.name
+                                                ? "icon rotate-90 text-secondary transition-all duration-300"
+                                                : "icon"
+                                        }
+                                    />
+                                </button>
+                                {currMenu === doc.name && (
+                                    <div
+                                        ref={menuRef}
+                                        className="menu top-[0%] left-[0%] translate-x-[-100%]"
+                                    >
+                                        <button
+                                            className="menu-item"
+                                            onClick={() =>
+                                                renameHandler(doc.name)
+                                            }
+                                        >
+                                            <IcEdit className="icon" />
+                                            <span>rename</span>
+                                        </button>
+                                        <button
+                                            className="menu-item"
+                                            onClick={exportHandler}
+                                        >
+                                            <IcExport className="icon" />
+                                            <span>Export</span>
+                                        </button>
+                                        <button
+                                            className="menu-item"
+                                            onClick={downloadHandler}
+                                        >
+                                            <IcDownload className="icon" />
+                                            <span>Download</span>
+                                        </button>
+                                        <button
+                                            className="menu-item"
+                                            onClick={() =>
+                                                deleteHandler(doc.name)
+                                            }
+                                        >
+                                            <IcDelete className="icon" />{" "}
+                                            <span>delete</span>
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
                         </div>
-                    </div>
-                ))}
+                    ))}
+                </div>
             </div>
         </div>
     );

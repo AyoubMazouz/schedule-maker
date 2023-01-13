@@ -5,7 +5,7 @@ import useSettings from "../../../hooks/useSettings";
 import useEditor from "../useEditor";
 
 const Table = ({ schedualIndex }) => {
-    const { data, setData, setAlert, saved, setSaved } = useGlobalContext();
+    const { data, setData, setAlert } = useGlobalContext();
     const { editField } = useEditor();
     const { getAllLabels } = useSettings();
 
@@ -30,51 +30,50 @@ const Table = ({ schedualIndex }) => {
             row,
             value
         );
-        setSaved(false);
     };
 
     return (
         <div className="flex justify-center">
             <div
                 id={`doc_${schedualIndex}`}
-                className="flex flex-col items-center max-w-[1400px] w-full"
+                className="flex w-full max-w-[1400px] flex-col items-center"
             >
-                <div className="max-w-[800px] rounded-xl border-2 border-dark/25 m-2 overflow-hidden">
+                <div className="m-2 max-w-[800px] overflow-hidden rounded-xl border-2 border-dark/25">
                     <div className="grid grid-cols-9">
-                        <div className="flex items-center flex-col font-semibold py-3">
-                            <div className="text-lg font-bold h-8 w-8 bg-primary rounded-full text-light flex justify-center items-center">
+                        <div className="flex flex-col items-center py-3 font-semibold">
+                            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-lg font-bold text-light">
                                 {schedualIndex + 1}
                             </div>
                             <div className="text-center">
                                 {data[schedualIndex].group}
                             </div>
                         </div>
-                        <div className="grid place-items-center bg-primary font-semibold text-white py-5 col-span-2 border-2 border-dark/25">
+                        <div className="col-span-2 grid place-items-center border-2 border-dark/25 bg-primary py-5 font-semibold text-white">
                             {SESSIONS_TEXT[0]}
                         </div>
-                        <div className="grid place-items-center bg-primary font-semibold text-white py-5 col-span-2 border-2 border-dark/25">
+                        <div className="col-span-2 grid place-items-center border-2 border-dark/25 bg-primary py-5 font-semibold text-white">
                             {SESSIONS_TEXT[1]}
                         </div>
-                        <div className="grid place-items-center bg-primary font-semibold text-white py-5 col-span-2 border-2 border-dark/25">
+                        <div className="col-span-2 grid place-items-center border-2 border-dark/25 bg-primary py-5 font-semibold text-white">
                             {SESSIONS_TEXT[2]}
                         </div>
-                        <div className="grid place-items-center bg-primary font-semibold text-white py-5 col-span-2 border-2 border-dark/25">
+                        <div className="col-span-2 grid place-items-center border-2 border-dark/25 bg-primary py-5 font-semibold text-white">
                             {SESSIONS_TEXT[3]}
                         </div>
                     </div>
                     {data[schedualIndex].schedual.map((day, dayIndex) => {
                         return (
-                            <div className="grid grid-cols-9 border-b-2 h-[5.25rem] overflow-hidden">
-                                <div className="flex justify-between pl-4 pr-1 bg-primary text-light border-2 border-dark/25">
+                            <div className="grid h-[5.25rem] grid-cols-9 overflow-hidden border-b-2">
+                                <div className="flex justify-between border-2 border-dark/25 bg-primary pl-4 pr-1 text-light">
                                     <div
                                         style={{
                                             writingMode: "vertical-rl",
                                         }}
-                                        className="font-semibold text-center"
+                                        className="text-center font-semibold"
                                     >
                                         {DAYS_TEXT[dayIndex]}
                                     </div>
-                                    <div className="font-semibold text-sm flex-col justify-between text-right py-2 hidden lg:flex">
+                                    <div className="hidden flex-col justify-between py-2 text-right text-sm font-semibold lg:flex">
                                         <div>Prof</div>
                                         <div>Mod</div>
                                         <div>Room</div>
@@ -101,7 +100,7 @@ const Table = ({ schedualIndex }) => {
                                                 col-span-2 border-2  
                                                 ${
                                                     done === "all"
-                                                        ? "bg-secondary border-dark/25"
+                                                        ? "border-dark/25 bg-secondary"
                                                         : done === "some"
                                                         ? "border-rose-600"
                                                         : "opacity-50"
@@ -110,7 +109,7 @@ const Table = ({ schedualIndex }) => {
                                             <div>
                                                 <select
                                                     name="group"
-                                                    className="input w-full ring-0 h-[1.75rem] bg-transparent"
+                                                    className="input h-[1.75rem] w-full bg-transparent ring-0"
                                                     value={session[0]}
                                                     onChange={(e) =>
                                                         editFieldHandler(
@@ -144,7 +143,7 @@ const Table = ({ schedualIndex }) => {
                                                 <input
                                                     type="text"
                                                     placeholder="Module..."
-                                                    className="input w-full ring-0 h-[1.75rem] bg-transparent uppercase"
+                                                    className="input h-[1.75rem] w-full bg-transparent uppercase ring-0"
                                                     value={session[1]}
                                                     onChange={(e) =>
                                                         editFieldHandler(
@@ -159,7 +158,7 @@ const Table = ({ schedualIndex }) => {
                                             <div>
                                                 <select
                                                     name="room"
-                                                    className="input w-full ring-0 h-[1.75rem] bg-transparent"
+                                                    className="input h-[1.75rem] w-full bg-transparent ring-0"
                                                     value={session[2]}
                                                     onChange={(e) =>
                                                         editFieldHandler(

@@ -10,35 +10,45 @@ import Editor from "./pages/Editor";
 import Documents from "./pages/Editor/Documents";
 import Settings from "./pages/Settings";
 import Home from "./pages/Home";
+import { AuthProvider } from "./Contexts/AuthContext";
+import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
     return (
         <div className="App">
             <BrowserRouter>
-                <GlobalContextProvider>
-                    <NavBar />
-                    <Alert />
-                    <Model />
-                    <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/contact" element={<Contact />} />
-                        <Route path="/settings" element={<Settings />} />
-                        <Route
-                            path="/settings/:settingsTab"
-                            element={<Settings />}
-                        />
-                        <Route path="/editor" element={<Editor />} />
-                        <Route
-                            path="/editor/documents"
-                            element={<Documents />}
-                        />
-                        <Route
-                            path="/editor/documents/:nameid"
-                            element={<Editor />}
-                        />
-                    </Routes>
-                    <Footer />
-                </GlobalContextProvider>
+                <AuthProvider>
+                    <GlobalContextProvider>
+                        <NavBar />
+                        <Alert />
+                        <Model />
+                        <Routes>
+                            <Route path="/" element={<Home />} />
+                            <Route path="/contact" element={<Contact />} />
+                            {/* PrivateRoutes */}
+                            <Route element={<PrivateRoute />}>
+                                <Route
+                                    path="/settings"
+                                    element={<Settings />}
+                                />
+                                <Route
+                                    path="/settings/:settingsTab"
+                                    element={<Settings />}
+                                />
+                                <Route
+                                    path="/editor/:nameid"
+                                    element={<Editor />}
+                                />
+                                <Route
+                                    path="/documents"
+                                    element={<Documents />}
+                                />
+                            </Route>
+                        </Routes>
+
+                        <Footer />
+                    </GlobalContextProvider>
+                </AuthProvider>
             </BrowserRouter>
         </div>
     );

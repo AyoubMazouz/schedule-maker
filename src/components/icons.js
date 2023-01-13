@@ -15,6 +15,8 @@ import {
     CiCircleCheck,
     CiTimer,
     CiTrash,
+    CiLogin,
+    CiLogout,
 } from "react-icons/ci";
 
 export const IcLabels = CiBoxList;
@@ -33,3 +35,5 @@ export const IcMore = CiCircleMore;
 export const IcEdit = CiEdit;
 export const IcTrue = CiCircleCheck;
 export const IcTime = CiTimer;
+export const IcLogin = CiLogin;
+export const IcLogout = CiLogout;

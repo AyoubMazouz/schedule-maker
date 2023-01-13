@@ -5,6 +5,9 @@ import {
     doc,
     getDoc,
     getDocs,
+    onSnapshot,
+    query,
+    orderBy,
     collection,
     deleteDoc,
 } from "firebase/firestore";
@@ -45,13 +48,19 @@ const useEditor = () => {
         });
     };
 
-    const getAllDocuments = () => {
-        return new Promise(async (resolve, reject) => {
-            const snapshot = await getDocs(collection(db, "documents"));
-            const docs = [];
-            snapshot.forEach((doc) => docs.push(doc.data()));
-            resolve(docs);
-        });
+    const getAllDocuments = (setDocs) => {
+        onSnapshot(
+            query(collection(db, "documents"), orderBy("createdAt")),
+            (snap) => {
+                const docs = [];
+                snap.forEach((doc) => {
+                    const data = doc.data();
+                    docs.push(data);
+                });
+                setDocs(docs);
+                console.log(docs);
+            }
+        );
     };
 
     const deleteDocument = (name) => {
