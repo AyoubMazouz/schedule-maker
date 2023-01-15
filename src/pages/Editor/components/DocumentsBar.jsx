@@ -2,13 +2,13 @@ import React from "react";
 import { useGlobalContext } from "../../../Contexts/GlobalContext";
 import useEditor from "../useEditor";
 import useSettings from "../../../hooks/useSettings";
-import { IcDelete, IcPlus, IcTime } from "../../../components/icons";
+import { IcBin, IcDelete, IcPlus, IcTime } from "../../../components/icons";
 
 const DocumentsBar = () => {
     const { data, setData, setAlert } = useGlobalContext();
     const { loading, addNewSchedual, editSchedualInfo, deleteSchedual } =
         useEditor();
-    const { getAllLabels } = useSettings();
+    const { getLabels } = useSettings();
 
     const [currSchedual, setCurrSchedual] = React.useState(0);
     const [labels, setLabels] = React.useState({
@@ -19,7 +19,7 @@ const DocumentsBar = () => {
 
     const [usedGroups, setUsedGroups] = React.useState([]);
     React.useEffect(() => {
-        getAllLabels().then((labels) => setLabels(labels));
+        getLabels().then((labels) => setLabels(labels));
 
         // Check for used Groups.
         setUsedGroups(data.map((schedual) => schedual.group));
@@ -112,7 +112,7 @@ const DocumentsBar = () => {
                                 deleteSchedualHandler(schedualIndex)
                             }
                         >
-                            <IcDelete className="icon" />
+                            <IcBin className="icon" />
                         </button>
                     </div>
                 ) : (

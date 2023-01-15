@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../../Contexts/GlobalContext";
 import useEditor from "../../pages/Editor/useEditor";
-import { IcRemove, IcTrue } from "../icons";
+import { IcEx, IcRemove, IcTrue } from "../icons";
 
 const Exit = () => {
     const { setModel, name, data, setAlert } = useGlobalContext();
@@ -39,14 +39,14 @@ const Exit = () => {
                             navigate("/documents");
                         }}
                     >
-                        <IcRemove className="icon" />
+                        <IcEx className="icon" />
                         <span>No</span>
                     </button>
                     <button
                         className="btn-secondary"
                         onClick={() => setModel(null)}
                     >
-                        <IcRemove className="icon" />
+                        <IcEx className="icon" />
                         <span>Cancel</span>
                     </button>
                 </div>

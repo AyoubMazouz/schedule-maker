@@ -12,31 +12,35 @@
     
 
     /* Buttons */
+    .btn-base {
+        @apply border-2 rounded shadow pr-4 py-0.5 font-semibold capitalize cursor-pointer disabled:opacity-50 flex gap-x-1 items-center pl-1 disabled:cursor-not-allowed transition-all duration-300
+    }
+
     .btn {
-        @apply bg-primary text-white border-indigo-600 border-2 rounded shadow pr-4 py-0.5 font-semibold capitalize cursor-pointer disabled:opacity-50 flex gap-x-1 items-center pl-1
+        @apply bg-primary text-white border-indigo-600 btn-base
     }
     .btn-secondary {
-        @apply  text-primary border-primary border-2 rounded shadow px-4 py-0.5 font-semibold capitalize cursor-pointer disabled:opacity-50 flex gap-x-1 items-center pl-1
+        @apply  text-primary border-primary btn-base
     }
     .btn-success {
-        @apply  bg-emerald-500 text-white border-emerald-800 border-2 rounded shadow px-4 py-0.5 font-semibold capitalize  cursor-pointer disabled:opacity-50 flex gap-x-1 items-center pl-1
+        @apply  bg-emerald-500 text-white border-emerald-800 btn-base
     }
     .btn-warn {
-        @apply  bg-amber-500 text-white border-orange-800 border-2 rounded shadow px-4 py-0.5 font-semibold capitalize cursor-pointer disabled:opacity-50 flex gap-x-1 items-center pl-1
+        @apply  bg-amber-500 text-white border-orange-800 btn-base
     }
     .btn-danger {
-        @apply  bg-red-500 text-white border-rose-800 border-2 rounded shadow px-4 py-0.5 font-semibold capitalize cursor-pointer disabled:opacity-50 flex gap-x-1 items-center pl-1
+        @apply  bg-red-500 text-white border-rose-800 btn-base
     }
 
     .icon {
-        @apply text-3xl
+        @apply text-2xl inline-block
     }
 
     .menu {
         @apply absolute w-[11rem] bg-light border-2 border-dark/25 rounded-lg shadow-lg flex flex-col overflow-hidden z-20
     }
     .menu-item {
-        @apply p-2 hover:bg-primary hover:text-light border-b-2 border-dark/25 w-full text-start disabled:bg-secondary disabled:hover:text-dark disabled:line-through flex gap-x-2 items-center
+        @apply p-2 hover:bg-primary hover:text-light border-b-2 border-dark/25 w-full text-start disabled:bg-secondary disabled:hover:text-dark disabled:line-through flex gap-x-2 items-center transition-all ease-in-out duration-100
     }
     
     /* Form */
@@ -63,5 +67,9 @@
     }
     .alert-danger {
         @apply bg-red-500 text-white border-rose-800
+    }
+
+    .border {
+        @apply border-2 border-dark/25
     }
 }

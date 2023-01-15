@@ -1,82 +1,23 @@
-import { setDoc, doc, getDoc, deleteDoc } from "firebase/firestore";
-import { db } from "../firebase";
+import {
+    setDoc,
+    doc,
+    getDoc,
+    deleteDoc,
+    Timestamp,
+    onSnapshot,
+    query,
+    collection,
+    orderBy,
+} from "firebase/firestore";
+import {
+    ref,
+    uploadBytesResumable,
+    getDownloadURL,
+    deleteObject,
+} from "firebase/storage";
+import { db, storage } from "../firebase";
 
 const useSettings = () => {
-    const copyData = (data) => JSON.parse(JSON.stringify(data));
-
-    const addNewLabel = (labelType, label) => {
-        return new Promise(async (resolve, reject) => {
-            const snapshot = await getDoc(doc(db, "settings", "labels"));
-
-            if (snapshot.exists()) {
-                const data = snapshot.data();
-
-                if (data[labelType]) {
-                    data[labelType].push(label);
-                } else {
-                    data[labelType] = [label];
-                }
-                data[labelType] = data[labelType].sort((a, b) =>
-                    a.localeCompare(b)
-                );
-                console.log(data[labelType]);
-                await setDoc(doc(db, "settings", "labels"), data);
-                resolve(true);
-            } else {
-                const data = {
-                    groups: [],
-                    profNames: [],
-                    rooms: [],
-                };
-                data[labelType].push(label);
-                data[labelType] = data[labelType].sort((a, b) =>
-                    a.localeCompare(b)
-                );
-                await setDoc(doc(db, "settings", "labels"), data);
-                resolve(true);
-            }
-        });
-    };
-
-    const addNewProf = (profName) => {
-        return addNewLabel("profNames", profName);
-    };
-    const addNewRoom = (RoomNum) => {
-        return addNewLabel("rooms", RoomNum);
-    };
-    const addNewGroup = (group) => {
-        return addNewLabel("groups", group);
-    };
-
-    const deleteLabel = (labelType, label) => {
-        return new Promise(async (resolve, reject) => {
-            const snapshot = await getDoc(doc(db, "settings", "labels"));
-
-            if (snapshot.exists()) {
-                const data = snapshot.data();
-
-                const newData = data[labelType].filter((item) => {
-                    return item !== label;
-                });
-
-                data[labelType] = newData;
-
-                await setDoc(doc(db, "settings", "labels"), data);
-                resolve(true);
-            }
-        });
-    };
-
-    const deleteProf = (profName) => {
-        return deleteLabel("profNames", profName);
-    };
-    const deleteRoom = (room) => {
-        return deleteLabel("rooms", room);
-    };
-    const deleteGroup = (group) => {
-        return deleteLabel("groups", group);
-    };
-
     const deleteAllLabels = () => {
         return new Promise(async (resolve, reject) => {
             await deleteDoc(doc(db, "settings", "labels"));
@@ -84,7 +25,11 @@ const useSettings = () => {
         });
     };
 
-    const getAllLabels = () => {
+    const setLabels = (data) => {
+        return setDoc(doc(db, "settings", "labels"), data);
+    };
+
+    const getLabels = () => {
         return new Promise(async (resolve, reject) => {
             const snapshot = await getDoc(doc(db, "settings", "labels"));
 
@@ -100,15 +45,63 @@ const useSettings = () => {
             resolve({ groups: [], profNames: [], rooms: [] });
         });
     };
+
+    const publishDocument = (file, id) => {
+        return new Promise(async (resolve, reject) => {
+            const storageRef = ref(storage, "publishedDocuments/" + id);
+
+            try {
+                const snapshot = await uploadBytesResumable(storageRef, file);
+                const url = await getDownloadURL(snapshot.ref);
+
+                const document = {
+                    id,
+                    url,
+                    createdAt: Timestamp.now(),
+                };
+
+                await setDoc(doc(db, "publishedDocuments", id), document);
+
+                resolve(true);
+            } catch (err) {
+                reject(err);
+            }
+        });
+    };
+
+    const getPublishedDocuments = (setDocs) => {
+        onSnapshot(
+            query(collection(db, "publishedDocuments"), orderBy("createdAt")),
+            (snap) => {
+                const docs = [];
+                snap.forEach((doc) => {
+                    const data = doc.data();
+                    docs.push(data);
+                });
+                setDocs(docs);
+            }
+        );
+    };
+
+    const deletePublishedDocument = (id) => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                await deleteObject(ref(storage, `publishedDocuments/${id}`));
+                await deleteDoc(doc(db, "publishedDocuments", id));
+                resolve(true);
+            } catch (e) {
+                reject(e);
+            }
+        });
+    };
+
     return {
-        addNewProf,
-        addNewRoom,
-        addNewGroup,
-        deleteProf,
-        deleteRoom,
-        deleteGroup,
         deleteAllLabels,
-        getAllLabels,
+        getLabels,
+        publishDocument,
+        getPublishedDocuments,
+        deletePublishedDocument,
+        setLabels,
     };
 };
 

@@ -7,7 +7,7 @@ import useEditor from "../useEditor";
 const Table = ({ schedualIndex }) => {
     const { data, setData, setAlert } = useGlobalContext();
     const { editField } = useEditor();
-    const { getAllLabels } = useSettings();
+    const { getLabels } = useSettings();
 
     const [labels, setLabels] = React.useState({
         groups: [],
@@ -16,7 +16,7 @@ const Table = ({ schedualIndex }) => {
     });
 
     React.useEffect(() => {
-        getAllLabels().then((labels) => setLabels(labels));
+        getLabels().then((labels) => setLabels(labels));
     }, [data]);
 
     const editFieldHandler = (dayIndex, sessionIndex, row, value) => {

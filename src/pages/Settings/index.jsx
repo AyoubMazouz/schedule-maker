@@ -10,10 +10,12 @@ const Settings = () => {
 
     const navigate = useNavigate();
 
+    const [saved, setSaved] = React.useState(true);
+
     const tabs = {
-        labels: <Labels />,
-        publish: <Publish />,
-        about: <About />,
+        labels: <Labels {...{ saved, setSaved }} />,
+        publish: <Publish {...{ saved, setSaved }} />,
+        about: <About {...{ saved, setSaved }} />,
     };
 
     const tabsLs = Object.keys(tabs);
@@ -25,14 +27,14 @@ const Settings = () => {
     }, []);
 
     return (
-        <div className="flex justify-center">
-            <div className="w-full max-w-[1400px] gap-x-2 space-y-2 p-2 md:grid md:grid-cols-12">
+        <div className="mx-2 flex justify-center">
+            <div className="grid w-full max-w-[1400px] grid-cols-12 gap-2">
                 <div className="col-span-full overflow-hidden rounded-lg border-2 border-dark/25 md:col-span-3">
                     <div className="md:h-[calc(100vh-6.6rem)]">
-                        <SideBar tabsLs={tabsLs} />
+                        <SideBar {...{ tabsLs, setSaved, saved }} />
                     </div>
                 </div>
-                <div className="col-span-9 overflow-hidden rounded-lg border-2 border-dark/25">
+                <div className="col-span-full overflow-hidden rounded-lg border-2 border-dark/25 md:col-span-9">
                     <div className="h-[75vh] overflow-y-scroll md:h-[calc(100vh-6.6rem)] ">
                         {tabs[settingsTab]}
                     </div>

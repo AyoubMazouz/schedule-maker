@@ -8,7 +8,9 @@ import {
     IcDownload,
     IcExport,
     IcImport,
-    IcPlus,
+    IcLogin,
+    IcLogout,
+    IcNewDoc,
     IcRemove,
     IcSave,
 } from "../../../components/icons";
@@ -58,7 +60,7 @@ const OptionBar = () => {
     };
 
     const exportHandler = () => {
-        exportDocument(data);
+        exportDocument(data, name);
         setAlert({
             type: "success",
             message:
@@ -79,7 +81,7 @@ const OptionBar = () => {
                     className="btn-secondary"
                     onClick={() => setCurrMenu("file")}
                 >
-                    <IcDown className="icon" />
+                    <IcDown className="text-xl" />
                     <span>File</span>
                 </button>
                 {currMenu === "file" && (
@@ -89,7 +91,7 @@ const OptionBar = () => {
                             <span>Save</span>
                         </button>
                         <button className="menu-item" onClick={newDocHandler}>
-                            <IcPlus className="icon" />
+                            <IcNewDoc className="icon" />
                             <span>New</span>
                         </button>
                         <div className="menu-item relative overflow-hidden">
@@ -112,7 +114,7 @@ const OptionBar = () => {
                             onClick={exitHandler}
                             className="menu-item border-b-0"
                         >
-                            <IcRemove className="icon" />
+                            <IcLogout className="icon" />
                             <span>Exit</span>
                         </button>
                     </div>

@@ -1,39 +1,49 @@
 import {
-    CiCircleInfo,
-    CiSaveUp1,
-    CiBoxList,
-    CiCirclePlus,
-    CiImport,
-    CiUndo,
-    CiCircleChevDown,
-    CiSaveDown1,
-    CiSaveDown2,
-    CiExport,
-    CiCircleRemove,
-    CiCircleMore,
-    CiEdit,
-    CiCircleCheck,
-    CiTimer,
-    CiTrash,
-    CiLogin,
-    CiLogout,
-} from "react-icons/ci";
+    HiOutlineX,
+    HiOutlineClock,
+    HiOutlineSave,
+    HiDotsVertical,
+} from "react-icons/hi";
+import {
+    HiOutlineDocumentArrowUp,
+    HiOutlineDocumentArrowDown,
+    HiOutlineDocumentPlus,
+    HiPlus,
+    HiOutlineChevronDown,
+    HiOutlineInformationCircle,
+    HiOutlineTrash,
+    HiOutlineSquaresPlus,
+    HiOutlineClipboardDocumentCheck,
+    HiOutlineArrowLeftOnRectangle,
+    HiOutlineCheckBadge,
+    HiOutlinePencilSquare,
+    HiOutlineArrowUpTray,
+    HiOutlineArrowDownTray,
+    HiOutlineArrowRightOnRectangle,
+    HiOutlineDocumentText,
+    HiOutlineCog8Tooth,
+    HiOutlineBolt,
+} from "react-icons/hi2";
 
-export const IcLabels = CiBoxList;
-export const IcPublish = CiSaveUp1;
-export const IcAbout = CiCircleInfo;
-export const IcPlus = CiCirclePlus;
-export const IcImport = CiImport;
-export const IcExport = CiExport;
-export const IcRefresh = CiUndo;
-export const IcDown = CiCircleChevDown;
-export const IcSave = CiSaveDown1;
-export const IcDownload = CiSaveDown2;
-export const IcRemove = CiCircleRemove;
-export const IcDelete = CiTrash;
-export const IcMore = CiCircleMore;
-export const IcEdit = CiEdit;
-export const IcTrue = CiCircleCheck;
-export const IcTime = CiTimer;
-export const IcLogin = CiLogin;
-export const IcLogout = CiLogout;
+export const IcEditor = HiOutlineBolt;
+export const IcSettings = HiOutlineCog8Tooth;
+export const IcDoc = HiOutlineDocumentText;
+export const IcPublish = HiOutlineArrowUpTray;
+export const IcEdit = HiOutlinePencilSquare;
+export const IcTrue = HiOutlineCheckBadge;
+export const IcLogin = HiOutlineArrowLeftOnRectangle;
+export const IcLabels = HiOutlineSquaresPlus;
+export const IcBin = HiOutlineTrash;
+export const IcAbout = HiOutlineInformationCircle;
+export const IcCopy = HiOutlineClipboardDocumentCheck;
+export const IcDown = HiOutlineChevronDown;
+export const IcMore = HiDotsVertical;
+export const IcExport = HiOutlineDocumentArrowUp;
+export const IcImport = HiOutlineDocumentArrowDown;
+export const IcPlus = HiPlus;
+export const IcSave = HiOutlineSave;
+export const IcTime = HiOutlineClock;
+export const IcDownload = HiOutlineArrowDownTray;
+export const IcLogout = HiOutlineArrowRightOnRectangle;
+export const IcEx = HiOutlineX;
+export const IcNewDoc = HiOutlineDocumentPlus;

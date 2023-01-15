@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../Contexts/AuthContext";
 import { useGlobalContext } from "../Contexts/GlobalContext";
-import { IcLogin, IcLogout } from "./icons";
+import { IcEditor, IcLogin, IcLogout, IcSettings } from "./icons";
 
 const NavBar = () => {
     const { setModel, setAlert } = useGlobalContext();
@@ -14,7 +14,7 @@ const NavBar = () => {
     };
     return (
         <nav className="flex justify-center">
-            <div className="flex h-[3.3rem] w-full max-w-[1400px] items-center justify-between px-2">
+            <div className="m-2 flex h-[3.3rem] w-full max-w-[1400px] items-center justify-between rounded-lg border p-2 shadow-md">
                 <div className="text-xl uppercase">
                     <Link to="/">
                         Schedual{" "}
@@ -23,10 +23,22 @@ const NavBar = () => {
                 </div>
                 <ul className="flex items-center gap-x-6">
                     <li className="capitalized font-semibold transition-all duration-300 hover:text-secondary">
-                        <Link to="/documents">1.Editor</Link>
+                        <Link
+                            to="/documents"
+                            className="flex items-center gap-x-1"
+                        >
+                            <IcEditor className="icon" />
+                            <span>Editor</span>
+                        </Link>
                     </li>
                     <li className="capitalized font-semibold transition-all duration-300 hover:text-secondary">
-                        <Link to="/settings">3.Settings</Link>
+                        <Link
+                            to="/settings"
+                            className="flex items-center gap-x-1"
+                        >
+                            <IcSettings className="icon" />
+                            <span>Settings</span>
+                        </Link>
                     </li>
                     {/* <li className="capitalized font-semibold transition-all duration-300 hover:text-secondary">
                         <Link to="/contact">2.Contact</Link>

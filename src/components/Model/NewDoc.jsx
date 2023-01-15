@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../../Contexts/GlobalContext";
 import useEditor from "../../pages/Editor/useEditor";
-import { IcSave, IcRemove } from "../icons";
+import { IcSave, IcRemove, IcEdit, IcEx } from "../icons";
 
 const NewDoc = () => {
     const navigate = useNavigate();
@@ -44,7 +44,7 @@ const NewDoc = () => {
                         className="btn-secondary"
                         onClick={() => setModel(null)}
                     >
-                        <IcRemove className="icon" />
+                        <IcEx className="icon" />
                         <span>Cancel</span>
                     </button>
                 </div>

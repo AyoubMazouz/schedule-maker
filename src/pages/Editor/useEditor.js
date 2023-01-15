@@ -58,7 +58,6 @@ const useEditor = () => {
                     docs.push(data);
                 });
                 setDocs(docs);
-                console.log(docs);
             }
         );
     };
@@ -93,9 +92,14 @@ const useEditor = () => {
         });
     };
 
-    const exportDocument = (data) => {
-        const stringData = JSON.stringify(data);
-        navigator.clipboard.writeText(stringData);
+    const exportDocument = (data, docName) => {
+        const jsonData = JSON.stringify(data);
+        const link = document.createElement("a");
+        link.href = "data:application/json," + jsonData;
+        link.download = `${docName}.schedual-maker.json`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     };
 
     const importDocument = (setData, file) => {

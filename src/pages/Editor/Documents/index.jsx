@@ -3,14 +3,14 @@ import useEditor from "../useEditor";
 import { Link } from "react-router-dom";
 import { useGlobalContext } from "../../../Contexts/GlobalContext";
 import {
-    IcDelete,
+    IcBin,
+    IcDoc,
     IcDownload,
     IcEdit,
     IcExport,
     IcImport,
     IcMore,
-    IcPlus,
-    IcRefresh,
+    IcNewDoc,
 } from "../../../components/icons";
 import { downloadShedual } from "../download";
 
@@ -79,11 +79,15 @@ const Documents = () => {
                 <div className="m-2 flex justify-between rounded-lg border-2 border-dark/25 p-2">
                     <div className="flex gap-x-4">
                         <button className="btn-success" onClick={newDocHandler}>
-                            <IcPlus className="icon" />
+                            <IcNewDoc className="icon" />
                             <span>New</span>
                         </button>
-                        <div className="btn-secondary relative overflow-hidden">
+                        <button
+                            disabled
+                            className="btn-secondary relative overflow-hidden"
+                        >
                             <input
+                                disabled
                                 type="file"
                                 accept=".json"
                                 className="absolute top-0 right-0 bottom-0 left-0 cursor-pointer opacity-0"
@@ -93,25 +97,13 @@ const Documents = () => {
                             />
                             <IcImport className="icon" />
                             <span>Import</span>
-                        </div>
+                        </button>
                     </div>
-                    <button className="btn-secondary" onClick={() => ""}>
-                        <IcRefresh className="icon" />
-                        <span>refresh</span>
-                    </button>
-                </div>
-                <div className="my-2 grid grid-cols-10 px-4 text-center">
-                    <div className="col-span-3 text-left font-semibold">
-                        Name
-                    </div>
-                    <div className="col-span-3 font-semibold">CreatedAt</div>
-                    <div className="col-span-3 font-semibold">ModifiedAt</div>
-                    <div></div>
                 </div>
                 <div className="mx-2 rounded-lg border-2 border-dark/25 shadow-lg">
                     {documents.map((doc, docIndex) => (
                         <div
-                            className={`group grid grid-cols-10 px-4 text-center ${
+                            className={`group grid grid-cols-10 px-2 text-center ${
                                 docIndex % 2 === 0 && "bg-dark/5"
                             } hover:bg-secondary`}
                         >
@@ -119,13 +111,14 @@ const Documents = () => {
                                 to={"/editor/" + doc.name}
                                 className="col-span-9 grid grid-cols-3"
                             >
-                                <div className="text-left group-hover:underline">
-                                    {doc.name}
+                                <div className="col-span-full space-x-1 text-left group-hover:underline sm:col-span-2 md:col-span-1">
+                                    <IcDoc className="icon inline-block" />
+                                    <span>{doc.name}</span>
                                 </div>
-                                <div className="">
+                                <div className="hidden sm:block">
                                     {doc.createdAt.toDate().toDateString()}
                                 </div>
-                                <div className="">
+                                <div className="hidden md:block">
                                     {doc.modifiedAt.toDate().toDateString()}
                                 </div>
                             </Link>
@@ -134,8 +127,8 @@ const Documents = () => {
                                     <IcMore
                                         className={
                                             currMenu === doc.name
-                                                ? "icon rotate-90 text-secondary transition-all duration-300"
-                                                : "icon"
+                                                ? "rotate-90 text-xl text-secondary transition-all duration-300"
+                                                : "text-xl"
                                         }
                                     />
                                 </button>
@@ -173,7 +166,7 @@ const Documents = () => {
                                                 deleteHandler(doc.name)
                                             }
                                         >
-                                            <IcDelete className="icon" />{" "}
+                                            <IcBin className="icon" />{" "}
                                             <span>delete</span>
                                         </button>
                                     </div>

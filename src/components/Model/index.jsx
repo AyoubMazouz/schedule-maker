@@ -1,5 +1,6 @@
 import { useGlobalContext } from "../../Contexts/GlobalContext";
 import DelDoc from "./DelDoc";
+import DelPubDoc from "./DelPubDoc";
 import Exit from "./Exit";
 import Login from "./Login";
 import NewDoc from "./NewDoc";
@@ -10,6 +11,7 @@ const Model = () => {
 
     if (!model) return null;
     else if (model.type === "deldoc") return <DelDoc />;
+    else if (model.type === "delpubdoc") return <DelPubDoc />;
     else if (model.type === "newdoc") return <NewDoc />;
     else if (model.type === "rendoc") return <RenDoc />;
     else if (model.type === "exit") return <Exit />;
