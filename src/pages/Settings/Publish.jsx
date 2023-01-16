@@ -67,9 +67,9 @@ const Publish = () => {
             <div className="mx-2 rounded-lg border shadow-md">
                 {documents.map((doc, docIndex) => (
                     <div
-                        className={`group flex cursor-pointer justify-between gap-x-2 px-4 ${
+                        className={`menu-item group flex justify-between gap-x-2 ${
                             docIndex % 2 === 0 && "bg-dark/5"
-                        } hover:bg-secondary`}
+                        }`}
                     >
                         <div className="grid grid-cols-12">
                             <div className="col-span-8">{doc.id}</div>

@@ -129,8 +129,8 @@ const Labels = ({ saved, setSaved }) => {
     };
 
     return (
-        <div>
-            <div className="m-2 flex justify-end gap-x-6 rounded-lg border p-2 shadow-md">
+        <div className="space-y-2 p-2">
+            <div className="flex justify-end gap-x-6 rounded-lg border p-2 shadow-md">
                 <button
                     disabled={saved}
                     className="btn-success"
@@ -148,80 +148,72 @@ const Labels = ({ saved, setSaved }) => {
                     <span>discard</span>
                 </button>
             </div>
-            <div className="mt-4 space-y-4 px-2">
-                {/* Prof */}
-                <div className="space-y-3">
-                    <div className="text-xl font-semibold">ProfNames:</div>
-                    <div className="flex flex-wrap items-center gap-2 rounded-lg border p-2">
-                        {data &&
-                            data.profNames.map((profName) => (
-                                <div className="flex items-center gap-x-2 rounded-full border-2 border-dark/25 bg-dark/5 py-0.5 pl-3 pr-2  font-semibold text-dark">
-                                    <div>{profName}</div>
-                                    <button
-                                        onClick={() => deleteProf(profName)}
-                                    >
-                                        <IcEx className="transition-all duration-300 hover:scale-125 hover:text-primary" />
-                                    </button>
-                                </div>
-                            ))}
-                        <input
-                            type="text"
-                            id="prof"
-                            placeholder="type here..."
-                            value={profInput}
-                            onChange={(e) => setProfInput(e.target.value)}
-                            onKeyPress={enterKeyPressHandler}
-                            className="h-[1.9rem] max-w-[8rem] rounded-full bg-light px-2 capitalize ring-primary focus:outline-none focus:ring-2"
-                        />
-                    </div>
+            {/* Prof */}
+            <div className="flex flex-wrap items-center gap-2 rounded-lg border p-2">
+                <div className="text-lg font-semibold text-primary">Profs:</div>
+                {data &&
+                    data.profNames.map((profName) => (
+                        <div className="flex items-center gap-x-2 rounded-full border-2 border-dark/25 bg-dark/5 py-0.5 pl-3 pr-2  font-semibold text-dark">
+                            <div>{profName}</div>
+                            <button onClick={() => deleteProf(profName)}>
+                                <IcEx className="transition-all duration-300 hover:scale-125 hover:text-primary" />
+                            </button>
+                        </div>
+                    ))}
+                <input
+                    type="text"
+                    id="prof"
+                    placeholder="type here..."
+                    value={profInput}
+                    onChange={(e) => setProfInput(e.target.value)}
+                    onKeyPress={enterKeyPressHandler}
+                    className="h-[1.9rem] max-w-[8rem] rounded-full bg-light px-2 capitalize ring-primary focus:outline-none focus:ring-2"
+                />
+            </div>
+            {/* Rooms */}
+            <div className="flex flex-wrap items-center gap-2 rounded-lg border p-2">
+                <div className="text-lg font-semibold text-primary">Rooms:</div>
+                {data &&
+                    data.rooms.map((room) => (
+                        <div className="flex items-center gap-x-2 rounded-full border-2 border-dark/25 bg-dark/5 p-1 pl-3 font-semibold text-dark">
+                            <div>{room}</div>
+                            <button onClick={() => deleteRoom(room)}>
+                                <IcEx className="transition-all duration-300 hover:scale-125 hover:text-primary" />
+                            </button>
+                        </div>
+                    ))}
+                <input
+                    type="text"
+                    id="room"
+                    placeholder="type here..."
+                    value={roomInput}
+                    onChange={(e) => setRoomInput(e.target.value)}
+                    onKeyPress={enterKeyPressHandler}
+                    className="h-[1.9rem] max-w-[8rem] rounded-full bg-light px-2 capitalize ring-primary focus:outline-none focus:ring-2"
+                />
+            </div>
+            <div className="flex flex-wrap items-center gap-2 rounded-lg border p-2">
+                <div className="text-lg font-semibold text-primary">
+                    Groups:
                 </div>
-                {/* Rooms */}
-                <div className="space-y-3">
-                    <div className="text-xl font-semibold">Rooms:</div>
-                    <div className="flex flex-wrap items-center gap-2 rounded-lg border p-2">
-                        {data &&
-                            data.rooms.map((room) => (
-                                <div className="flex items-center gap-x-2 rounded-full border-2 border-dark/25 bg-dark/5 p-1 pl-3 font-semibold text-dark">
-                                    <div>{room}</div>
-                                    <button onClick={() => deleteRoom(room)}>
-                                        <IcEx className="transition-all duration-300 hover:scale-125 hover:text-primary" />
-                                    </button>
-                                </div>
-                            ))}
-                        <input
-                            type="text"
-                            id="room"
-                            placeholder="type here..."
-                            value={roomInput}
-                            onChange={(e) => setRoomInput(e.target.value)}
-                            onKeyPress={enterKeyPressHandler}
-                            className="h-[1.9rem] max-w-[8rem] rounded-full bg-light px-2 capitalize ring-primary focus:outline-none focus:ring-2"
-                        />
-                    </div>
-                </div>
-                <div className="space-y-3">
-                    <div className="text-xl font-semibold">Groups:</div>
-                    <div className="flex flex-wrap items-center gap-2 rounded-lg border p-2">
-                        {data &&
-                            data.groups.map((group) => (
-                                <div className="flex items-center gap-x-2 rounded-full border-2 border-dark/25 bg-dark/5 p-1 pl-3 font-semibold text-dark">
-                                    <div>{group}</div>
-                                    <button onClick={() => deleteGroup(group)}>
-                                        <IcEx className="transition-all duration-300 hover:scale-125 hover:text-primary" />
-                                    </button>
-                                </div>
-                            ))}
-                        <input
-                            type="text"
-                            id="group"
-                            placeholder="type here..."
-                            value={groupInput}
-                            onChange={(e) => setGroupInput(e.target.value)}
-                            onKeyPress={enterKeyPressHandler}
-                            className="h-[1.9rem] max-w-[8rem] rounded-full bg-light px-2 capitalize ring-primary focus:outline-none focus:ring-2"
-                        />
-                    </div>
-                </div>
+                {data &&
+                    data.groups.map((group) => (
+                        <div className="flex items-center gap-x-2 rounded-full border-2 border-dark/25 bg-dark/5 p-1 pl-3 font-semibold text-dark">
+                            <div>{group}</div>
+                            <button onClick={() => deleteGroup(group)}>
+                                <IcEx className="transition-all duration-300 hover:scale-125 hover:text-primary" />
+                            </button>
+                        </div>
+                    ))}
+                <input
+                    type="text"
+                    id="group"
+                    placeholder="type here..."
+                    value={groupInput}
+                    onChange={(e) => setGroupInput(e.target.value)}
+                    onKeyPress={enterKeyPressHandler}
+                    className="h-[1.9rem] max-w-[8rem] rounded-full bg-light px-2 capitalize ring-primary focus:outline-none focus:ring-2"
+                />
             </div>
         </div>
     );

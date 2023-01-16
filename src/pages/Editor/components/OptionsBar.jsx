@@ -2,23 +2,20 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import { useGlobalContext } from "../../../Contexts/GlobalContext";
 import useEditor from "../useEditor";
-import { downloadShedual } from "../download";
 import {
     IcDown,
     IcDownload,
     IcExport,
     IcImport,
-    IcLogin,
     IcLogout,
     IcNewDoc,
-    IcRemove,
     IcSave,
 } from "../../../components/icons";
 
 const OptionBar = () => {
-    const { addNewDocument, documentExists, importDocument, exportDocument } =
+    const { addNewDocument, importDocument, exportDocument, downloadAsPdf } =
         useEditor();
-    const { data, setData, loadData, loadNew, name, setModel, setAlert } =
+    const { data, setData, loadData, name, setModel, setAlert } =
         useGlobalContext();
 
     const { nameid } = useParams();
@@ -54,7 +51,7 @@ const OptionBar = () => {
     };
 
     const downloadHandler = () => {
-        downloadShedual(data);
+        downloadAsPdf(data);
         setAlert({ type: "success", message: "Download has started..." });
         setCurrMenu(null);
     };
@@ -97,7 +94,7 @@ const OptionBar = () => {
                         <div className="menu-item relative overflow-hidden">
                             <input
                                 type="file"
-                                accept=".json"
+                                accept=".json,.xls,.xlsm"
                                 className="absolute top-0 right-0 bottom-0 left-0 cursor-pointer opacity-0"
                                 onChange={(e) =>
                                     importDocument(setData, e.target.files[0])

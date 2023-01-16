@@ -12,11 +12,15 @@ import {
     IcMore,
     IcNewDoc,
 } from "../../../components/icons";
-import { downloadShedual } from "../download";
 
 const Documents = () => {
-    const { getAllDocuments, importDocument, exportDocument } = useEditor();
-    const { setModel, setData, data, setAlert } = useGlobalContext();
+    const {
+        getAllDocuments,
+        importDocumentAsFile,
+        exportDocument,
+        downloadAsPdf,
+    } = useEditor();
+    const { setModel, data, setAlert } = useGlobalContext();
 
     const [documents, setDocuments] = React.useState([]);
 
@@ -53,7 +57,7 @@ const Documents = () => {
     };
 
     const downloadHandler = () => {
-        downloadShedual(data);
+        downloadAsPdf(data);
         setAlert({ type: "success", message: "Download has started..." });
     };
 
@@ -76,24 +80,18 @@ const Documents = () => {
     return (
         <div className="flex justify-center">
             <div className="w-full max-w-[1400px]">
-                <div className="m-2 flex justify-between rounded-lg border-2 border-dark/25 p-2">
+                <div className="m-2 flex justify-between rounded-lg border-2 border-dark/25 p-2 shadow-md">
                     <div className="flex gap-x-4">
                         <button className="btn-success" onClick={newDocHandler}>
                             <IcNewDoc className="icon" />
                             <span>New</span>
                         </button>
-                        <button
-                            disabled
-                            className="btn-secondary relative overflow-hidden"
-                        >
+                        <button className="btn-secondary relative overflow-hidden">
                             <input
-                                disabled
                                 type="file"
-                                accept=".json"
+                                accept=".json,.xlsm,.xls"
                                 className="absolute top-0 right-0 bottom-0 left-0 cursor-pointer opacity-0"
-                                onChange={(e) =>
-                                    importDocument(setData, e.target.files[0])
-                                }
+                                onChange={importDocumentAsFile}
                             />
                             <IcImport className="icon" />
                             <span>Import</span>
@@ -103,22 +101,26 @@ const Documents = () => {
                 <div className="mx-2 rounded-lg border-2 border-dark/25 shadow-lg">
                     {documents.map((doc, docIndex) => (
                         <div
-                            className={`group grid grid-cols-10 px-2 text-center ${
+                            className={`menu-item group flex justify-between text-center ${
                                 docIndex % 2 === 0 && "bg-dark/5"
-                            } hover:bg-secondary`}
+                            }`}
                         >
                             <Link
                                 to={"/editor/" + doc.name}
-                                className="col-span-9 grid grid-cols-3"
+                                className="grid w-full grid-cols-12"
                             >
-                                <div className="col-span-full space-x-1 text-left group-hover:underline sm:col-span-2 md:col-span-1">
+                                <div className="col-span-full space-x-1 text-left group-hover:underline sm:col-span-9 md:col-span-6">
                                     <IcDoc className="icon inline-block" />
-                                    <span>{doc.name}</span>
+                                    <span>
+                                        {doc.name.length > 30
+                                            ? doc.name.slice(0, 38) + "..."
+                                            : doc.name}
+                                    </span>
                                 </div>
-                                <div className="hidden sm:block">
+                                <div className="col-span-3 hidden sm:block">
                                     {doc.createdAt.toDate().toDateString()}
                                 </div>
-                                <div className="hidden md:block">
+                                <div className="col-span-3 hidden md:block">
                                     {doc.modifiedAt.toDate().toDateString()}
                                 </div>
                             </Link>

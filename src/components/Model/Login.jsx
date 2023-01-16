@@ -1,7 +1,7 @@
 import React from "react";
 import { useAuth } from "../../Contexts/AuthContext";
 import { useGlobalContext } from "../../Contexts/GlobalContext";
-import { IcEx, IcLogin, IcRemove } from "../icons";
+import { IcEx, IcLogin } from "../icons";
 
 const Login = () => {
     const { model, setModel, setAlert } = useGlobalContext();
