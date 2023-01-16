@@ -1,7 +1,7 @@
 import React from "react";
 import { useAuth } from "../../Contexts/AuthContext";
 import { useGlobalContext } from "../../Contexts/GlobalContext";
-import { IcEx, IcLogin } from "../icons";
+import { IcCancel, IcEx, IcLogin } from "../icons";
 
 const Login = () => {
     const { model, setModel, setAlert } = useGlobalContext();
@@ -72,7 +72,7 @@ const Login = () => {
                             className="btn-secondary"
                             onClick={(e) => setModel(null)}
                         >
-                            <IcEx className="icon" />
+                            <IcCancel className="icon" />
                             <span>Cancel</span>
                         </button>
                     </div>

@@ -95,7 +95,7 @@ const useEditor = () => {
                 : null;
     };
 
-    const downloadAsPdf = (data) => {
+    const downloadAsPdf = (data, docName) => {
         const content = [];
 
         data.forEach((schedual, schedualIndex) => {
@@ -146,7 +146,7 @@ const useEditor = () => {
             pageMargins: 10,
             content,
         };
-        pdfMake.createPdf(doc).download();
+        pdfMake.createPdf(doc).download(docName + ".pdf");
     };
 
     const [loading, setLoading] = React.useState(false);
@@ -333,8 +333,21 @@ const useEditor = () => {
         day,
         session,
         row,
-        value
+        value,
+        fusionMode
     ) => {
+        if (row === 1) {
+            const copiedData = copyData(data);
+            copiedData[schedual].schedual[day][session][row] = value;
+            if (fusionMode) {
+                let offset = session % 2 === 0 ? 1 : -1;
+                copiedData[schedual].schedual[day][session + offset][row] =
+                    value;
+            }
+            setData(copiedData);
+            return true;
+        }
+
         let hoursCount = 0;
 
         for (let schIndex = 0; schIndex < data.length; schIndex++) {
@@ -399,8 +412,12 @@ const useEditor = () => {
             }
         }
         const copiedData = copyData(data);
-        copiedData[schedual].schedual[day][session][row] = value;
         copiedData[schedual].totalHours = hoursCount;
+        copiedData[schedual].schedual[day][session][row] = value;
+        if (fusionMode) {
+            let offset = session % 2 === 0 ? 1 : -1;
+            copiedData[schedual].schedual[day][session + offset][row] = value;
+        }
         setData(copiedData);
         return true;
     };

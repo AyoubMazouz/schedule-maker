@@ -27,24 +27,17 @@ export const GlobalContextProvider = ({ children }) => {
         return () => clearTimeout(unsubscribe);
     }, [alert]);
 
-    const loadData = async (name) => {
-        if (!name) return;
+    const loadData = (name) => {
+        return new Promise(async (resolve, reject) => {
+            if (!name) resolve(false);
 
-        const doc = await getDocument(name);
+            const doc = await getDocument(name);
 
-        if (doc) {
-            setData(JSON.parse(doc.data));
-            setName(doc.name);
-        }
-    };
-
-    const loadNew = () => {
-        setData([copyData(EMPTY_SCHEDUAL)]);
-        setName("");
-        navigate("/editor");
-        setAlert({
-            type: "success",
-            message: "You are now on a new blank document.",
+            if (doc) {
+                setData(JSON.parse(doc.data));
+                setName(doc.name);
+                resolve(true);
+            }
         });
     };
 
@@ -58,7 +51,6 @@ export const GlobalContextProvider = ({ children }) => {
         name,
         setName,
         loadData,
-        loadNew,
     };
 
     return (

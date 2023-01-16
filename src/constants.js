@@ -77,7 +77,6 @@ export const ROOMS = [
 
 export const EMPTY_SCHEDUAL = {
     id: 0,
-    date: "",
     group: "",
     totalHours: 0,
     schedual: [

@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../../Contexts/GlobalContext";
 import useEditor from "../../pages/Editor/useEditor";
-import { IcEx, IcTrue } from "../icons";
+import { IcCancel, IcEx, IcTrue } from "../icons";
 
 const Exit = () => {
     const { setModel, name, data, setAlert } = useGlobalContext();
@@ -46,7 +46,7 @@ const Exit = () => {
                         className="btn-secondary"
                         onClick={() => setModel(null)}
                     >
-                        <IcEx className="icon" />
+                        <IcCancel className="icon" />
                         <span>Cancel</span>
                     </button>
                 </div>

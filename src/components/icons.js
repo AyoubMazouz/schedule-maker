@@ -3,6 +3,7 @@ import {
     HiOutlineClock,
     HiOutlineSave,
     HiDotsVertical,
+    HiOutlineSaveAs,
 } from "react-icons/hi";
 import {
     HiOutlineDocumentArrowUp,
@@ -15,7 +16,6 @@ import {
     HiOutlineSquaresPlus,
     HiOutlineClipboardDocumentCheck,
     HiOutlineArrowLeftOnRectangle,
-    HiOutlineCheckBadge,
     HiOutlinePencilSquare,
     HiOutlineArrowUpTray,
     HiOutlineArrowDownTray,
@@ -23,6 +23,8 @@ import {
     HiOutlineDocumentText,
     HiOutlineCog8Tooth,
     HiOutlineBolt,
+    HiOutlineCheck,
+    HiOutlineNoSymbol,
 } from "react-icons/hi2";
 
 export const IcEditor = HiOutlineBolt;
@@ -30,7 +32,7 @@ export const IcSettings = HiOutlineCog8Tooth;
 export const IcDoc = HiOutlineDocumentText;
 export const IcPublish = HiOutlineArrowUpTray;
 export const IcEdit = HiOutlinePencilSquare;
-export const IcTrue = HiOutlineCheckBadge;
+export const IcTrue = HiOutlineCheck;
 export const IcLogin = HiOutlineArrowLeftOnRectangle;
 export const IcLabels = HiOutlineSquaresPlus;
 export const IcBin = HiOutlineTrash;
@@ -46,4 +48,6 @@ export const IcTime = HiOutlineClock;
 export const IcDownload = HiOutlineArrowDownTray;
 export const IcLogout = HiOutlineArrowRightOnRectangle;
 export const IcEx = HiOutlineX;
+export const IcCancel = HiOutlineNoSymbol;
 export const IcNewDoc = HiOutlineDocumentPlus;
+export const IcFusion = HiOutlineSaveAs;

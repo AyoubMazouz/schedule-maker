@@ -1,7 +1,7 @@
 import React from "react";
 import { useGlobalContext } from "../../Contexts/GlobalContext";
 import useSettings from "../../hooks/useSettings";
-import { IcBin, IcEdit, IcEx, IcRemove } from "../icons";
+import { IcBin, IcCancel, IcEdit, IcEx, IcRemove } from "../icons";
 
 const DelPubDoc = () => {
     const { model, setModel, setAlert } = useGlobalContext();
@@ -32,7 +32,7 @@ const DelPubDoc = () => {
                         className="btn-secondary"
                         onClick={() => setModel(null)}
                     >
-                        <IcEx className="icon" />
+                        <IcCancel className="icon" />
                         <span>Cancel</span>
                     </button>
                 </div>
