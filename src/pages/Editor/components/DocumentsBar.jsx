@@ -4,7 +4,7 @@ import useEditor from "../useEditor";
 import useSettings from "../../../hooks/useSettings";
 import { IcBin, IcDelete, IcPlus, IcTime } from "../../../components/icons";
 
-const DocumentsBar = () => {
+const DocumentsBar = ({ saved, setSaved }) => {
     const { data, setData, setAlert } = useGlobalContext();
     const { loading, addNewSchedual, editSchedualInfo, deleteSchedual } =
         useEditor();
@@ -28,6 +28,7 @@ const DocumentsBar = () => {
     const addNewSchedualHandler = () => {
         if (addNewSchedual(data, setData, setAlert)) {
             setCurrSchedual(data.length);
+            setSaved(false);
         }
 
         const newDoc = document.getElementById(`new_doc`);
@@ -48,13 +49,27 @@ const DocumentsBar = () => {
     };
 
     const editSchedualInfoHandler = (schedualIndex, info, value) => {
-        editSchedualInfo(data, setData, setAlert, schedualIndex, info, value);
+        const res = editSchedualInfo(
+            data,
+            setData,
+            setAlert,
+            schedualIndex,
+            info,
+            value
+        );
+        if (res) setSaved(false);
     };
 
     const deleteSchedualHandler = (schedualIndex) => {
         if (schedualIndex === data.length - 1)
             setCurrSchedual(schedualIndex - 1);
-        deleteSchedual(data, setData, setAlert, data[schedualIndex].id);
+        const res = deleteSchedual(
+            data,
+            setData,
+            setAlert,
+            data[schedualIndex].id
+        );
+        if (res) setSaved(false);
     };
     const selectSchedualHandler = (schedualIndex) => {
         setCurrSchedual(schedualIndex);

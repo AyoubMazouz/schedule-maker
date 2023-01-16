@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { IcLabels, IcPublish, IcAbout } from "../../components/icons";
 import { useGlobalContext } from "../../Contexts/GlobalContext";
 
-const SideBar = ({ tabsLs, saved, setSaved }) => {
+const SideBar = ({ tabsLs, saved }) => {
     const { setAlert } = useGlobalContext();
 
     const icons = [

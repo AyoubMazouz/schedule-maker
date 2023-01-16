@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../../Contexts/GlobalContext";
 import useEditor from "../../pages/Editor/useEditor";
-import { IcEx, IcRemove, IcTrue } from "../icons";
+import { IcEx, IcTrue } from "../icons";
 
 const Exit = () => {
     const { setModel, name, data, setAlert } = useGlobalContext();
@@ -19,14 +19,14 @@ const Exit = () => {
                 <div className="mt-4 flex gap-x-6">
                     <button
                         className="btn"
-                        onClick={() => {
-                            addNewDocument(data, name);
+                        onClick={async () => {
                             setModel(null);
+                            navigate("/documents");
+                            await addNewDocument(data, name);
                             setAlert({
                                 type: "success",
                                 message: "Document has been saved!",
                             });
-                            navigate("/documents");
                         }}
                     >
                         <IcTrue className="icon" />

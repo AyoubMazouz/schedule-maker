@@ -325,7 +325,6 @@ const useEditor = () => {
     };
 
     // Schedual.
-
     const editField = (
         data,
         setData,
@@ -336,74 +335,74 @@ const useEditor = () => {
         row,
         value
     ) => {
-        const copiedData = copyData(data);
         let hoursCount = 0;
 
-        copiedData[schedual].schedual[day][session][row] = value;
-
-        copiedData.forEach((sch, schIndex) => {
-            sch.schedual.forEach((d, dIndex) => {
-                d.forEach((sess, sessIndex) => {
-                    // Session String.
+        for (let schIndex = 0; schIndex < data.length; schIndex++) {
+            for (
+                let dayIndex = 0;
+                dayIndex < data[schIndex].schedual.length;
+                dayIndex++
+            ) {
+                for (
+                    let sessIndex = 0;
+                    sessIndex < data[schIndex].schedual[dayIndex].length;
+                    sessIndex++
+                ) {
                     const sessionTextSplited =
                         SESSIONS_TEXT[sessIndex].split("-");
 
-                    // Check if Room or Prof available.
-                    // Prof
+                    const sess = data[schIndex].schedual[dayIndex][sessIndex];
+                    // Check if Prof available.
                     if (
                         sess[0] === value &&
                         schIndex !== schedual &&
-                        dIndex === day &&
+                        dayIndex === day &&
                         sessIndex === session &&
                         sess[2].toLowerCase() !== "teams"
                     ) {
-                        const message = `The professor "${value}" is not available on "${DAYS_TEXT[dIndex]}", from "${sessionTextSplited[0]}" to "${sessionTextSplited[1]}" working with the group "${sch.group}" in classRoom number "${sess[2]}".`;
-
                         setAlert({
                             type: "warn",
-                            message,
+                            message: `The professor "${value}" is not available on "${DAYS_TEXT[dayIndex]}", from "${sessionTextSplited[0]}" to "${sessionTextSplited[1]}" working with the group "${data[schIndex].group}" in classRoom number "${sess[2]}".`,
                         });
-
-                        copiedData[schedual].schedual[day][session][row] = "";
+                        return false;
                     }
-                    // Room.
+                    // Check if Room available.
                     else if (
                         sess[2] === value &&
                         schIndex !== schedual &&
-                        dIndex === day &&
+                        dayIndex === day &&
                         sessIndex === session &&
                         sess[2].toLowerCase() !== "teams"
                     ) {
-                        const message = `The Room number "${value}" is not available on "${DAYS_TEXT[dIndex]}", from "${sessionTextSplited[0]}" to "${sessionTextSplited[1]}" it is ocupied by the group "${sch.group}".`;
-
                         setAlert({
                             type: "warn",
-                            message,
+                            message: `The Room number "${value}" is not available on "${DAYS_TEXT[dayIndex]}", from "${sessionTextSplited[0]}" to "${sessionTextSplited[1]}" it is ocupied by the group "${data[schIndex].group}".`,
                         });
-
-                        copiedData[schedual].schedual[day][session][row] = "";
+                        return false;
                     }
 
                     // Count Total Hours.
                     if (schIndex === schedual)
                         if (
-                            copiedData[schedual].schedual[dIndex][
+                            data[schedual].schedual[dayIndex][
                                 sessIndex
                             ][0].trim() &&
-                            copiedData[schedual].schedual[dIndex][
+                            data[schedual].schedual[dayIndex][
                                 sessIndex
                             ][1].trim() &&
-                            copiedData[schedual].schedual[dIndex][
+                            data[schedual].schedual[dayIndex][
                                 sessIndex
                             ][2].trim()
                         )
                             hoursCount += 2.5;
-                });
-            });
-        });
-
+                }
+            }
+        }
+        const copiedData = copyData(data);
+        copiedData[schedual].schedual[day][session][row] = value;
         copiedData[schedual].totalHours = hoursCount;
         setData(copiedData);
+        return true;
     };
 
     const editSchedualInfo = (
@@ -417,18 +416,21 @@ const useEditor = () => {
         // Check if Group alreadty have a Schedual.
         if (label === "group") {
             for (let i = 0; i < data.length; i++) {
-                if (data[i].group === value)
-                    return setAlert({
+                if (data[i].group === value) {
+                    setAlert({
                         type: "warn",
                         message:
                             "You have already created a Schedual for this group",
                     });
+                    return false;
+                }
             }
         }
 
         const copiedData = copyData(data);
         copiedData[schedual][label] = value;
         setData(copiedData);
+        return true;
     };
 
     const addNewSchedual = (data, setData, setAlert) => {
@@ -461,17 +463,13 @@ const useEditor = () => {
         return true;
     };
 
-    const deleteSchedual = (data, setData, setAlert, id) => {
+    const deleteSchedual = (data, setData, id) => {
         setLoading(true);
-
         const newData = data.filter((schedual) => schedual.id !== id);
         setData(newData);
-        setAlert({
-            type: "success",
-            message: `Schedual Number ${id + 1} has been deleted`,
-        });
-
         setLoading(false);
+        if (newData.length === data.length) return false;
+        return true;
     };
 
     return {

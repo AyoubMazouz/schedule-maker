@@ -817,6 +817,7 @@ body {
 }
 
 .menu-item:disabled {
+  cursor: not-allowed;
   --tw-bg-opacity: 1;
   background-color: rgb(177 168 179 / var(--tw-bg-opacity));
   text-decoration-line: line-through;
@@ -1023,6 +1024,10 @@ body {
   height: 65vh;
 }
 
+.h-full {
+  height: 100%;
+}
+
 .h-\[75vh\] {
   height: 75vh;
 }
@@ -1043,12 +1048,44 @@ body {
   height: 1.75rem;
 }
 
+.h-\[2rem\] {
+  height: 2rem;
+}
+
+.h-\[1\.6rem\] {
+  height: 1.6rem;
+}
+
+.h-\[1\.8rem\] {
+  height: 1.8rem;
+}
+
 .w-full {
   width: 100%;
 }
 
+.w-\[8rem\] {
+  width: 8rem;
+}
+
+.w-1\/2 {
+  width: 50%;
+}
+
 .w-8 {
   width: 2rem;
+}
+
+.w-\[10rem\] {
+  width: 10rem;
+}
+
+.w-\[9rem\] {
+  width: 9rem;
+}
+
+.w-\[9\.6rem\] {
+  width: 9.6rem;
 }
 
 .max-w-\[1200px\] {
@@ -1189,6 +1226,12 @@ body {
   margin-left: calc(0.25rem * calc(1 - var(--tw-space-x-reverse)));
 }
 
+.space-y-3 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.75rem * var(--tw-space-y-reverse));
+}
+
 .overflow-hidden {
   overflow: hidden;
 }
@@ -1199,6 +1242,10 @@ body {
 
 .rounded-lg {
   border-radius: 0.5rem;
+}
+
+.rounded-md {
+  border-radius: 0.375rem;
 }
 
 .rounded-full {
@@ -1239,6 +1286,11 @@ body {
   background-color: rgb(236 236 236 / var(--tw-bg-opacity));
 }
 
+.bg-sky-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(2 132 199 / var(--tw-bg-opacity));
+}
+
 .bg-dark\/5 {
   background-color: rgb(21 29 59 / 0.05);
 }
@@ -1260,6 +1312,16 @@ body {
 
 .bg-transparent {
   background-color: transparent;
+}
+
+.bg-slate-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(226 232 240 / var(--tw-bg-opacity));
+}
+
+.bg-slate-300 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(203 213 225 / var(--tw-bg-opacity));
 }
 
 .p-2 {
@@ -1372,6 +1434,11 @@ body {
 .text-sm {
   font-size: 0.875rem;
   line-height: 1.25rem;
+}
+
+.text-xs {
+  font-size: 0.75rem;
+  line-height: 1rem;
 }
 
 .font-bold {
@@ -1498,6 +1565,86 @@ body {
 .border {
   border-width: 2px;
   border-color: rgb(21 29 59 / 0.25);
+}
+
+.after\:absolute::after {
+  content: var(--tw-content);
+  position: absolute;
+}
+
+.after\:top-\[0\%\]::after {
+  content: var(--tw-content);
+  top: 0%;
+}
+
+.after\:right-\[0\%\]::after {
+  content: var(--tw-content);
+  right: 0%;
+}
+
+.after\:top-\[38\%\]::after {
+  content: var(--tw-content);
+  top: 38%;
+}
+
+.after\:left-\[0\%\]::after {
+  content: var(--tw-content);
+  left: 0%;
+}
+
+.after\:h-3::after {
+  content: var(--tw-content);
+  height: 0.75rem;
+}
+
+.after\:w-3::after {
+  content: var(--tw-content);
+  width: 0.75rem;
+}
+
+.after\:translate-x-\[50\%\]::after {
+  content: var(--tw-content);
+  --tw-translate-x: 50%;
+  -webkit-transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+          transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.after\:translate-y-\[-50\%\]::after {
+  content: var(--tw-content);
+  --tw-translate-y: -50%;
+  -webkit-transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+          transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+@-webkit-keyframes pulse {
+  50% {
+    content: var(--tw-content);
+    opacity: .5;
+  }
+}
+
+@keyframes pulse {
+  50% {
+    content: var(--tw-content);
+    opacity: .5;
+  }
+}
+
+.after\:animate-pulse::after {
+  content: var(--tw-content);
+  -webkit-animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+          animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.after\:rounded-full::after {
+  content: var(--tw-content);
+  border-radius: 9999px;
+}
+
+.after\:bg-emerald-500::after {
+  content: var(--tw-content);
+  --tw-bg-opacity: 1;
+  background-color: rgb(16 185 129 / var(--tw-bg-opacity));
 }
 
 .hover\:rotate-180:hover {

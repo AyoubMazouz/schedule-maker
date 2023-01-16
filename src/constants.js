@@ -1,17 +1,3 @@
-export type DataObj = {
-    date: string;
-    group: string;
-    schedual: [];
-}[];
-
-export type OneDocument = {
-    name: string;
-    createdAt: any;
-    modifiedAt: any;
-    data: string;
-};
-export type DocumentsList = OneDocument[];
-
 export const DAYS_TEXT = [
     "Monday",
     "Tuesday",
@@ -133,3 +119,11 @@ export const EMPTY_SCHEDUAL = {
         ],
     ],
 };
+
+export const VERSION = "0.4.7";
+export const ABOUT_APP = (
+    <p>
+        <b>Schedual Maker</b> is a Web App made with react.<br></br>This App
+        helps with creating scheduals for The <b>OFPPT</b>.
+    </p>
+);

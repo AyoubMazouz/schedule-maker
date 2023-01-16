@@ -4,7 +4,7 @@ import { useGlobalContext } from "../../../Contexts/GlobalContext";
 import useSettings from "../../../hooks/useSettings";
 import useEditor from "../useEditor";
 
-const Table = ({ schedualIndex }) => {
+const Table = ({ schedualIndex, setSaved }) => {
     const { data, setData, setAlert } = useGlobalContext();
     const { editField } = useEditor();
     const { getLabels } = useSettings();
@@ -20,7 +20,7 @@ const Table = ({ schedualIndex }) => {
     }, [data]);
 
     const editFieldHandler = (dayIndex, sessionIndex, row, value) => {
-        editField(
+        const res = editField(
             data,
             setData,
             setAlert,
@@ -30,6 +30,7 @@ const Table = ({ schedualIndex }) => {
             row,
             value
         );
+        if (res) setSaved(false);
     };
 
     return (
