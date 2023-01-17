@@ -1,12 +1,13 @@
 import React from "react";
+import { IcEx } from "../../../components/icons";
 import { DAYS_TEXT, SESSIONS_TEXT } from "../../../constants";
 import { useGlobalContext } from "../../../Contexts/GlobalContext";
 import useSettings from "../../../hooks/useSettings";
 import useEditor from "../useEditor";
 
-const Table = ({ schedualIndex, setSaved, fusionMode }) => {
+const Table = ({ schedualIndex, setSaved, fusionMode, clearCellMode }) => {
     const { data, setData, setAlert } = useGlobalContext();
-    const { editField } = useEditor();
+    const { editField, clearCell } = useEditor();
     const { getLabels } = useSettings();
 
     const [labels, setLabels] = React.useState({
@@ -32,6 +33,30 @@ const Table = ({ schedualIndex, setSaved, fusionMode }) => {
             fusionMode
         );
         if (res) setSaved(false);
+    };
+
+    const isComplete = (session) => {
+        if (session[0].trim() && session[1].trim() && session[2].trim())
+            return "all";
+        else if (session[0].trim() || session[1].trim() || session[2].trim())
+            return "some";
+    };
+
+    const getClearCellButton = (sess, schedual, day, session) => {
+        if (!["some", "all"].includes(isComplete(sess)) || !clearCellMode)
+            return null;
+
+        return (
+            <button
+                onClick={(e) => {
+                    clearCell(data, setData, schedual, day, session);
+                    setSaved(false);
+                }}
+                className="absolute top-[5%] right-[5%] h-4 w-4 cursor-pointer rounded-full bg-red-500"
+            >
+                <IcEx />
+            </button>
+        );
     };
 
     return (
@@ -82,32 +107,26 @@ const Table = ({ schedualIndex, setSaved, fusionMode }) => {
                                     </div>
                                 </div>
                                 {day.map((session, sessionIndex) => {
-                                    let done = "";
-
-                                    if (
-                                        session[0].trim() &&
-                                        session[1].trim() &&
-                                        session[2].trim()
-                                    )
-                                        done = "all";
-                                    else if (
-                                        session[0].trim() ||
-                                        session[1].trim() ||
-                                        session[2].trim()
-                                    )
-                                        done = "some";
                                     return (
                                         <div
-                                            className={`
-                                                col-span-2 border-2  
+                                            className={`relative col-span-2 border-2  
                                                 ${
-                                                    done === "all"
+                                                    isComplete(session) ===
+                                                    "all"
                                                         ? "border-dark/25 bg-secondary"
-                                                        : done === "some"
+                                                        : isComplete(
+                                                              session
+                                                          ) === "some"
                                                         ? "border-rose-600"
                                                         : "opacity-50"
                                                 }`}
                                         >
+                                            {getClearCellButton(
+                                                session,
+                                                schedualIndex,
+                                                dayIndex,
+                                                sessionIndex
+                                            )}
                                             <div>
                                                 <select
                                                     name="group"

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 const Home = () => {
     const navigate = useNavigate();
     React.useEffect(() => {
+        document.title = `SH-Maker - Home`;
         navigate("/documents");
     }, []);
     return <div>Home</div>;

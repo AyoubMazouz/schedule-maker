@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useGlobalContext } from "../../../Contexts/GlobalContext";
 import useEditor from "../useEditor";
 import {
+    IcClearCell,
     IcDown,
     IcDownload,
     IcExport,
@@ -13,7 +14,14 @@ import {
     IcSave,
 } from "../../../components/icons";
 
-const OptionBar = ({ saved, setSaved, setFusionMode, fusionMode }) => {
+const OptionBar = ({
+    saved,
+    setSaved,
+    setFusionMode,
+    fusionMode,
+    clearCellMode,
+    setClearCellMode,
+}) => {
     const {
         addNewDocument,
         importDocument,
@@ -160,14 +168,24 @@ const OptionBar = ({ saved, setSaved, setFusionMode, fusionMode }) => {
                         onChange={docNameHandler}
                     />
                 </div>
-                <button
-                    className={`flex h-8 w-8 items-center justify-center rounded transition-all duration-300 hover:bg-dark/25 ${
-                        fusionMode ? "bg-primary/25" : ""
-                    }`}
-                    onClick={() => setFusionMode((x) => !x)}
-                >
-                    <IcFusion className="icon" />
-                </button>
+                <div className="flex gap-x-2">
+                    <button
+                        className={`flex h-8 w-8 items-center justify-center rounded transition-all duration-300 hover:bg-dark/25 ${
+                            fusionMode ? "bg-primary/25" : ""
+                        }`}
+                        onClick={() => setFusionMode((x) => !x)}
+                    >
+                        <IcFusion className="icon" />
+                    </button>
+                    <button
+                        className={`flex h-8 w-8 items-center justify-center rounded transition-all duration-300 hover:bg-dark/25 ${
+                            clearCellMode ? "bg-primary/25" : ""
+                        }`}
+                        onClick={() => setClearCellMode((x) => !x)}
+                    >
+                        <IcClearCell className="icon" />
+                    </button>
+                </div>
             </div>
             <button className="btn" onClick={downloadHandler}>
                 <IcDownload className="icon" />

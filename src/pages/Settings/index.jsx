@@ -21,6 +21,7 @@ const Settings = () => {
     const tabsLs = Object.keys(tabs);
 
     React.useEffect(() => {
+        document.title = `SH-Maker - Settings-${settingsTab}`;
         if (!tabsLs.includes(settingsTab)) {
             navigate("/settings/labels");
         }

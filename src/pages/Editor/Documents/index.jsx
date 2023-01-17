@@ -25,6 +25,7 @@ const Documents = () => {
     const [documents, setDocuments] = React.useState([]);
 
     React.useEffect(() => {
+        document.title = `SH-Maker - Documents`;
         getAllDocuments(setDocuments);
     }, []);
 
@@ -58,7 +59,10 @@ const Documents = () => {
 
     const downloadHandler = (doc) => {
         downloadAsPdf(JSON.parse(doc.data), doc.name);
-        setAlert({ type: "success", message: "Download has started..." });
+        setAlert({
+            type: "success",
+            message: `Document ${doc.name} has started downloading...`,
+        });
     };
 
     const exportHandler = () => {

@@ -338,6 +338,19 @@ const useEditor = () => {
         }
     };
 
+    const clearCell = (data, setData, schedual, day, session) => {
+        if (
+            !data[schedual].schedual[day][session][0] ||
+            !data[schedual].schedual[day][session][1] ||
+            !data[schedual].schedual[day][session][2]
+        )
+            return false;
+        const copiedData = copyData(data);
+        copiedData[schedual].schedual[day][session] = ["", "", ""];
+        setData(copiedData);
+        return true;
+    };
+
     // Schedual.
     const editField = (
         data,
@@ -515,6 +528,7 @@ const useEditor = () => {
         importDocument,
         importDocumentAsFile,
         editField,
+        clearCell,
         editSchedualInfo,
         deleteSchedual,
         addNewSchedual,

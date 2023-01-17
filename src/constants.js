@@ -132,3 +132,4 @@ export const ABOUT_APP = (
         helps with creating scheduals for The <b>OFPPT</b>.
     </p>
 );
+export const MY_EMAIL = "ayoub2000mazouz@gmail.com";

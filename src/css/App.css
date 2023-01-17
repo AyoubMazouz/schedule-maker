@@ -923,6 +923,26 @@ body {
   left: 0%;
 }
 
+.right-\[0\%\] {
+  right: 0%;
+}
+
+.top-\[-10\%\] {
+  top: -10%;
+}
+
+.right-\[-10\%\] {
+  right: -10%;
+}
+
+.top-\[5\%\] {
+  top: 5%;
+}
+
+.right-\[5\%\] {
+  right: 5%;
+}
+
 .z-50 {
   z-index: 50;
 }
@@ -1052,6 +1072,18 @@ body {
   height: 1.75rem;
 }
 
+.h-\[1\.5rem\] {
+  height: 1.5rem;
+}
+
+.h-\[1\.4rem\] {
+  height: 1.4rem;
+}
+
+.h-4 {
+  height: 1rem;
+}
+
 .w-full {
   width: 100%;
 }
@@ -1066,6 +1098,22 @@ body {
 
 .w-8 {
   width: 2rem;
+}
+
+.w-\[7rem\] {
+  width: 7rem;
+}
+
+.w-\[7\.8rem\] {
+  width: 7.8rem;
+}
+
+.w-4 {
+  width: 1rem;
+}
+
+.w-3 {
+  width: 0.75rem;
 }
 
 .max-w-\[1200px\] {
@@ -1309,6 +1357,11 @@ body {
 
 .bg-transparent {
   background-color: transparent;
+}
+
+.bg-red-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 68 68 / var(--tw-bg-opacity));
 }
 
 .p-2 {
@@ -1666,6 +1719,10 @@ body {
 .hover\:text-primary:hover {
   --tw-text-opacity: 1;
   color: rgb(83 62 133 / var(--tw-text-opacity));
+}
+
+.hover\:underline:hover {
+  text-decoration-line: underline;
 }
 
 .focus\:bg-light:focus {

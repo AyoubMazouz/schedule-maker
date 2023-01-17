@@ -4,6 +4,7 @@ import {
     HiOutlineSave,
     HiDotsVertical,
     HiOutlineSaveAs,
+    HiOutlineMail,
 } from "react-icons/hi";
 import {
     HiOutlineDocumentArrowUp,
@@ -25,6 +26,7 @@ import {
     HiOutlineBolt,
     HiOutlineCheck,
     HiOutlineNoSymbol,
+    HiOutlineBackspace,
 } from "react-icons/hi2";
 
 export const IcEditor = HiOutlineBolt;
@@ -51,3 +53,5 @@ export const IcEx = HiOutlineX;
 export const IcCancel = HiOutlineNoSymbol;
 export const IcNewDoc = HiOutlineDocumentPlus;
 export const IcFusion = HiOutlineSaveAs;
+export const IcMail = HiOutlineMail;
+export const IcClearCell = HiOutlineBackspace;
