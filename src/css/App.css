@@ -1024,6 +1024,10 @@ body {
   height: 65vh;
 }
 
+.h-\[1\.8rem\] {
+  height: 1.8rem;
+}
+
 .h-full {
   height: 100%;
 }
@@ -1048,28 +1052,12 @@ body {
   height: 1.75rem;
 }
 
-.h-\[2rem\] {
-  height: 2rem;
-}
-
-.h-\[1\.6rem\] {
-  height: 1.6rem;
-}
-
-.h-\[1\.8rem\] {
-  height: 1.8rem;
-}
-
-.h-12 {
-  height: 3rem;
-}
-
 .w-full {
   width: 100%;
 }
 
-.w-\[8rem\] {
-  width: 8rem;
+.w-\[9\.6rem\] {
+  width: 9.6rem;
 }
 
 .w-1\/2 {
@@ -1078,22 +1066,6 @@ body {
 
 .w-8 {
   width: 2rem;
-}
-
-.w-\[10rem\] {
-  width: 10rem;
-}
-
-.w-\[9rem\] {
-  width: 9rem;
-}
-
-.w-\[9\.6rem\] {
-  width: 9.6rem;
-}
-
-.w-12 {
-  width: 3rem;
 }
 
 .max-w-\[1200px\] {
@@ -1232,16 +1204,16 @@ body {
   margin-bottom: calc(1.5rem * var(--tw-space-y-reverse));
 }
 
-.space-x-1 > :not([hidden]) ~ :not([hidden]) {
-  --tw-space-x-reverse: 0;
-  margin-right: calc(0.25rem * var(--tw-space-x-reverse));
-  margin-left: calc(0.25rem * calc(1 - var(--tw-space-x-reverse)));
-}
-
 .space-y-3 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-y-reverse: 0;
   margin-top: calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(0.75rem * var(--tw-space-y-reverse));
+}
+
+.space-x-1 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0;
+  margin-right: calc(0.25rem * var(--tw-space-x-reverse));
+  margin-left: calc(0.25rem * calc(1 - var(--tw-space-x-reverse)));
 }
 
 .overflow-hidden {
@@ -1264,12 +1236,12 @@ body {
   border-radius: 9999px;
 }
 
-.rounded-xl {
-  border-radius: 0.75rem;
-}
-
 .rounded {
   border-radius: 0.25rem;
+}
+
+.rounded-xl {
+  border-radius: 0.75rem;
 }
 
 .border-2 {
@@ -1307,6 +1279,11 @@ body {
   background-color: rgb(2 132 199 / var(--tw-bg-opacity));
 }
 
+.bg-slate-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(226 232 240 / var(--tw-bg-opacity));
+}
+
 .bg-dark\/5 {
   background-color: rgb(21 29 59 / 0.05);
 }
@@ -1321,6 +1298,10 @@ body {
   background-color: rgb(225 29 72 / var(--tw-bg-opacity));
 }
 
+.bg-primary\/25 {
+  background-color: rgb(83 62 133 / 0.25);
+}
+
 .bg-secondary {
   --tw-bg-opacity: 1;
   background-color: rgb(177 168 179 / var(--tw-bg-opacity));
@@ -1328,20 +1309,6 @@ body {
 
 .bg-transparent {
   background-color: transparent;
-}
-
-.bg-slate-200 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(226 232 240 / var(--tw-bg-opacity));
-}
-
-.bg-slate-300 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(203 213 225 / var(--tw-bg-opacity));
-}
-
-.bg-primary\/25 {
-  background-color: rgb(83 62 133 / 0.25);
 }
 
 .p-2 {
@@ -1354,14 +1321,6 @@ body {
 
 .p-1 {
   padding: 0.25rem;
-}
-
-.p-0\.5 {
-  padding: 0.125rem;
-}
-
-.p-0 {
-  padding: 0px;
 }
 
 .px-4 {
@@ -1459,14 +1418,14 @@ body {
   line-height: 1.75rem;
 }
 
-.text-sm {
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-}
-
 .text-xs {
   font-size: 0.75rem;
   line-height: 1rem;
+}
+
+.text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
 }
 
 .font-bold {
@@ -1490,6 +1449,11 @@ body {
   color: rgb(83 62 133 / var(--tw-text-opacity));
 }
 
+.text-white {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
 .text-dark {
   --tw-text-opacity: 1;
   color: rgb(21 29 59 / var(--tw-text-opacity));
@@ -1498,11 +1462,6 @@ body {
 .text-light {
   --tw-text-opacity: 1;
   color: rgb(236 236 236 / var(--tw-text-opacity));
-}
-
-.text-white {
-  --tw-text-opacity: 1;
-  color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
 .text-secondary {
@@ -1527,12 +1486,6 @@ body {
 .shadow-lg {
   --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-}
-
-.shadow {
-  --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-  --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 

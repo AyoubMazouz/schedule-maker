@@ -14,90 +14,101 @@ import { db } from "../../firebase";
 import XLSX from "xlsx";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
-import { DAYS_TEXT, EMPTY_SCHEDUAL, SESSIONS_TEXT } from "../../constants";
+import {
+    DARK_COL,
+    DAYS_TEXT,
+    EMPTY_SCHEDUAL,
+    LIGHT_COL,
+    PRIMARY_COL,
+    SECONDARY_COL,
+    SESSIONS_TEXT,
+} from "../../constants";
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 pdfMake.fonts = {
     Roboto: {
         normal: "Roboto-Regular.ttf",
-        bold: "Roboto-Medium.ttf",
+        bold: "Roboto-Bold.ttf",
         italics: "Roboto-Italic.ttf",
-        bolditalics: "Roboto-Italic.ttf",
     },
 };
 
 const useEditor = () => {
-    const getSessionObj = (text) => {
-        return {
-            text: "\n" + text,
-            style: "tableBody",
-            fontSize: 28,
-            lineHeight: 0.4,
-            alignment: "center",
-            color: "white",
-        };
-    };
-    const getLabel = (text) => {
-        let color = "#3333";
-
-        if (typeof text === "string" && text.split(" ").includes("EFM"))
-            color = "red";
-
-        return {
-            text,
-            color,
-            style: "tableBody",
-            fontSize: 18,
-        };
-    };
-    const getRoomLabel = (text) => {
-        if (!text) return;
-
-        return {
-            text: text.toLowerCase() !== "teams" ? "Room " + text : text,
-            color: "#3333",
-            style: "tableBody",
-            fontSize: 18,
-        };
-    };
-
-    const tableData = (data) => {
-        const copiedData = JSON.parse(JSON.stringify(data));
-        return copiedData.map((day, index) => {
-            day.unshift([
-                {
-                    text: "\n" + DAYS_TEXT[index],
-                    style: "tableBody",
-                    fontSize: 28,
-                    lineHeight: 0.4,
-                    color: "white",
-                },
-            ]);
-            return day.map((session) => {
-                return [
-                    getLabel(session[0]),
-                    getLabel(session[1]),
-                    getRoomLabel(session[2]),
-                ];
-            });
-        });
-    };
-
-    const getFillColor = (data, schedualIndex, rowIndex, node, columnIndex) => {
-        if (rowIndex === 0 && columnIndex === 0) return null;
-
-        if (rowIndex === 0 || columnIndex === 0) return "#C060A1";
-        else
-            return data[schedualIndex].schedual[rowIndex - 1][
-                columnIndex - 1
-            ][0]
-                ? "#eef"
-                : null;
-    };
-
     const downloadAsPdf = (data, docName) => {
-        const content = [];
+        const getSessionObj = (text) => {
+            return {
+                text: "\n" + text,
+                style: "tableBody",
+                fontSize: 28,
+                lineHeight: 0.4,
+                alignment: "center",
+                color: "white",
+            };
+        };
+        const getLabel = (text) => {
+            let color = DARK_COL;
 
+            if (typeof text === "string" && text.includes("EFM")) color = "red";
+
+            return {
+                text,
+                color,
+                style: "tableBody",
+                fontSize: 18,
+            };
+        };
+        const getRoomLabel = (text) => {
+            if (!text) return;
+
+            return {
+                text: text.toLowerCase() !== "teams" ? "Room " + text : text,
+                color: DARK_COL,
+                style: "tableBody",
+                fontSize: 18,
+            };
+        };
+
+        const tableData = (data) => {
+            const copiedData = JSON.parse(JSON.stringify(data));
+            return copiedData.map((day, index) => {
+                day.unshift([
+                    {
+                        text: "\n" + DAYS_TEXT[index],
+                        style: "tableBody",
+                        fontSize: 28,
+                        lineHeight: 0.4,
+                        color: LIGHT_COL,
+                    },
+                ]);
+                return day.map((session) => {
+                    return [
+                        getLabel(session[0]),
+                        getLabel(session[1]),
+                        getRoomLabel(session[2]),
+                    ];
+                });
+            });
+        };
+
+        const getFillColor = (
+            data,
+            schedualIndex,
+            rowIndex,
+            node,
+            columnIndex
+        ) => {
+            if (rowIndex === 0 && columnIndex === 0) return null;
+
+            if (rowIndex === 0 || columnIndex === 0) return PRIMARY_COL;
+            else
+                return data[schedualIndex].schedual[rowIndex - 1][
+                    columnIndex - 1
+                ][0]
+                    ? SECONDARY_COL
+                    : null;
+        };
+        //
+        const content = [];
         data.forEach((schedual, schedualIndex) => {
             content.push({
                 style: "tableExample",
@@ -144,9 +155,12 @@ const useEditor = () => {
             pageSize: "A4",
             pageOrientation: "landscape",
             pageMargins: 10,
+            defaultStyle: {
+                font: "Roboto",
+            },
             content,
         };
-        pdfMake.createPdf(doc).download(docName + ".pdf");
+        pdfMake.createPdf(doc, null, pdfMake.fonts).download(docName + ".pdf");
     };
 
     const [loading, setLoading] = React.useState(false);

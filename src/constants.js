@@ -119,6 +119,12 @@ export const EMPTY_SCHEDUAL = {
     ],
 };
 
+// Colors.
+export const PRIMARY_COL = "#DA0037";
+export const SECONDARY_COL = "#eee";
+export const LIGHT_COL = "#EDEDED";
+export const DARK_COL = "#171717";
+
 export const VERSION = "0.4.7";
 export const ABOUT_APP = (
     <p>

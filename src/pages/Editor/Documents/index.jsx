@@ -56,8 +56,8 @@ const Documents = () => {
         setCurrMenu(null);
     };
 
-    const downloadHandler = () => {
-        downloadAsPdf(data);
+    const downloadHandler = (doc) => {
+        downloadAsPdf(JSON.parse(doc.data), doc.name);
         setAlert({ type: "success", message: "Download has started..." });
     };
 
@@ -157,7 +157,9 @@ const Documents = () => {
                                         </button>
                                         <button
                                             className="menu-item"
-                                            onClick={downloadHandler}
+                                            onClick={(e) =>
+                                                downloadHandler(doc)
+                                            }
                                         >
                                             <IcDownload className="icon" />
                                             <span>Download</span>
