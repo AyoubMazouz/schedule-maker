@@ -1,7 +1,7 @@
 import React from "react";
-import useEditor from "../useEditor";
+import useEditor from "../../hooks/useEditor";
 import { Link } from "react-router-dom";
-import { useGlobalContext } from "../../../Contexts/GlobalContext";
+import { useGlobalContext } from "../../Contexts/GlobalContext";
 import {
     IcBin,
     IcDoc,
@@ -11,7 +11,7 @@ import {
     IcImport,
     IcMore,
     IcNewDoc,
-} from "../../../components/icons";
+} from "../../components/icons";
 
 const Documents = () => {
     const {

@@ -10,7 +10,7 @@ import {
     collection,
     deleteDoc,
 } from "firebase/firestore";
-import { db } from "../../firebase";
+import { db } from "../firebase";
 import XLSX from "xlsx";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
@@ -22,7 +22,7 @@ import {
     PRIMARY_COL,
     SECONDARY_COL,
     SESSIONS_TEXT,
-} from "../../constants";
+} from "../constants";
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 pdfMake.fonts = {
@@ -287,9 +287,13 @@ const useEditor = () => {
                 columns.forEach((col, index) => {
                     if (worksheet[`${col}${i}`] && worksheet[`${col}${i}`]?.v)
                         day.push([
-                            worksheet[`${col}${i}`].v,
+                            worksheet[`${col}${i}`].v.charAt(0).toUpperCase() +
+                                worksheet[`${col}${i}`].v
+                                    .slice(1)
+                                    .toLowerCase(),
                             worksheet[`${col}${i + 1}`].v,
-                            worksheet[`${col}${i + 2}`].v,
+                            worksheet[`${col}${i + 2}`].v.replace("SALLE ", ""),
+                            null,
                         ]);
                     else day.push(["", "", ""]);
 
@@ -338,15 +342,28 @@ const useEditor = () => {
         }
     };
 
-    const clearCell = (data, setData, schedual, day, session) => {
-        if (
-            !data[schedual].schedual[day][session][0] ||
-            !data[schedual].schedual[day][session][1] ||
-            !data[schedual].schedual[day][session][2]
-        )
-            return false;
-        const copiedData = copyData(data);
-        copiedData[schedual].schedual[day][session] = ["", "", ""];
+    const clearCell = (
+        data,
+        setData,
+        fusionMode,
+        schedualIndex,
+        dayIndex,
+        sessionIndex
+    ) => {
+        const copiedData = data.map((sch) => sch);
+        copiedData[schedualIndex].schedual[dayIndex][sessionIndex] = [
+            "",
+            "",
+            "",
+        ];
+
+        if (fusionMode) {
+            const offset = sessionIndex % 2 === 0 ? 1 : -1;
+            copiedData[schedualIndex].schedual[dayIndex][
+                sessionIndex + offset
+            ] = ["", "", ""];
+        }
+
         setData(copiedData);
         return true;
     };
@@ -363,88 +380,64 @@ const useEditor = () => {
         value,
         fusionMode
     ) => {
-        if (row === 1) {
-            const copiedData = copyData(data);
-            copiedData[schedual].schedual[day][session][row] = value;
-            if (fusionMode) {
-                let offset = session % 2 === 0 ? 1 : -1;
-                copiedData[schedual].schedual[day][session + offset][row] =
-                    value;
-            }
-            setData(copiedData);
-            return true;
-        }
+        let [hoursCount, message] = [0, ""];
 
-        let hoursCount = 0;
+        const copiedData = data.map((sch, schIndex) => {
+            if (row === 1) return sch;
+            return {
+                ...sch,
+                schedual: sch.schedual.map((d, dIndex) => {
+                    return d.map((ses, sesIndex) => {
+                        const sessionTextSplited =
+                            SESSIONS_TEXT[sesIndex].split("-");
 
-        for (let schIndex = 0; schIndex < data.length; schIndex++) {
-            for (
-                let dayIndex = 0;
-                dayIndex < data[schIndex].schedual.length;
-                dayIndex++
-            ) {
-                for (
-                    let sessIndex = 0;
-                    sessIndex < data[schIndex].schedual[dayIndex].length;
-                    sessIndex++
-                ) {
-                    const sessionTextSplited =
-                        SESSIONS_TEXT[sessIndex].split("-");
-
-                    const sess = data[schIndex].schedual[dayIndex][sessIndex];
-                    // Check if Prof available.
-                    if (
-                        sess[0] === value &&
-                        schIndex !== schedual &&
-                        dayIndex === day &&
-                        sessIndex === session &&
-                        sess[2].toLowerCase() !== "teams"
-                    ) {
-                        setAlert({
-                            type: "warn",
-                            message: `The professor "${value}" is not available on "${DAYS_TEXT[dayIndex]}", from "${sessionTextSplited[0]}" to "${sessionTextSplited[1]}" working with the group "${data[schIndex].group}" in classRoom number "${sess[2]}".`,
-                        });
-                        return false;
-                    }
-                    // Check if Room available.
-                    else if (
-                        sess[2] === value &&
-                        schIndex !== schedual &&
-                        dayIndex === day &&
-                        sessIndex === session &&
-                        sess[2].toLowerCase() !== "teams"
-                    ) {
-                        setAlert({
-                            type: "warn",
-                            message: `The Room number "${value}" is not available on "${DAYS_TEXT[dayIndex]}", from "${sessionTextSplited[0]}" to "${sessionTextSplited[1]}" it is ocupied by the group "${data[schIndex].group}".`,
-                        });
-                        return false;
-                    }
-
-                    // Count Total Hours.
-                    if (schIndex === schedual)
+                        // Check if Prof available.
                         if (
-                            data[schedual].schedual[dayIndex][
-                                sessIndex
-                            ][0].trim() &&
-                            data[schedual].schedual[dayIndex][
-                                sessIndex
-                            ][1].trim() &&
-                            data[schedual].schedual[dayIndex][
-                                sessIndex
-                            ][2].trim()
-                        )
-                            hoursCount += 2.5;
-                }
-            }
+                            ses[0] === value &&
+                            schIndex !== schedual &&
+                            dIndex === day &&
+                            sesIndex === session &&
+                            ses[2].toLowerCase() !== "teams"
+                        ) {
+                            message = `The professor "${value}" is not available on "${DAYS_TEXT[dIndex]}", from "${sessionTextSplited[0]}" to "${sessionTextSplited[1]}" working with the group "${data[schIndex].group}" in classRoom number "${ses[2]}".`;
+                            return ses;
+                        }
+                        // Check if Room available.
+                        else if (
+                            ses[2] === value &&
+                            schIndex !== schedual &&
+                            dIndex === day &&
+                            sesIndex === session &&
+                            ses[2].toLowerCase() !== "teams"
+                        ) {
+                            message = `The Room number "${value}" is not available on "${DAYS_TEXT[dIndex]}", from "${sessionTextSplited[0]}" to "${sessionTextSplited[1]}" it is ocupied by the group "${sch.group}".`;
+                            return ses;
+                        }
+
+                        // Count Total Hours.
+                        if (schIndex === schedual)
+                            if (ses[0].trim() && ses[1].trim() && ses[2].trim())
+                                hoursCount += 2.5;
+                        return ses;
+                    });
+                }),
+            };
+        });
+
+        if (message) {
+            setAlert({
+                type: "warn",
+                message,
+            });
+            return false;
         }
-        const copiedData = copyData(data);
-        copiedData[schedual].totalHours = hoursCount;
-        copiedData[schedual].schedual[day][session][row] = value;
         if (fusionMode) {
-            let offset = session % 2 === 0 ? 1 : -1;
+            const offset = session % 2 === 0 ? 1 : -1;
             copiedData[schedual].schedual[day][session + offset][row] = value;
         }
+
+        copiedData[schedual].totalHours = hoursCount;
+        copiedData[schedual].schedual[day][session][row] = value;
         setData(copiedData);
         return true;
     };
@@ -457,38 +450,34 @@ const useEditor = () => {
         label,
         value
     ) => {
-        // Check if Group alreadty have a Schedual.
-        if (label === "group") {
-            for (let i = 0; i < data.length; i++) {
-                if (data[i].group === value) {
-                    setAlert({
-                        type: "warn",
-                        message:
-                            "You have already created a Schedual for this group",
-                    });
-                    return false;
-                }
+        let message = "";
+        const copiedData = data.map((sch) => {
+            if (sch.group === value) {
+                message = "You have already created a Schedual for this group";
+                return sch;
             }
+            return sch;
+        });
+        if (message) {
+            setAlert({
+                type: "warn",
+                message,
+            });
+            return false;
         }
-
-        const copiedData = copyData(data);
         copiedData[schedual][label] = value;
         setData(copiedData);
         return true;
     };
 
     const addNewSchedual = (data, setData, setAlert) => {
-        setLoading(true);
-
         if (data.length === 0) {
-            const newData = [copyData(EMPTY_SCHEDUAL)];
+            const newData = [EMPTY_SCHEDUAL];
             setData(newData);
-            setLoading(false);
             return true;
         }
 
         if (!data[data.length - 1].group) {
-            setLoading(false);
             setAlert({
                 type: "warn",
                 message:
@@ -497,24 +486,13 @@ const useEditor = () => {
             return false;
         }
 
-        const copiedData = copyData(data);
-        const newSchedual = copyData(EMPTY_SCHEDUAL);
-        newSchedual.id = copiedData.length;
-        copiedData.push(newSchedual);
-        setData(copiedData);
-
-        setLoading(false);
+        const newSchedual = { ...EMPTY_SCHEDUAL, id: data.length };
+        setData([...data, newSchedual]);
         return true;
     };
 
-    const deleteSchedual = (data, setData, id) => {
-        setLoading(true);
-        const newData = data.filter((schedual) => schedual.id !== id);
-        setData(newData);
-        setLoading(false);
-        if (newData.length === data.length) return false;
-        return true;
-    };
+    const deleteSchedual = (data, setData, id) =>
+        setData(data.filter((sch) => sch.id !== id));
 
     return {
         loading,

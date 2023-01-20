@@ -1,10 +1,12 @@
 import React from "react";
 import { useGlobalContext } from "../../../Contexts/GlobalContext";
-import useEditor from "../useEditor";
+import useEditor from "../../../hooks/useEditor";
 import useSettings from "../../../hooks/useSettings";
 import { IcBin, IcDelete, IcPlus, IcTime } from "../../../components/icons";
+import { useEditorContext } from "../../../Contexts/EditorContext";
 
-const DocumentsBar = ({ saved, setSaved }) => {
+const DocumentsBar = () => {
+    const { saved, setSaved } = useEditorContext();
     const { data, setData, setAlert } = useGlobalContext();
     const { loading, addNewSchedual, editSchedualInfo, deleteSchedual } =
         useEditor();
@@ -13,15 +15,34 @@ const DocumentsBar = ({ saved, setSaved }) => {
     const [currSchedual, setCurrSchedual] = React.useState(0);
     const [labels, setLabels] = React.useState({
         groups: [],
-        profNames: [],
+        trainers: [],
         rooms: [],
     });
 
     const [usedGroups, setUsedGroups] = React.useState([]);
     React.useEffect(() => {
-        getLabels().then((labels) => setLabels(labels));
-
-        // Check for used Groups.
+        getLabels().then((labels) => {
+            const groups = [];
+            labels.faculties.forEach((faculty) => {
+                for (let i = 1; i <= faculty.firstYear; i++) {
+                    groups.push(
+                        `${faculty.name} ${i >= 10 ? `1${i}` : `10${i}`}`
+                    );
+                }
+                for (let i = 1; i <= faculty.secondYear; i++) {
+                    groups.push(
+                        `${faculty.name} ${i >= 10 ? `2${i}` : `20${i}`}`
+                    );
+                }
+            });
+            setLabels({
+                trainers: labels.trainers,
+                rooms: labels.rooms,
+                groups,
+            });
+        });
+    }, []);
+    React.useEffect(() => {
         setUsedGroups(data.map((schedual) => schedual.group));
     }, [data]);
 
@@ -34,16 +55,18 @@ const DocumentsBar = ({ saved, setSaved }) => {
         const newDoc = document.getElementById(`new_doc`);
         const timeOut = setTimeout(() => {
             const editorEle = document.getElementById(`doc_${data.length}`);
-            editorEle.scrollIntoView({
-                behavior: "smooth",
-                block: "center",
-                inline: "nearest",
-            });
-            newDoc.scrollIntoView({
-                behavior: "smooth",
-                block: "end",
-                inline: "nearest",
-            });
+            if (editorEle) {
+                editorEle.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center",
+                    inline: "nearest",
+                });
+                newDoc.scrollIntoView({
+                    behavior: "smooth",
+                    block: "end",
+                    inline: "nearest",
+                });
+            }
             return () => clearTimeout(timeOut);
         }, 10);
     };
@@ -63,12 +86,7 @@ const DocumentsBar = ({ saved, setSaved }) => {
     const deleteSchedualHandler = (schedualIndex) => {
         if (schedualIndex === data.length - 1)
             setCurrSchedual(schedualIndex - 1);
-        const res = deleteSchedual(
-            data,
-            setData,
-            setAlert,
-            data[schedualIndex].id
-        );
+        const res = deleteSchedual(data, setData, data[schedualIndex].id);
         if (res) setSaved(false);
     };
     const selectSchedualHandler = (schedualIndex) => {
@@ -83,11 +101,11 @@ const DocumentsBar = ({ saved, setSaved }) => {
     };
 
     return (
-        <div className="flex flex-col gap-y-3 p-2">
+        <div className="flex flex-col p-2 gap-y-3">
             {data.map((schedual, schedualIndex) =>
                 schedualIndex === currSchedual ? (
-                    <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg border-2 border-dark/25 bg-primary p-2">
-                        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-light text-lg font-bold text-primary">
+                    <div className="flex flex-wrap items-center justify-between gap-2 p-2 border-2 rounded-lg border-dark/25 bg-primary">
+                        <div className="flex items-center justify-center w-8 h-8 text-lg font-bold rounded-full bg-light text-primary">
                             {schedualIndex + 1}
                         </div>
                         <select
@@ -122,7 +140,7 @@ const DocumentsBar = ({ saved, setSaved }) => {
                             })}
                         </select>
                         <button
-                            className="btn-danger rounded-full p-1"
+                            className="p-1 rounded-full btn-danger"
                             onClick={(e) =>
                                 deleteSchedualHandler(schedualIndex)
                             }
@@ -132,14 +150,14 @@ const DocumentsBar = ({ saved, setSaved }) => {
                     </div>
                 ) : (
                     <button
-                        className="flex items-center gap-2 rounded-lg border-2 border-dark/25 p-2"
+                        className="flex items-center gap-2 p-2 border-2 rounded-lg border-dark/25"
                         onClick={(e) => selectSchedualHandler(schedualIndex)}
                     >
-                        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-lg font-bold text-light">
+                        <div className="flex items-center justify-center w-8 h-8 text-lg font-bold rounded-full bg-primary text-light">
                             {schedualIndex + 1}
                         </div>
                         <div className="">{schedual.group}</div>
-                        <div className="ml-auto flex items-center gap-x-1 font-semibold text-primary">
+                        <div className="flex items-center ml-auto font-semibold gap-x-1 text-primary">
                             <span>{schedual.totalHours}</span>
                             <IcTime className="icon" />
                         </div>
@@ -148,7 +166,7 @@ const DocumentsBar = ({ saved, setSaved }) => {
             )}
             <div>
                 <button
-                    className="btn-success w-full justify-center"
+                    className="justify-center w-full btn-success"
                     id="new_doc"
                     disabled={loading}
                     onClick={addNewSchedualHandler}

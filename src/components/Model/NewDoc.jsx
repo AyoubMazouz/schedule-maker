@@ -1,21 +1,21 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { EMPTY_SCHEDUAL } from "../../constants";
 import { useGlobalContext } from "../../Contexts/GlobalContext";
-import useEditor from "../../pages/Editor/useEditor";
+import useEditor from "../../hooks/useEditor";
 import { IcSave, IcRemove, IcEdit, IcEx, IcCancel } from "../icons";
 
 const NewDoc = () => {
     const navigate = useNavigate();
 
     const [docName, setDocName] = React.useState("");
-    const { setModel, setName, data, name, loadNew } = useGlobalContext();
+    const { setModel, setName, data, loadData } = useGlobalContext();
     const { addNewDocument } = useEditor();
 
-    const createHandler = () => {
-        loadNew();
-        addNewDocument(data, docName);
-        setName(docName);
+    const createHandler = async () => {
         setModel(null);
+        await addNewDocument([EMPTY_SCHEDUAL], docName);
+        setName(docName);
         navigate("/editor/" + docName);
     };
 

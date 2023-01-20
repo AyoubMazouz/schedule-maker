@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../../Contexts/GlobalContext";
-import useEditor from "../../pages/Editor/useEditor";
+import useEditor from "../../hooks/useEditor";
 import { IcCancel, IcEx, IcTrue } from "../icons";
 
 const Exit = () => {

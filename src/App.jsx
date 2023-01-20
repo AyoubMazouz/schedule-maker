@@ -7,7 +7,7 @@ import { GlobalContextProvider } from "./Contexts/GlobalContext";
 import "./css/App.css";
 import Contact from "./pages/Contact";
 import Editor from "./pages/Editor";
-import Documents from "./pages/Editor/Documents";
+import Documents from "./pages/Documents";
 import Settings from "./pages/Settings";
 import Home from "./pages/Home";
 import { AuthProvider } from "./Contexts/AuthContext";

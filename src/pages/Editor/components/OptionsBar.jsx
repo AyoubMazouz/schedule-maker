@@ -1,8 +1,9 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useGlobalContext } from "../../../Contexts/GlobalContext";
-import useEditor from "../useEditor";
+import useEditor from "../../../hooks/useEditor";
 import {
+    IcBin,
     IcClearCell,
     IcDown,
     IcDownload,
@@ -13,15 +14,13 @@ import {
     IcNewDoc,
     IcSave,
 } from "../../../components/icons";
+import { useEditorContext } from "../../../Contexts/EditorContext";
 
-const OptionBar = ({
-    saved,
-    setSaved,
-    setFusionMode,
-    fusionMode,
-    clearCellMode,
-    setClearCellMode,
-}) => {
+const OptionBar = () => {
+    const { saved, setSaved, setFusionMode, fusionMode, selectedCell } =
+        useEditorContext();
+    const { data, setData, loadData, setModel, setAlert, setName } =
+        useGlobalContext();
     const {
         addNewDocument,
         importDocument,
@@ -29,8 +28,8 @@ const OptionBar = ({
         downloadAsPdf,
         deleteDocument,
         documentExists,
+        clearCell,
     } = useEditor();
-    const { data, setData, loadData, setModel, setAlert } = useGlobalContext();
 
     const { nameid } = useParams();
     const navigate = useNavigate();
@@ -50,8 +49,10 @@ const OptionBar = ({
     }, [menuRef]);
 
     React.useEffect(() => {
+        setNewDocName(nameid);
+        setName(nameid);
         loadData(nameid);
-    }, []);
+    }, [nameid]);
 
     const saveHandler = async () => {
         setCurrMenu(null);
@@ -105,8 +106,23 @@ const OptionBar = ({
         setSaved(false);
     };
 
+    const clearCellHandler = () => {
+        const [schedualIndex, dayIndex, sessionIndex] = selectedCell
+            .split("")
+            .map((i) => parseInt(i));
+        const res = clearCell(
+            data,
+            setData,
+            fusionMode,
+            schedualIndex,
+            dayIndex,
+            sessionIndex
+        );
+        if (res) setSaved(false);
+    };
+
     return (
-        <div className="sticky top-0 z-30 flex w-full justify-between p-2">
+        <div className="sticky top-0 z-30 flex justify-between w-full p-2">
             <div className="flex gap-6">
                 <button
                     className={`btn-secondary relative ${
@@ -135,11 +151,11 @@ const OptionBar = ({
                             <IcNewDoc className="icon" />
                             <span>New</span>
                         </button>
-                        <div className="menu-item relative overflow-hidden">
+                        <div className="relative overflow-hidden menu-item">
                             <input
                                 type="file"
                                 accept=".json,.xls,.xlsm"
-                                className="absolute top-0 right-0 bottom-0 left-0 cursor-pointer opacity-0"
+                                className="absolute top-0 bottom-0 left-0 right-0 opacity-0 cursor-pointer"
                                 onChange={(e) =>
                                     importDocument(setData, e.target.files[0])
                                 }
@@ -153,7 +169,7 @@ const OptionBar = ({
                         </button>
                         <button
                             onClick={exitHandler}
-                            className="menu-item border-b-0"
+                            className="border-b-0 menu-item"
                         >
                             <IcLogout className="icon" />
                             <span>Exit</span>
@@ -178,12 +194,10 @@ const OptionBar = ({
                         <IcFusion className="icon" />
                     </button>
                     <button
-                        className={`flex h-8 w-8 items-center justify-center rounded transition-all duration-300 hover:bg-dark/25 ${
-                            clearCellMode ? "bg-primary/25" : ""
-                        }`}
-                        onClick={() => setClearCellMode((x) => !x)}
+                        className={`flex h-8 w-8 items-center justify-center rounded transition-all duration-300 hover:bg-dark/25`}
+                        onClick={clearCellHandler}
                     >
-                        <IcClearCell className="icon" />
+                        <IcBin className="icon" />
                     </button>
                 </div>
             </div>

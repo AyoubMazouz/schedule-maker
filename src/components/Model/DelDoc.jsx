@@ -1,6 +1,6 @@
 import React from "react";
 import { useGlobalContext } from "../../Contexts/GlobalContext";
-import useEditor from "../../pages/Editor/useEditor";
+import useEditor from "../../hooks/useEditor";
 import { IcBin, IcCancel, IcEx } from "../icons";
 
 const DelDoc = () => {

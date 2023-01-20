@@ -36,14 +36,97 @@ const useSettings = () => {
             if (snapshot.exists()) {
                 const data = snapshot.data();
 
-                if (data.hasOwnProperty("groups")) {
+                if (data.hasOwnProperty("trainers")) {
                     resolve(data);
                 } else {
-                    resolve({ groups: [], profNames: [], rooms: [] });
+                    resolve({
+                        faculties: [],
+                        trainers: [],
+                        rooms: [],
+                        events: [],
+                    });
                 }
             }
-            resolve({ groups: [], profNames: [], rooms: [] });
+            resolve({ faculties: [], trainers: [], rooms: [], events: [] });
         });
+    };
+
+    const addFaculty = (data, setData, value) => {
+        const newLabels = {
+            trainers: data.trainers,
+            rooms: data.rooms,
+            events: data.events,
+            faculties: [...data.faculties, value],
+        };
+        setData(newLabels);
+    };
+    const addTrainer = (data, setData, value) => {
+        const labelsDoc = {
+            rooms: data.rooms,
+            faculties: data.faculties,
+            events: data.events,
+            trainers: [...data.trainers, value],
+        };
+        setData(labelsDoc);
+    };
+    const addRoom = (data, setData, value) => {
+        const labelsDoc = {
+            trainers: data.trainers,
+            faculties: data.faculties,
+            events: data.events,
+            rooms: [...data.rooms, value],
+        };
+        setData(labelsDoc);
+    };
+    const addEvent = (data, setData, value) => {
+        const labelsDoc = {
+            trainers: data.trainers,
+            faculties: data.faculties,
+            rooms: data.rooms,
+            events: [...data.events, value],
+        };
+        setData(labelsDoc);
+    };
+
+    const deleteTrainer = (data, setData, id) => {
+        const trainers = data.trainers.filter((trainer) => trainer.id !== id);
+        const labelsDoc = {
+            faculties: data.faculties,
+            rooms: data.rooms,
+            events: data.events,
+            trainers,
+        };
+        setData(labelsDoc);
+    };
+    const deleteFaculty = (data, setData, id) => {
+        const faculties = data.faculties.filter((faculty) => faculty.id !== id);
+        const labelsDoc = {
+            trainers: data.trainers,
+            rooms: data.rooms,
+            events: data.events,
+            faculties,
+        };
+        setData(labelsDoc);
+    };
+    const deleteRoom = (data, setData, id) => {
+        const rooms = data.rooms.filter((room) => room.id !== id);
+        const labelsDoc = {
+            trainers: data.trainers,
+            faculties: data.faculties,
+            events: data.events,
+            rooms,
+        };
+        setData(labelsDoc);
+    };
+    const deleteEvent = (data, setData, id) => {
+        const events = data.events.filter((event) => event.id !== id);
+        const labelsDoc = {
+            trainers: data.trainers,
+            faculties: data.faculties,
+            rooms: data.rooms,
+            events,
+        };
+        setData(labelsDoc);
     };
 
     const publishDocument = (file, id) => {
@@ -102,6 +185,14 @@ const useSettings = () => {
         getPublishedDocuments,
         deletePublishedDocument,
         setLabels,
+        deleteRoom,
+        deleteFaculty,
+        deleteTrainer,
+        deleteEvent,
+        addRoom,
+        addTrainer,
+        addFaculty,
+        addEvent,
     };
 };
 
