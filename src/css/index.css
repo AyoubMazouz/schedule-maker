@@ -53,6 +53,22 @@
         @apply capitalize
     }
 
+    .textbox-icon {
+        @apply transition-all duration-300 hover:scale-125 hover:text-primary cursor-pointer
+    }
+
+    .textbox div {
+        @apply flex items-center gap-x-2 rounded-full border-2 border-dark/25 bg-dark/5 py-0.5 pl-3 pr-2  font-semibold text-dark
+    }
+
+    .textbox input {
+        @apply h-[1.9rem] max-w-[8rem] rounded-full bg-light px-2 capitalize ring-primary focus:outline-none focus:ring-2
+    }
+
+    .textbox {
+        @apply flex flex-wrap items-center gap-2 p-2 border rounded-lg;
+    }
+
 }
 
 @layer utilities{

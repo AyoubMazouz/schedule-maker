@@ -7,25 +7,25 @@ import { EditorContextProvider } from "../../Contexts/EditorContext";
 import SelectionBar from "./components/SelectionBar";
 
 const Editor = () => {
-    const { data, name } = useGlobalContext();
+    const { data, name, setAlert } = useGlobalContext();
 
     React.useEffect(() => {
         document.title = `SH-Maker - Editor-${name}`;
     }, [name]);
 
-    // React.useEffect(() => {
-    //     if (saved) window.onbeforeunload = null;
-    //     else
-    //         window.onbeforeunload = () => {
-    //             const message =
-    //                 "You can't leave this page with unsaved changes, if you leave changes will be lost.";
-    //             setAlert({
-    //                 type: "warn",
-    //                 message,
-    //             });
-    //             return message;
-    //         };
-    // }, [saved]);
+    React.useEffect(() => {
+        if (EditorContextProvider.saved) window.onbeforeunload = null;
+        else
+            window.onbeforeunload = () => {
+                const message =
+                    "You can't leave this page with unsaved changes, if you leave changes will be lost.";
+                setAlert({
+                    type: "warn",
+                    message,
+                });
+                return message;
+            };
+    }, [EditorContextProvider.saved]);
 
     return (
         <EditorContextProvider>

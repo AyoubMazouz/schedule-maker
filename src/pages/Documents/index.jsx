@@ -3,6 +3,7 @@ import useEditor from "../../hooks/useEditor";
 import { Link } from "react-router-dom";
 import { useGlobalContext } from "../../Contexts/GlobalContext";
 import {
+    IcAbout,
     IcBin,
     IcDoc,
     IcDownload,
@@ -12,6 +13,7 @@ import {
     IcMore,
     IcNewDoc,
 } from "../../components/icons";
+import OptionBar from "./OptionBar";
 
 const Documents = () => {
     const {
@@ -49,10 +51,10 @@ const Documents = () => {
         setCurrMenu(null);
     };
 
-    const renameHandler = (docName) => {
+    const renameHandler = (value) => {
         setModel({
             type: "rendoc",
-            docName,
+            value,
         });
         setCurrMenu(null);
     };
@@ -75,70 +77,59 @@ const Documents = () => {
         setCurrMenu(null);
     };
 
-    const newDocHandler = (e) => {
-        setModel({
-            type: "newdoc",
-        });
+    const showDetails = (v) => {
+        const details = [
+            ["id", v.id],
+            ["document name", v.name],
+            ["created at", v.createdAt.toDate().toDateString()],
+            ["modified at", v.modifiedAt.toDate().toDateString()],
+        ];
+        setModel({ type: "showDetails", details });
     };
 
     return (
         <div className="flex justify-center">
             <div className="w-full max-w-[1400px]">
-                <div className="m-2 flex justify-between rounded-lg border-2 border-dark/25 p-2 shadow-md">
-                    <div className="flex gap-x-4">
-                        <button className="btn-success" onClick={newDocHandler}>
-                            <IcNewDoc className="icon" />
-                            <span>New</span>
-                        </button>
-                        <button className="btn-secondary relative overflow-hidden">
-                            <input
-                                type="file"
-                                accept=".json,.xlsm,.xls"
-                                className="absolute top-0 right-0 bottom-0 left-0 cursor-pointer opacity-0"
-                                onChange={importDocumentAsFile}
-                            />
-                            <IcImport className="icon" />
-                            <span>Import</span>
-                        </button>
-                    </div>
-                </div>
-                <div className="mx-2 rounded-lg border-2 border-dark/25 shadow-lg">
-                    {documents.map((doc, docIndex) => (
+                <OptionBar />
+                <div className="mx-2 border-2 rounded-lg shadow-lg border-dark/25">
+                    {documents.map((value, docIndex) => (
                         <div
                             className={`menu-item group flex justify-between text-center ${
                                 docIndex % 2 === 0 && "bg-dark/5"
                             }`}
                         >
                             <Link
-                                to={"/editor/" + doc.name}
+                                to={"/editor/" + value.name}
                                 className="grid w-full grid-cols-12"
                             >
-                                <div className="col-span-full space-x-1 text-left group-hover:underline sm:col-span-9 md:col-span-6">
-                                    <IcDoc className="icon inline-block" />
+                                <div className="space-x-1 text-left col-span-full group-hover:underline sm:col-span-9 md:col-span-6">
+                                    <IcDoc className="inline-block icon" />
                                     <span>
-                                        {doc.name.length > 30
-                                            ? doc.name.slice(0, 38) + "..."
-                                            : doc.name}
+                                        {value.name.length > 30
+                                            ? value.name.slice(0, 38) + "..."
+                                            : value.name}
                                     </span>
                                 </div>
-                                <div className="col-span-3 hidden sm:block">
-                                    {doc.createdAt.toDate().toDateString()}
+                                <div className="hidden col-span-3 sm:block">
+                                    {value.createdAt.toDate().toDateString()}
                                 </div>
-                                <div className="col-span-3 hidden md:block">
-                                    {doc.modifiedAt.toDate().toDateString()}
+                                <div className="hidden col-span-3 md:block">
+                                    {value.modifiedAt.toDate().toDateString()}
                                 </div>
                             </Link>
                             <div className="relative flex gap-x-2 text-end">
-                                <button onClick={(e) => setCurrMenu(doc.name)}>
+                                <button
+                                    onClick={(e) => setCurrMenu(value.name)}
+                                >
                                     <IcMore
                                         className={
-                                            currMenu === doc.name
+                                            currMenu === value.name
                                                 ? "rotate-90 text-xl text-secondary transition-all duration-300"
                                                 : "text-xl"
                                         }
                                     />
                                 </button>
-                                {currMenu === doc.name && (
+                                {currMenu === value.name && (
                                     <div
                                         ref={menuRef}
                                         className="menu top-[0%] left-[0%] translate-x-[-100%]"
@@ -146,7 +137,7 @@ const Documents = () => {
                                         <button
                                             className="menu-item"
                                             onClick={() =>
-                                                renameHandler(doc.name)
+                                                renameHandler(value.name)
                                             }
                                         >
                                             <IcEdit className="icon" />
@@ -162,7 +153,7 @@ const Documents = () => {
                                         <button
                                             className="menu-item"
                                             onClick={(e) =>
-                                                downloadHandler(doc)
+                                                downloadHandler(value)
                                             }
                                         >
                                             <IcDownload className="icon" />
@@ -171,11 +162,18 @@ const Documents = () => {
                                         <button
                                             className="menu-item"
                                             onClick={() =>
-                                                deleteHandler(doc.name)
+                                                deleteHandler(value.name)
                                             }
                                         >
-                                            <IcBin className="icon" />{" "}
+                                            <IcBin className="icon" />
                                             <span>delete</span>
+                                        </button>
+                                        <button
+                                            className="menu-item"
+                                            onClick={() => showDetails(value)}
+                                        >
+                                            <IcAbout className="icon" />
+                                            <span>Details</span>
                                         </button>
                                     </div>
                                 )}

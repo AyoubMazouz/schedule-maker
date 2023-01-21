@@ -6,27 +6,30 @@ import { IcCancel, IcEx, IcLogin } from "../icons";
 
 const AddTrainer = () => {
     const { model, setModel, setAlert } = useGlobalContext();
-    const { addTrainer } = useSettings();
+    const { addTrainer, updateTrainer } = useSettings();
 
     const [trainer, setTrainer] = React.useState("");
-    const [room, setRoom] = React.useState([]);
     const [preferedRooms, setPreferedRooms] = React.useState([]);
 
-    const enterKeyPressHandler = (e) => {
-        if (e.key !== "Enter" || !room) return;
+    React.useEffect(() => {
+        if (model.update) {
+            setTrainer(model.value.name);
+            setPreferedRooms(model.value.preferedRooms);
+        }
+    }, []);
 
-        const value = room.trim(" ");
-        const newPreferedRooms = preferedRooms.filter((mod) => mod !== value);
+    const addNewRoomHandler = (e) => {
+        const room = e.target.value;
+        const newPreferedRooms = preferedRooms.filter((r) => r !== room);
 
         if (newPreferedRooms.length !== preferedRooms.length) {
             return setAlert({
                 type: "warn",
-                message: `room number "${value} is already in the list"`,
+                message: `room number "${room} is already in the list"`,
             });
         }
 
-        setPreferedRooms((rooms) => [...rooms, value]);
-        setRoom("");
+        setPreferedRooms((rooms) => [...rooms, room]);
     };
 
     const removeRoomHandler = (value) => {
@@ -38,14 +41,32 @@ const AddTrainer = () => {
         e.preventDefault();
 
         const newtrainer = {
-            id: model.data.trainers.length,
+            id: model.labelsData.trainers.length,
             name: trainer,
             preferedRooms,
             createdAt: Timestamp.now(),
             modifiedAt: Timestamp.now(),
         };
 
-        addTrainer(model.data, model.setData, newtrainer);
+        if (model.update) {
+            newtrainer.id = model.value.id;
+            updateTrainer(
+                model.labelsData,
+                model.setLabelsData,
+                model.value.id,
+                newtrainer
+            );
+        } else {
+            const alreadyExist = model.labelsData.trainers.filter(
+                (f) => f.name === trainer
+            ).length;
+            if (alreadyExist)
+                return setAlert({
+                    type: "warn",
+                    message: `Trainer "${trainer}" already exists!`,
+                });
+            addTrainer(model.labelsData, model.setLabelsData, newtrainer);
+        }
         model.setSaved(false);
         setModel(null);
     };
@@ -55,9 +76,8 @@ const AddTrainer = () => {
             <div
                 className={`w-full space-y-4 rounded-lg border-2 border-dark/25 bg-light p-4 shadow-lg`}
             >
-                <div className="text-center">
-                    <div className="text-xl text-primary">LogIn</div>
-                    <div>Only Authorized Admins are allowed here</div>
+                <div className="text-xl text-center text-primary">
+                    Add New Trainer
                 </div>
                 <div className="flex flex-col items-center gap-2">
                     <label className="input-label" htmlFor="trainer">
@@ -76,29 +96,34 @@ const AddTrainer = () => {
                         }}
                     />
                 </div>
-                <div className="flex flex-wrap items-center gap-2 p-2 border rounded-lg">
+                <div className="textbox">
+                    <span>Prefered Rooms: </span>
                     {preferedRooms.map((room) => (
-                        <div
-                            key={room}
-                            className="flex items-center gap-x-2 rounded-full border-2 border-dark/25 bg-dark/5 py-0.5 pl-3 pr-2  font-semibold text-dark"
-                        >
-                            <div>{room}</div>
-
+                        <div key={room}>
+                            {room}
                             <IcEx
+                                id="preferedRooms"
                                 onClick={(e) => removeRoomHandler(room)}
-                                className="transition-all duration-300 hover:scale-125 hover:text-primary"
+                                className="textbox-icon"
                             />
                         </div>
                     ))}
-                    <input
-                        type="text"
-                        id="groupModule"
-                        placeholder="type here..."
-                        value={room}
-                        onChange={(e) => setRoom(e.target.value.toUpperCase())}
-                        onKeyPress={enterKeyPressHandler}
-                        className="h-[1.9rem] max-w-[8rem] rounded-full bg-light px-2 capitalize ring-primary focus:outline-none focus:ring-2"
-                    />
+                    <select
+                        name="preferedRooms"
+                        className="input"
+                        value=""
+                        onChange={addNewRoomHandler}
+                    >
+                        <option value="" disabled>
+                            Rooms...
+                        </option>
+                        {model.labelsData.rooms.map((room) => (
+                            <option value={room.name}>{room.name}</option>
+                        ))}
+                    </select>
+                </div>
+                <div>
+                    <div className=""></div>
                 </div>
                 <div className="flex gap-x-6">
                     <button

@@ -1,5 +1,12 @@
 import React from "react";
-import { IcBin, IcDown, IcNewDoc, IcSave } from "../../../components/icons";
+import {
+    IcBin,
+    IcDown,
+    IcExport,
+    IcImport,
+    IcNewDoc,
+    IcSave,
+} from "../../../components/icons";
 import { useGlobalContext } from "../../../Contexts/GlobalContext";
 import useSettings from "../../../hooks/useSettings";
 
@@ -9,35 +16,56 @@ const OptionBar = ({
     setCurrMenu,
     saved,
     setSaved,
-    data,
-    setData,
+    labelsData,
+    setLabelsData,
 }) => {
     const { setModel } = useGlobalContext();
-    const { getLabels, setLabels } = useSettings();
+    const { getLabels, setLabels, importSettings, exportSettings } =
+        useSettings();
 
     const saveHandler = () => {
-        setLabels(data);
+        setLabels(labelsData);
         setSaved(true);
     };
 
     const discardChanges = () => {
         getLabels().then((data) => {
-            setData(data);
+            setLabelsData(data);
         });
         setSaved(true);
     };
 
     const addFacultyHandler = () => {
-        setModel({ type: "addFaculty", data, setData, setSaved });
+        setModel({
+            type: "addFaculty",
+            labelsData,
+            setLabelsData,
+            setSaved,
+        });
     };
     const addTrainerHandler = () => {
-        setModel({ type: "addTrainer", data, setData, setSaved });
+        setModel({
+            type: "addTrainer",
+            labelsData,
+            setLabelsData,
+            setSaved,
+        });
     };
     const addRoomHandler = () => {
-        setModel({ type: "addRoom", data, setData, setSaved });
+        setModel({
+            type: "addRoom",
+            labelsData,
+            setLabelsData,
+            setSaved,
+        });
     };
     const addEventHandler = () => {
-        setModel({ type: "addEvent", data, setData, setSaved });
+        setModel({
+            type: "addEvent",
+            labelsData,
+            setLabelsData,
+            setSaved,
+        });
     };
 
     return (
@@ -70,6 +98,27 @@ const OptionBar = ({
                 </div>
             )}
             <div className="flex gap-x-6">
+                {/* <div className="relative overflow-hidden btn">
+                    <input
+                        type="file"
+                        accept=".json,.xls,.xlsm"
+                        className="absolute top-0 bottom-0 left-0 right-0 opacity-0 cursor-pointer"
+                        onChange={(e) =>
+                            importSettings(e.target.files[0], setLabelsData)
+                        }
+                    />
+                    <IcImport className="icon" />
+                    <span>Import</span>
+                </div>
+                <button
+                    className="btn-success"
+                    onClick={(e) =>
+                        exportSettings(labelsData, "settings.sh-maker")
+                    }
+                >
+                    <IcExport className="icon" />
+                    <span>Export</span>
+                </button> */}
                 <button
                     disabled={saved}
                     className="btn-success"

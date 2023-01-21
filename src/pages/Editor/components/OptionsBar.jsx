@@ -26,8 +26,6 @@ const OptionBar = () => {
         importDocument,
         exportDocument,
         downloadAsPdf,
-        deleteDocument,
-        documentExists,
         clearCell,
     } = useEditor();
 
@@ -56,22 +54,7 @@ const OptionBar = () => {
 
     const saveHandler = async () => {
         setCurrMenu(null);
-        if (newDocName !== nameid) {
-            if (await documentExists(newDocName)) {
-                setAlert({
-                    type: "warn",
-                    message: "Document name already used",
-                });
-                setNewDocName(nameid);
-                return false;
-            } else {
-                await deleteDocument(nameid);
-                await addNewDocument(data, newDocName);
-                navigate(`/editor/${newDocName}`);
-            }
-        } else {
-            await addNewDocument(data, newDocName);
-        }
+        await addNewDocument(data, newDocName);
         setSaved(true);
     };
 
@@ -99,11 +82,6 @@ const OptionBar = () => {
         setModel({
             type: "newdoc",
         });
-    };
-
-    const docNameHandler = (e) => {
-        setNewDocName(e.target.value);
-        setSaved(false);
     };
 
     const clearCellHandler = () => {
@@ -157,7 +135,7 @@ const OptionBar = () => {
                                 accept=".json,.xls,.xlsm"
                                 className="absolute top-0 bottom-0 left-0 right-0 opacity-0 cursor-pointer"
                                 onChange={(e) =>
-                                    importDocument(setData, e.target.files[0])
+                                    importDocument(e.target.files[0], setData)
                                 }
                             />
                             <IcImport className="icon" />
@@ -176,14 +154,6 @@ const OptionBar = () => {
                         </button>
                     </div>
                 )}
-                <div>
-                    <input
-                        className="input"
-                        type="text"
-                        value={newDocName}
-                        onChange={docNameHandler}
-                    />
-                </div>
                 <div className="flex gap-x-2">
                     <button
                         className={`flex h-8 w-8 items-center justify-center rounded transition-all duration-300 hover:bg-dark/25 ${

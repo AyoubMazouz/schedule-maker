@@ -243,11 +243,11 @@ const useEditor = () => {
         });
     };
 
-    const exportDocument = (data, docName) => {
+    const exportDocument = (data, fileName) => {
         const jsonData = JSON.stringify(data);
         const link = document.createElement("a");
         link.href = "data:application/json," + jsonData;
-        link.download = `${docName}.schedual-maker.json`;
+        link.download = `${fileName}.schedual-maker.json`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -334,7 +334,7 @@ const useEditor = () => {
             );
         }
     };
-    const importDocument = (setData, file) => {
+    const importDocument = (file, setData) => {
         if (file.name.includes(".xls") || file.name.includes(".xlsm")) {
             importFromXl(file, (doc) => setData(doc));
         } else if (file.name.includes(".json")) {

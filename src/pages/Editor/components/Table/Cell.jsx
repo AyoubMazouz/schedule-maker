@@ -1,7 +1,4 @@
 import React from "react";
-import { useGlobalContext } from "../../../../Contexts/GlobalContext";
-import useSettings from "../../../../hooks/useSettings";
-import useEditor from "../../../../hooks/useEditor";
 
 const Cell = ({
     session,

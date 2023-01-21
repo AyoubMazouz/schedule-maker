@@ -6,21 +6,48 @@ import { IcCancel, IcEx, IcLogin } from "../icons";
 
 const AddRoom = () => {
     const { model, setModel, setAlert } = useGlobalContext();
-    const { addRoom } = useSettings();
+    const { addRoom, updateRoom } = useSettings();
 
     const [room, setRoom] = React.useState("");
+
+    React.useEffect(() => {
+        if (model.update) setRoom(model.value.name);
+    }, []);
 
     const submitHandler = (e) => {
         e.preventDefault();
 
         const newRoom = {
-            id: model.data.events.length,
+            id: model.labelsData.events.length,
             name: room,
             createdAt: Timestamp.now(),
             modifiedAt: Timestamp.now(),
         };
 
-        addRoom(model.data, model.setData, newRoom);
+        const alreadyExist = model.labelsData.rooms.filter(
+            (f) => f.name === room
+        ).length;
+        if (model.update) {
+            newRoom.id = model.value.id;
+            if (alreadyExist)
+                return setAlert({
+                    type: "warn",
+                    message: `room "${room}" already exists!`,
+                });
+            updateRoom(
+                model.labelsData,
+                model.setLabelsData,
+                model.value.id,
+                newRoom
+            );
+        } else {
+            if (alreadyExist)
+                return setAlert({
+                    type: "warn",
+                    message: `room "${room}" already exists!`,
+                });
+            addRoom(model.labelsData, model.setLabelsData, newRoom);
+        }
         model.setSaved(false);
         setModel(null);
     };

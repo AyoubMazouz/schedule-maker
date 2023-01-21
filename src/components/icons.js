@@ -27,6 +27,10 @@ import {
     HiOutlineCheck,
     HiOutlineNoSymbol,
     HiOutlineBackspace,
+    HiOutlineNewspaper,
+    HiOutlineUser,
+    HiOutlineHome,
+    HiOutlineBookOpen,
 } from "react-icons/hi2";
 
 export const IcEditor = HiOutlineBolt;
@@ -55,3 +59,7 @@ export const IcNewDoc = HiOutlineDocumentPlus;
 export const IcFusion = HiOutlineSaveAs;
 export const IcMail = HiOutlineMail;
 export const IcClearCell = HiOutlineBackspace;
+export const IcRoom = HiOutlineHome;
+export const IcUser = HiOutlineUser;
+export const IcEvent = HiOutlineNewspaper;
+export const IcFaculty = HiOutlineBookOpen;

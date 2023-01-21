@@ -52,38 +52,46 @@ const useSettings = () => {
     };
 
     const addFaculty = (data, setData, value) => {
+        const faculties = [...data.faculties, value].sort(
+            (a, b) => a.name > b.name
+        );
         const newLabels = {
             trainers: data.trainers,
             rooms: data.rooms,
             events: data.events,
-            faculties: [...data.faculties, value],
+            faculties,
         };
         setData(newLabels);
     };
     const addTrainer = (data, setData, value) => {
+        const trainers = [...data.trainers, value].sort(
+            (a, b) => a.name > b.name
+        );
         const labelsDoc = {
             rooms: data.rooms,
             faculties: data.faculties,
             events: data.events,
-            trainers: [...data.trainers, value],
+            trainers,
         };
         setData(labelsDoc);
     };
     const addRoom = (data, setData, value) => {
+        const rooms = [...data.rooms, value].sort((a, b) => a.name > b.name);
         const labelsDoc = {
             trainers: data.trainers,
             faculties: data.faculties,
             events: data.events,
-            rooms: [...data.rooms, value],
+            rooms,
         };
         setData(labelsDoc);
     };
     const addEvent = (data, setData, value) => {
+        const events = [...data.events, value].sort((a, b) => a.name > b.name);
         const labelsDoc = {
             trainers: data.trainers,
             faculties: data.faculties,
             rooms: data.rooms,
-            events: [...data.events, value],
+            events,
         };
         setData(labelsDoc);
     };
@@ -125,6 +133,47 @@ const useSettings = () => {
             faculties: data.faculties,
             rooms: data.rooms,
             events,
+        };
+        setData(labelsDoc);
+    };
+    const updateFaculty = (data, setData, id, value) => {
+        let faculties = data.faculties.filter((event) => event.id !== id);
+        faculties = [...faculties, value].sort((a, b) => a.name > b.name);
+        const labelsDoc = {
+            trainers: data.trainers,
+            rooms: data.rooms,
+            events: data.events,
+            faculties,
+        };
+        setData(labelsDoc);
+    };
+    const updateTrainer = (data, setData, id, value) => {
+        const trainers = data.trainers.filter((trainer) => trainer.id !== id);
+        const labelsDoc = {
+            rooms: data.rooms,
+            events: data.events,
+            faculties: data.faculties,
+            trainers: [...trainers, value],
+        };
+        setData(labelsDoc);
+    };
+    const updateRoom = (data, setData, id, value) => {
+        const rooms = data.rooms.filter((room) => room.id !== id);
+        const labelsDoc = {
+            trainers: data.trainers,
+            events: data.events,
+            faculties: data.faculties,
+            rooms: [...rooms, value],
+        };
+        setData(labelsDoc);
+    };
+    const updateEvent = (data, setData, id, value) => {
+        const events = data.events.filter((event) => event.id !== id);
+        const labelsDoc = {
+            trainers: data.trainers,
+            faculties: data.faculties,
+            rooms: data.rooms,
+            events: [...events, value],
         };
         setData(labelsDoc);
     };
@@ -178,6 +227,25 @@ const useSettings = () => {
         });
     };
 
+    const importSettings = (file, callback) => {
+        const reader = new FileReader();
+        reader.readAsText(file, "UTF-8");
+        reader.onload = async (readerEvent) => {
+            const json = readerEvent.target.result;
+            const document = JSON.parse(json);
+            callback(document);
+        };
+    };
+    const exportSettings = (data, fileName) => {
+        const jsonData = JSON.stringify(data);
+        const link = document.createElement("a");
+        link.href = "data:application/json," + jsonData;
+        link.download = `${fileName}.schedual-maker.json`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
     return {
         deleteAllLabels,
         getLabels,
@@ -193,6 +261,12 @@ const useSettings = () => {
         addTrainer,
         addFaculty,
         addEvent,
+        updateFaculty,
+        updateTrainer,
+        updateRoom,
+        updateEvent,
+        importSettings,
+        exportSettings,
     };
 };
 

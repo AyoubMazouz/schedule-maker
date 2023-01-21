@@ -1,18 +1,17 @@
 import React from "react";
 import { useGlobalContext } from "../../Contexts/GlobalContext";
 import useEditor from "../../hooks/useEditor";
-import { IcCancel, IcEdit, IcEx, IcRemove } from "../icons";
+import { IcCancel, IcEdit } from "../icons";
 
 const RenDoc = () => {
     const { model, setModel } = useGlobalContext();
     const { renameDocument } = useEditor();
 
-    const [newDocName, setNewDocName] = React.useState(model.docName);
+    const [newDocName, setNewDocName] = React.useState(model.value);
 
     const renameHandler = async () => {
         setModel(null);
-        await renameDocument(model.docName, newDocName);
-        model.func();
+        await renameDocument(model.value, newDocName);
     };
     return (
         <div className="fixed top-[4rem] left-[50%] z-40 w-full max-w-[600px] translate-x-[-50%] px-4">
@@ -30,7 +29,7 @@ const RenDoc = () => {
                         onChange={(e) => setNewDocName(e.target.value)}
                     />
                 </div>
-                <div className="mt-8 flex gap-x-6">
+                <div className="flex mt-8 gap-x-6">
                     <button className="btn-success" onClick={renameHandler}>
                         <IcEdit className="icon" />
                         <span>Rename</span>

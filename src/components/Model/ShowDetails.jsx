@@ -1,6 +1,6 @@
 import React from "react";
 import { useGlobalContext } from "../../Contexts/GlobalContext";
-import { IcCancel, IcEx } from "../icons";
+import { IcEx } from "../icons";
 
 const ShowDetails = () => {
     const { model, setModel } = useGlobalContext();
@@ -12,12 +12,12 @@ const ShowDetails = () => {
                 <div>
                     {model.details.map(([key, value], index) => (
                         <div
-                            className={`flex items-center justify-between px-2 py-1 ${
+                            className={`grid grid-cols-2 px-2 py-1 ${
                                 index % 2 === 0 && "bg-dark/5"
                             }`}
                         >
-                            <span>{key}:</span>
-                            <span className="font-semibold text-primary">
+                            <span className="text-left max-w-1/2">{key}:</span>
+                            <span className="font-semibold text-right max-w-1/2 text-primary">
                                 {value}
                             </span>
                         </div>

@@ -16,13 +16,36 @@ const SelectionBar = () => {
         rooms: [],
         events: [],
     });
+    const [modules, setModules] = React.useState([]);
     React.useEffect(() => {
-        getLabels().then((labels) => setLabels(labels));
+        getLabels().then((labels) => {
+            setLabels(labels);
+        });
     }, []);
+
+    React.useEffect(() => {
+        if (selectedCell) {
+            const l = data[selectedCell[0]].group.length;
+            const faculty = data[selectedCell[0]].group.slice(0, l - 4);
+            const year = data[selectedCell[0]].group.slice(l - 3, l - 2);
+            const facultiesLS = labels.faculties.filter(
+                (f) => f.name === faculty
+            );
+            if (facultiesLS.length) {
+                if (year === "1") {
+                    setModules(facultiesLS[0].firstYearModules);
+                } else {
+                    setModules(facultiesLS[0].secondYearModules);
+                }
+            } else {
+                setModules([]);
+            }
+        }
+    }, [selectedCell, data]);
 
     if (!selectedCell) return null;
 
-    const [schedualIndex, dayIndex, sessionIndex] = selectedCell;
+    let [schedualIndex, dayIndex, sessionIndex] = selectedCell;
 
     const editFieldHandler = (row, value) => {
         const res = editField(
@@ -50,15 +73,6 @@ const SelectionBar = () => {
         else if (session[0].trim() || session[1].trim() || session[2].trim())
             return "some";
     };
-    const getModules = () => {
-        const faculty = data[schedualIndex].group.slice(
-            0,
-            data[schedualIndex].group.length - 4
-        );
-        return labels.faculties.filter((f) => f.name === faculty)[0].modules;
-    };
-
-    console.log(selectedCell);
 
     return (
         <div className="sticky top-0 z-30 flex justify-between w-full p-2 border rounded-lg shadow-md bg-light">
@@ -93,7 +107,7 @@ const SelectionBar = () => {
                     <option value="" disabled>
                         Module...
                     </option>
-                    {getModules().map((mod) => (
+                    {modules.map((mod) => (
                         <option value={mod}>{mod}</option>
                     ))}
                 </select>

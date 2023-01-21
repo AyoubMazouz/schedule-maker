@@ -7,30 +7,8 @@ export const SESSIONS_TEXT = [
     "04:00 - 06:00",
 ];
 
-export const GROUPS = [
-    "IDOSR 201",
-    "IDOSR 202",
-    "IDOSR 203",
-    "DDOFS 201",
-    "DDOFS 202",
-    "DDOFS 203",
-    "DDOFS 204",
-    "DDOFS 205",
-    "DDOFS 206",
-    "DDOFS 207",
-    "DDOFS 208",
-    "DDOFS 209",
-    "DDOFS 210",
-    "DDOFS 211",
-    "DDOFS 212",
-    "DD 101",
-    "DD 102",
-    "DD 103",
-    "DD 104",
-];
-
 export const PROFS = [
-    "Semar",
+    "Semmar",
     "Lahlali",
     "Aouid",
     "Diouri",
@@ -44,7 +22,6 @@ export const PROFS = [
     "Legdani",
     "Aziz Sbai",
     "Aalil",
-    "Irfaq",
     "Belhaous",
     "Fathallah",
     "Zahraoui",
@@ -52,12 +29,14 @@ export const PROFS = [
 ];
 
 export const ROOMS = [
+    "11",
     "12",
     "13",
     "14",
     "15",
     "16",
     "17",
+    "18",
     "21",
     "22",
     "24",

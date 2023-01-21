@@ -6,52 +6,98 @@ import { IcCancel, IcEx, IcLogin } from "../icons";
 
 const AddFaculty = () => {
     const { model, setModel, setAlert } = useGlobalContext();
-    const { addFaculty } = useSettings();
+    const { addFaculty, updateFaculty } = useSettings();
 
     const [faculty, setFaculty] = React.useState("");
     const [firstYear, setFirstYear] = React.useState(0);
     const [secondYear, setSecondYear] = React.useState(0);
-    const [modules, setModules] = React.useState([]);
-    const [moduleInput, setModuleInput] = React.useState("");
+    const [firstYearModules, setFirstYearModules] = React.useState([]);
+    const [secondYearModules, setSecondYearModules] = React.useState([]);
+    const [moduleInput1, setModuleInput1] = React.useState("");
+    const [moduleInput2, setModuleInput2] = React.useState("");
 
-    const enterKeyPressHandler = (e) => {
-        if (e.key !== "Enter" || !moduleInput) return;
+    React.useEffect(() => {
+        if (model.update) {
+            setFaculty(model.value.name);
+            setFirstYear(model.value.firstYear);
+            setSecondYear(model.value.secondYear);
+            setFirstYearModules(model.value.firstYearModules);
+            setSecondYearModules(model.value.secondYearModules);
+        }
+    }, []);
 
-        const value = moduleInput.trim(" ");
-        const newModules = modules.filter((mod) => mod !== value);
-
-        if (newModules.length !== modules.length) {
+    const enterKeyPressHandler1 = (e) => {
+        if (e.key !== "Enter" || !moduleInput1) return;
+        const value = moduleInput1.trim(" ");
+        const newModules = firstYearModules.filter((mod) => mod !== value);
+        if (newModules.length !== firstYearModules.length) {
             return setAlert({
                 type: "warn",
                 message: `Module "${value} is already in the list"`,
             });
         }
-
-        setModules((modules) => [...modules, value]);
-        setModuleInput("");
+        setFirstYearModules((modules) => [...modules, value]);
+        setModuleInput1("");
+    };
+    const enterKeyPressHandler2 = (e) => {
+        if (e.key !== "Enter" || !moduleInput2) return;
+        const value = moduleInput2.trim(" ");
+        const newModules = secondYearModules.filter((mod) => mod !== value);
+        if (newModules.length !== secondYearModules.length) {
+            return setAlert({
+                type: "warn",
+                message: `Module "${value} is already in the list"`,
+            });
+        }
+        setSecondYearModules((modules) => [...modules, value]);
+        setModuleInput2("");
     };
 
     const submitHandler = (e) => {
         e.preventDefault();
 
         const newFaculty = {
-            id: model.data.faculties.length,
+            id: model.labelsData.faculties.length,
             name: faculty,
             firstYear,
             secondYear,
-            modules,
+            firstYearModules,
+            secondYearModules,
             createdAt: Timestamp.now(),
             modifiedAt: Timestamp.now(),
         };
 
-        addFaculty(model.data, model.setData, newFaculty);
+        if (model.update) {
+            newFaculty.id = model.value.id;
+            updateFaculty(
+                model.labelsData,
+                model.setLabelsData,
+                model.value.id,
+                newFaculty
+            );
+        } else {
+            const alreadyExist = model.labelsData.faculties.filter(
+                (f) => f.name === faculty
+            ).length;
+            if (alreadyExist)
+                return setAlert({
+                    type: "warn",
+                    message: `faculty "${faculty}" already exists!`,
+                });
+            addFaculty(model.labelsData, model.setLabelsData, newFaculty);
+        }
         model.setSaved(false);
         setModel(null);
     };
 
-    const removeModuleHandler = (value) => {
-        const newModules = modules.filter((mod) => mod !== value);
-        setModules(newModules);
+    const removeModuleHandler = (e, value) => {
+        if (e.target.id === "modules1") {
+            const newModules = firstYearModules.filter((mod) => mod !== value);
+            setFirstYearModules(newModules);
+        } else {
+            const newModules = secondYearModules.filter((mod) => mod !== value);
+            setSecondYearModules(newModules);
+        }
     };
 
     return (
@@ -59,9 +105,8 @@ const AddFaculty = () => {
             <div
                 className={`w-full space-y-4 rounded-lg border-2 border-dark/25 bg-light p-4 shadow-lg`}
             >
-                <div className="text-center">
-                    <div className="text-xl text-primary">LogIn</div>
-                    <div>Only Authorized Admins are allowed here</div>
+                <div className="text-xl text-center text-primary">
+                    Add New Faculty
                 </div>
                 <div className="flex flex-col items-center gap-2">
                     <label className="input-label" htmlFor="faculty">
@@ -72,7 +117,9 @@ const AddFaculty = () => {
                         type="text"
                         name="faculty"
                         value={faculty}
-                        onChange={(e) => setFaculty(e.target.value)}
+                        onChange={(e) =>
+                            setFaculty(e.target.value.toUpperCase())
+                        }
                     />
                 </div>
                 <div className="flex flex-col items-center gap-2">
@@ -99,28 +146,50 @@ const AddFaculty = () => {
                         onChange={(e) => setSecondYear(e.target.value)}
                     />
                 </div>
-                <div className="flex flex-wrap items-center gap-2 p-2 border rounded-lg">
-                    {modules.map((mod) => (
-                        <div
-                            key={mod}
-                            className="flex items-center gap-x-2 rounded-full border-2 border-dark/25 bg-dark/5 py-0.5 pl-3 pr-2  font-semibold text-dark"
-                        >
-                            <div>{mod}</div>
-
+                <div className="textbox">
+                    <span>First year modules: </span>
+                    {firstYearModules.map((mod) => (
+                        <div key={mod}>
+                            {mod}
                             <IcEx
-                                onClick={(e) => removeModuleHandler(mod)}
-                                className="transition-all duration-300 hover:scale-125 hover:text-primary"
+                                id="modules1"
+                                onClick={(e) => removeModuleHandler(e, mod)}
+                                className="textbox-icon"
                             />
                         </div>
                     ))}
                     <input
                         type="text"
-                        id="groupModule"
+                        id="modules1"
                         placeholder="type here..."
-                        value={moduleInput}
-                        onChange={(e) => setModuleInput(e.target.value)}
-                        onKeyPress={enterKeyPressHandler}
-                        className="h-[1.9rem] max-w-[8rem] rounded-full bg-light px-2 capitalize ring-primary focus:outline-none focus:ring-2"
+                        value={moduleInput1}
+                        onChange={(e) =>
+                            setModuleInput1(e.target.value.toUpperCase())
+                        }
+                        onKeyPress={enterKeyPressHandler1}
+                    />
+                </div>
+                <div className="textbox">
+                    <span>Second year modules</span>
+                    {secondYearModules.map((mod) => (
+                        <div key={mod}>
+                            {mod}
+                            <IcEx
+                                id="modules2"
+                                onClick={(e) => removeModuleHandler(e, mod)}
+                                className="textbox-icon"
+                            />
+                        </div>
+                    ))}
+                    <input
+                        type="text"
+                        id="modules2"
+                        placeholder="type here..."
+                        value={moduleInput2}
+                        onChange={(e) =>
+                            setModuleInput2(e.target.value.toUpperCase())
+                        }
+                        onKeyPress={enterKeyPressHandler2}
                     />
                 </div>
                 <div className="flex gap-x-6">
