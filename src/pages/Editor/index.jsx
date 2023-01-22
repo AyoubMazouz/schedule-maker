@@ -4,7 +4,6 @@ import DocumentsBar from "./components/DocumentsBar";
 import OptionsBar from "./components/OptionsBar";
 import Table from "./components/Table/Index";
 import { EditorContextProvider } from "../../Contexts/EditorContext";
-import SelectionBar from "./components/SelectionBar";
 
 const Editor = () => {
     const { data, name, setAlert } = useGlobalContext();
@@ -40,7 +39,6 @@ const Editor = () => {
                         </div>
                     </div>
                     <div className=" relative col-span-9 h-[65vh] space-y-2 overflow-hidden overflow-y-scroll rounded-lg border p-2 md:h-[calc(100vh-10.2rem)]">
-                        <SelectionBar />
                         {data.map((_, schedualIndex) => (
                             <Table
                                 {...{

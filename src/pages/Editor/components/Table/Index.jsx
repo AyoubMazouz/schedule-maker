@@ -65,7 +65,6 @@ const Table = ({ schedualIndex }) => {
                                                 schedualIndex,
                                                 dayIndex,
                                                 sessionIndex,
-                                                setSelectedCell,
                                             }}
                                         />
                                     ));
