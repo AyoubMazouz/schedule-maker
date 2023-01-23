@@ -1,8 +1,8 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useGlobalContext } from "../../../Contexts/GlobalContext";
+import useLabels from "../../../hooks/useLabels";
 import useEditor from "../../../hooks/useEditor";
-import useSettings from "../../../hooks/useSettings";
 import {
     IcBin,
     IcDown,
@@ -30,7 +30,7 @@ const OptionBar = () => {
 
     const { nameid } = useParams();
     const navigate = useNavigate();
-    const { getLabels } = useSettings();
+    const { getLabels } = useLabels();
     const { editField } = useEditor();
 
     const menuRef = React.useRef(null);

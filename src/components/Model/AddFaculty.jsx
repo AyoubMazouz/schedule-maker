@@ -1,7 +1,7 @@
 import { Timestamp } from "firebase/firestore";
 import React from "react";
 import { useGlobalContext } from "../../Contexts/GlobalContext";
-import useSettings from "../../hooks/useSettings";
+import useSettings from "../../hooks/usePublish";
 import { IcCancel, IcEx, IcLogin } from "../icons";
 
 const AddFaculty = () => {
@@ -105,7 +105,7 @@ const AddFaculty = () => {
             <div
                 className={`w-full space-y-4 rounded-lg border-2 border-dark/25 bg-light p-4 shadow-lg`}
             >
-                <div className="text-xl text-center text-primary">
+                <div className="text-center text-xl text-primary">
                     Add New Faculty
                 </div>
                 <div className="flex flex-col items-center gap-2">

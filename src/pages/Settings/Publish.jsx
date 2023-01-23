@@ -7,7 +7,7 @@ import {
     IcPlus,
 } from "../../components/icons";
 import { useGlobalContext } from "../../Contexts/GlobalContext";
-import useSettings from "../../hooks/useSettings";
+import useSettings from "../../hooks/usePublish";
 
 const Publish = () => {
     const { publishDocument, getPublishedDocuments, deletePublishedDocument } =

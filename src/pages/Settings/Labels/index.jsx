@@ -1,6 +1,6 @@
 import React from "react";
 import { useGlobalContext } from "../../../Contexts/GlobalContext";
-import useSettings from "../../../hooks/useSettings";
+import useLabels from "../../../hooks/useLabels";
 import Events from "./Events";
 import Faculties from "./Faculties";
 import OptionBar from "./OptionBar";
@@ -8,7 +8,7 @@ import Rooms from "./Rooms";
 import Trainers from "./Trainers";
 
 const Labels = ({ saved, setSaved }) => {
-    const { getLabels } = useSettings();
+    const { getLabels } = useLabels();
     const { setAlert } = useGlobalContext();
     const [labelsData, setLabelsData] = React.useState({
         trainers: [],

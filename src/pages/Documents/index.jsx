@@ -9,19 +9,14 @@ import {
     IcDownload,
     IcEdit,
     IcExport,
-    IcImport,
     IcMore,
-    IcNewDoc,
 } from "../../components/icons";
 import OptionBar from "./OptionBar";
+import useDocument from "../../hooks/useDocument";
 
 const Documents = () => {
-    const {
-        getAllDocuments,
-        importDocumentAsFile,
-        exportDocument,
-        downloadAsPdf,
-    } = useEditor();
+    const { exportDocument, downloadAsPdf } = useEditor();
+    const { getAllDocuments } = useDocument();
     const { setModel, data, setAlert } = useGlobalContext();
 
     const [documents, setDocuments] = React.useState([]);

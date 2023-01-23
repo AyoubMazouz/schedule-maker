@@ -1,6 +1,6 @@
 import React from "react";
 import { useGlobalContext } from "../../Contexts/GlobalContext";
-import useSettings from "../../hooks/useSettings";
+import useSettings from "../../hooks/usePublish";
 import { IcBin, IcCancel, IcEdit, IcEx, IcRemove } from "../icons";
 
 const DelPubDoc = () => {

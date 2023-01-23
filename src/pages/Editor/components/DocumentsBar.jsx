@@ -1,22 +1,23 @@
 import React from "react";
 import { useGlobalContext } from "../../../Contexts/GlobalContext";
 import useEditor from "../../../hooks/useEditor";
-import useSettings from "../../../hooks/useSettings";
-import { IcBin, IcDelete, IcPlus, IcTime } from "../../../components/icons";
+import { IcBin, IcPlus, IcTime } from "../../../components/icons";
 import { useEditorContext } from "../../../Contexts/EditorContext";
+import useLabels from "../../../hooks/useLabels";
 
 const DocumentsBar = () => {
-    const { saved, setSaved } = useEditorContext();
+    const { setSaved } = useEditorContext();
     const { data, setData, setAlert } = useGlobalContext();
     const { loading, addNewSchedual, editSchedualInfo, deleteSchedual } =
         useEditor();
-    const { getLabels } = useSettings();
+    const { getLabels } = useLabels();
 
     const [currSchedual, setCurrSchedual] = React.useState(0);
     const [labels, setLabels] = React.useState({
         groups: [],
         trainers: [],
         rooms: [],
+        events: [],
     });
 
     const [usedGroups, setUsedGroups] = React.useState([]);

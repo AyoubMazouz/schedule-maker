@@ -8,7 +8,7 @@ import {
     IcSave,
 } from "../../../components/icons";
 import { useGlobalContext } from "../../../Contexts/GlobalContext";
-import useSettings from "../../../hooks/useSettings";
+import useSettings from "../../../hooks/usePublish";
 
 const OptionBar = ({
     menuRef,
@@ -69,7 +69,7 @@ const OptionBar = ({
     };
 
     return (
-        <div className="relative flex justify-between gap-6 p-2 border rounded-lg shadow-md">
+        <div className="relative flex justify-between gap-6 rounded-lg border p-2 shadow-md">
             <button
                 className={`btn-secondary`}
                 onClick={() => setCurrMenu("add")}

@@ -1,5 +1,5 @@
 import React from "react";
-import useEditor from "../hooks/useEditor";
+import useDocument from "../hooks/useDocument";
 
 const GlobalContext = React.createContext();
 
@@ -13,7 +13,7 @@ export const GlobalContextProvider = ({ children }) => {
     const [data, setData] = React.useState([]);
     const [name, setName] = React.useState("");
 
-    const { getDocument } = useEditor();
+    const { getDocument } = useDocument();
 
     React.useEffect(() => {
         const unsubscribe = setTimeout(() => {

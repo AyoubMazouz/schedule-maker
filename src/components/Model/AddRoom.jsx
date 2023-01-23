@@ -1,7 +1,7 @@
 import { Timestamp } from "firebase/firestore";
 import React from "react";
 import { useGlobalContext } from "../../Contexts/GlobalContext";
-import useSettings from "../../hooks/useSettings";
+import useSettings from "../../hooks/usePublish";
 import { IcCancel, IcEx, IcLogin } from "../icons";
 
 const AddRoom = () => {

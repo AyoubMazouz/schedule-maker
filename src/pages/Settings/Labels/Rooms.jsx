@@ -7,7 +7,7 @@ import {
     IcRoom,
 } from "../../../components/icons";
 import { useGlobalContext } from "../../../Contexts/GlobalContext";
-import useSettings from "../../../hooks/useSettings";
+import useSettings from "../../../hooks/usePublish";
 
 const Rooms = ({
     currMenu,
@@ -40,7 +40,7 @@ const Rooms = ({
     };
 
     return (
-        <div className="border-2 rounded-lg shadow-lg border-dark/25">
+        <div className="rounded-lg border-2 border-dark/25 shadow-lg">
             {labelsData.rooms.map((value, index) => (
                 <div
                     key={value}
@@ -52,11 +52,11 @@ const Rooms = ({
                         onClick={(e) => showDetails(value)}
                         className="grid w-full grid-cols-12"
                     >
-                        <div className="space-x-1 text-left col-span-full group-hover:underline sm:col-span-9">
-                            <IcRoom className="inline-block icon" />
+                        <div className="col-span-full space-x-1 text-left group-hover:underline sm:col-span-9">
+                            <IcRoom className="icon inline-block" />
                             <span>{value.name}</span>
                         </div>
-                        <div className="hidden col-span-3 md:block">
+                        <div className="col-span-3 hidden md:block">
                             {value.createdAt.toDate().toDateString()}
                         </div>
                     </button>
