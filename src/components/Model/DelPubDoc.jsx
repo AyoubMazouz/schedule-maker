@@ -1,7 +1,8 @@
 import React from "react";
 import { useGlobalContext } from "../../Contexts/GlobalContext";
 import useSettings from "../../hooks/usePublish";
-import { IcBin, IcCancel, IcEdit, IcEx, IcRemove } from "../icons";
+import { Button } from "../Button";
+import { IcBin, IcCancel } from "../icons";
 
 const DelPubDoc = () => {
     const { model, setModel, setAlert } = useGlobalContext();
@@ -13,9 +14,10 @@ const DelPubDoc = () => {
                 className={`w-full rounded-lg border-2 border-dark/25 bg-light p-4 text-center shadow-lg`}
             >
                 <div>{`Do you Really want to delete document "${model.id}"?`}</div>
-                <div className="mt-8 flex gap-x-6">
-                    <button
-                        className="btn-danger"
+                <div className="flex mt-8 gap-x-6">
+                    <Button
+                        text="delete"
+                        type="danger"
                         onClick={() => {
                             deletePublishedDocument(model.id);
                             setModel(null);
@@ -24,17 +26,13 @@ const DelPubDoc = () => {
                                 message: `Document "${model.id}" has been deleted.`,
                             });
                         }}
-                    >
-                        <IcBin className="icon" />
-                        <span>Delete</span>
-                    </button>
-                    <button
-                        className="btn-secondary"
+                        Icon={IcBin}
+                    />
+                    <Button
+                        text="Cancel"
                         onClick={() => setModel(null)}
-                    >
-                        <IcCancel className="icon" />
-                        <span>Cancel</span>
-                    </button>
+                        Icon={IcCancel}
+                    />
                 </div>
             </div>
         </div>

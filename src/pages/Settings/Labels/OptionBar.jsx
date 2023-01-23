@@ -1,14 +1,17 @@
 import React from "react";
+import { Button } from "../../../components/Button";
 import {
     IcBin,
     IcDown,
-    IcExport,
-    IcImport,
+    IcEvent,
+    IcLevel,
     IcNewDoc,
+    IcRoom,
     IcSave,
+    IcUser,
 } from "../../../components/icons";
 import { useGlobalContext } from "../../../Contexts/GlobalContext";
-import useSettings from "../../../hooks/usePublish";
+import useLabels from "../../../hooks/useLabels";
 
 const OptionBar = ({
     menuRef,
@@ -20,8 +23,7 @@ const OptionBar = ({
     setLabelsData,
 }) => {
     const { setModel } = useGlobalContext();
-    const { getLabels, setLabels, importSettings, exportSettings } =
-        useSettings();
+    const { getLabels, setLabels } = useLabels();
 
     const saveHandler = () => {
         setLabels(labelsData);
@@ -37,7 +39,7 @@ const OptionBar = ({
 
     const addFacultyHandler = () => {
         setModel({
-            type: "addFaculty",
+            type: "addLevel",
             labelsData,
             setLabelsData,
             setSaved,
@@ -69,30 +71,28 @@ const OptionBar = ({
     };
 
     return (
-        <div className="relative flex justify-between gap-6 rounded-lg border p-2 shadow-md">
-            <button
-                className={`btn-secondary`}
+        <div className="relative flex justify-between gap-6 p-2 border rounded-lg shadow-md">
+            <Button
+                text="add"
                 onClick={() => setCurrMenu("add")}
-            >
-                <IcDown className="text-xl" />
-                <span>Add</span>
-            </button>
+                Icon={IcDown}
+            />
             {currMenu === "add" && (
                 <div ref={menuRef} className="menu top-[96%] left-[1%]">
                     <button className="menu-item" onClick={addFacultyHandler}>
-                        <IcNewDoc className="icon" />
-                        <span>New Faculty</span>
+                        <IcLevel className="icon" />
+                        <span>New Level</span>
                     </button>
                     <button className="menu-item" onClick={addTrainerHandler}>
-                        <IcNewDoc className="icon" />
+                        <IcUser className="icon" />
                         <span>New Trainer</span>
                     </button>
                     <button className="menu-item" onClick={addRoomHandler}>
-                        <IcNewDoc className="icon" />
+                        <IcRoom className="icon" />
                         <span>New Room</span>
                     </button>
                     <button className="menu-item" onClick={addEventHandler}>
-                        <IcNewDoc className="icon" />
+                        <IcEvent className="icon" />
                         <span>New Event</span>
                     </button>
                 </div>
@@ -106,8 +106,8 @@ const OptionBar = ({
                         onChange={(e) =>
                             importSettings(e.target.files[0], setLabelsData)
                         }
-                    />
-                    <IcImport className="icon" />
+                        />
+                        <IcImport className="icon" />
                     <span>Import</span>
                 </div>
                 <button
@@ -115,26 +115,23 @@ const OptionBar = ({
                     onClick={(e) =>
                         exportSettings(labelsData, "settings.sh-maker")
                     }
-                >
+                    >
                     <IcExport className="icon" />
                     <span>Export</span>
                 </button> */}
-                <button
+                <Button
+                    type="success"
+                    text="save"
                     disabled={saved}
-                    className="btn-success"
                     onClick={saveHandler}
-                >
-                    <IcSave className="icon" />
-                    <span>save</span>
-                </button>
-                <button
+                    Icon={IcSave}
+                />
+                <Button
+                    text="discard"
                     disabled={saved}
-                    className="btn-secondary"
                     onClick={discardChanges}
-                >
-                    <IcBin className="icon" />
-                    <span>discard</span>
-                </button>
+                    Icon={IcBin}
+                />
             </div>
         </div>
     );

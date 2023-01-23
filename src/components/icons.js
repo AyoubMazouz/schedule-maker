@@ -62,4 +62,4 @@ export const IcClearCell = HiOutlineBackspace;
 export const IcRoom = HiOutlineHome;
 export const IcUser = HiOutlineUser;
 export const IcEvent = HiOutlineNewspaper;
-export const IcFaculty = HiOutlineBookOpen;
+export const IcLevel = HiOutlineBookOpen;

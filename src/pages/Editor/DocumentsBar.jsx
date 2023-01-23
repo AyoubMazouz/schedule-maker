@@ -1,9 +1,9 @@
 import React from "react";
-import { useGlobalContext } from "../../../Contexts/GlobalContext";
-import useEditor from "../../../hooks/useEditor";
-import { IcBin, IcPlus, IcTime } from "../../../components/icons";
-import { useEditorContext } from "../../../Contexts/EditorContext";
-import useLabels from "../../../hooks/useLabels";
+import { useGlobalContext } from "../../Contexts/GlobalContext";
+import useEditor from "../../hooks/useEditor";
+import { IcBin, IcPlus, IcTime } from "../../components/icons";
+import { useEditorContext } from "../../Contexts/EditorContext";
+import useLabels from "../../hooks/useLabels";
 
 const DocumentsBar = () => {
     const { setSaved } = useEditorContext();
@@ -14,26 +14,20 @@ const DocumentsBar = () => {
 
     const [currSchedual, setCurrSchedual] = React.useState(0);
     const [labels, setLabels] = React.useState({
-        groups: [],
+        levels: [],
         trainers: [],
         rooms: [],
         events: [],
+        groups: [],
     });
 
     const [usedGroups, setUsedGroups] = React.useState([]);
     React.useEffect(() => {
         getLabels().then((labels) => {
             const groups = [];
-            labels.faculties.forEach((faculty) => {
-                for (let i = 1; i <= faculty.firstYear; i++) {
-                    groups.push(
-                        `${faculty.name} ${i >= 10 ? `1${i}` : `10${i}`}`
-                    );
-                }
-                for (let i = 1; i <= faculty.secondYear; i++) {
-                    groups.push(
-                        `${faculty.name} ${i >= 10 ? `2${i}` : `20${i}`}`
-                    );
+            labels.levels.forEach((level) => {
+                for (let i = 1; i <= level.numberOfGroups; i++) {
+                    groups.push(`${level.name} ${i}`);
                 }
             });
             setLabels({
@@ -102,11 +96,11 @@ const DocumentsBar = () => {
     };
 
     return (
-        <div className="flex flex-col p-2 gap-y-3">
+        <div className="flex flex-col gap-y-3 p-2">
             {data.map((schedual, schedualIndex) =>
                 schedualIndex === currSchedual ? (
-                    <div className="flex flex-wrap items-center justify-between gap-2 p-2 border-2 rounded-lg border-dark/25 bg-primary">
-                        <div className="flex items-center justify-center w-8 h-8 text-lg font-bold rounded-full bg-light text-primary">
+                    <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg border-2 border-dark/25 bg-primary p-2">
+                        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-light text-lg font-bold text-primary">
                             {schedualIndex + 1}
                         </div>
                         <select
@@ -141,7 +135,7 @@ const DocumentsBar = () => {
                             })}
                         </select>
                         <button
-                            className="p-1 rounded-full btn-danger"
+                            className="btn-danger rounded-full p-1"
                             onClick={(e) =>
                                 deleteSchedualHandler(schedualIndex)
                             }
@@ -151,14 +145,14 @@ const DocumentsBar = () => {
                     </div>
                 ) : (
                     <button
-                        className="flex items-center gap-2 p-2 border-2 rounded-lg border-dark/25"
+                        className="flex items-center gap-2 rounded-lg border-2 border-dark/25 p-2"
                         onClick={(e) => selectSchedualHandler(schedualIndex)}
                     >
-                        <div className="flex items-center justify-center w-8 h-8 text-lg font-bold rounded-full bg-primary text-light">
+                        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-lg font-bold text-light">
                             {schedualIndex + 1}
                         </div>
                         <div className="">{schedual.group}</div>
-                        <div className="flex items-center ml-auto font-semibold gap-x-1 text-primary">
+                        <div className="ml-auto flex items-center gap-x-1 font-semibold text-primary">
                             <span>{schedual.totalHours}</span>
                             <IcTime className="icon" />
                         </div>
@@ -167,7 +161,7 @@ const DocumentsBar = () => {
             )}
             <div>
                 <button
-                    className="justify-center w-full btn-success"
+                    className="btn-success w-full justify-center"
                     id="new_doc"
                     disabled={loading}
                     onClick={addNewSchedualHandler}

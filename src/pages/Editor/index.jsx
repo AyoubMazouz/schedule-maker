@@ -1,8 +1,8 @@
 import React from "react";
 import { useGlobalContext } from "../../Contexts/GlobalContext";
-import DocumentsBar from "./components/DocumentsBar";
-import OptionsBar from "./components/OptionsBar";
-import Table from "./components/Table/Index";
+import DocumentsBar from "./DocumentsBar";
+import OptionsBar from "./OptionsBar";
+import Table from "./Table/Index";
 import { EditorContextProvider } from "../../Contexts/EditorContext";
 
 const Editor = () => {
@@ -12,19 +12,19 @@ const Editor = () => {
         document.title = `SH-Maker - Editor-${name}`;
     }, [name]);
 
-    React.useEffect(() => {
-        if (EditorContextProvider.saved) window.onbeforeunload = null;
-        else
-            window.onbeforeunload = () => {
-                const message =
-                    "You can't leave this page with unsaved changes, if you leave changes will be lost.";
-                setAlert({
-                    type: "warn",
-                    message,
-                });
-                return message;
-            };
-    }, [EditorContextProvider.saved]);
+    // React.useEffect(() => {
+    //     if (EditorContextProvider.saved) window.onbeforeunload = null;
+    //     else
+    //         window.onbeforeunload = () => {
+    //             const message =
+    //                 "You can't leave this page with unsaved changes, if you leave changes will be lost.";
+    //             setAlert({
+    //                 type: "warn",
+    //                 message,
+    //             });
+    //             return message;
+    //         };
+    // }, [EditorContextProvider.saved]);
 
     return (
         <EditorContextProvider>

@@ -1,5 +1,5 @@
 import { useGlobalContext } from "../../Contexts/GlobalContext";
-import AddFaculty from "./AddFaculty";
+import AddLevel from "./AddLevel";
 import AddRoom from "./AddRoom";
 import AddTrainer from "./AddTrainer";
 import DelDoc from "./DelDoc";
@@ -21,7 +21,7 @@ const Model = () => {
         rendoc: <RenDoc />,
         exit: <Exit />,
         login: <Login />,
-        addFaculty: <AddFaculty />,
+        addLevel: <AddLevel />,
         addTrainer: <AddTrainer />,
         addRoom: <AddRoom />,
         addEvent: <AddEvent />,

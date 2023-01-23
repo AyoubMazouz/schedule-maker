@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useGlobalContext } from "../../Contexts/GlobalContext";
 import useEditor from "../../hooks/useEditor";
+import { Button } from "../Button";
 import { IcCancel, IcEx, IcTrue } from "../icons";
 
 const Exit = () => {
@@ -16,9 +17,10 @@ const Exit = () => {
                 className={`rounded-lg border-2 border-dark/25 bg-light p-4 text-center shadow-lg`}
             >
                 <div className="">Do you want to save before exiting?</div>
-                <div className="mt-4 flex gap-x-6">
-                    <button
-                        className="btn"
+                <div className="flex mt-4 gap-x-6">
+                    <Button
+                        text="Yes"
+                        type="success"
                         onClick={async () => {
                             setModel(null);
                             navigate("/documents");
@@ -28,27 +30,21 @@ const Exit = () => {
                                 message: "Document has been saved!",
                             });
                         }}
-                    >
-                        <IcTrue className="icon" />
-                        <span>Yes</span>
-                    </button>
-                    <button
-                        className="btn-secondary"
+                        Icon={IcTrue}
+                    />
+                    <Button
+                        text="No"
                         onClick={() => {
                             setModel(null);
                             navigate("/documents");
                         }}
-                    >
-                        <IcEx className="icon" />
-                        <span>No</span>
-                    </button>
-                    <button
-                        className="btn-secondary"
+                        Icon={IcEx}
+                    />
+                    <Button
+                        text="Cancel"
                         onClick={() => setModel(null)}
-                    >
-                        <IcCancel className="icon" />
-                        <span>Cancel</span>
-                    </button>
+                        Icon={IcCancel}
+                    />
                 </div>
             </div>
         </div>

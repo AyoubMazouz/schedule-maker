@@ -1,5 +1,5 @@
 import React from "react";
-import { useEditorContext } from "../../../../Contexts/EditorContext";
+import { useEditorContext } from "../../../Contexts/EditorContext";
 
 const Cell = ({ session, schedualIndex, dayIndex, sessionIndex }) => {
     const { setSelectedCell, selectedCell, fusionMode } = useEditorContext();

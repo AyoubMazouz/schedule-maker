@@ -1,7 +1,8 @@
 import React from "react";
-import { IcBin, IcMore, IcEdit, IcUser } from "../../../components/icons";
+import { IcBin, IcEdit, IcUser } from "../../../components/icons";
+import MoreMenu from "../../../components/MoreMenu";
 import { useGlobalContext } from "../../../Contexts/GlobalContext";
-import useSettings from "../../../hooks/usePublish";
+import useSettings from "../../../hooks/useSettings";
 
 const Trainers = ({
     currMenu,
@@ -16,14 +17,14 @@ const Trainers = ({
     const showDetails = (v) => {
         const details = [
             ["id", v.id],
-            ["trainer name", v.name],
+            ["trainer", v.name],
             ["created at", v.createdAt.toDate().toDateString()],
             ["modified at", v.modifiedAt.toDate().toDateString()],
             ["prefered rooms", v.preferedRooms.join(", ")],
         ];
         setModel({ type: "showDetails", details });
     };
-    const editTrainer = (value) => {
+    const editHandler = (value) => {
         setModel({
             type: "addTrainer",
             labelsData,
@@ -33,11 +34,15 @@ const Trainers = ({
             update: true,
         });
     };
+    const deleteHandler = (value) => {
+        deleteTrainer(labelsData, setLabelsData, value.id);
+        setSaved(false);
+    };
     return (
-        <div className="rounded-lg border-2 border-dark/25 shadow-lg">
+        <div className="border-2 rounded-lg shadow-lg border-dark/25">
             {labelsData.trainers.map((value, index) => (
                 <div
-                    key={value}
+                    key={value.name}
                     className={`menu-item group flex justify-between text-center ${
                         index % 2 === 0 && "bg-dark/5"
                     }`}
@@ -46,55 +51,24 @@ const Trainers = ({
                         onClick={(e) => showDetails(value)}
                         className="grid w-full grid-cols-12"
                     >
-                        <div className="col-span-full space-x-1 text-left group-hover:underline sm:col-span-9">
-                            <IcUser className="icon inline-block" />
+                        <div className="space-x-1 text-left col-span-full group-hover:underline sm:col-span-9">
+                            <IcUser className="inline-block icon" />
                             <span>{value.name}</span>
                         </div>
-                        <div className="col-span-3 hidden md:block">
+                        <div className="hidden col-span-3 md:block">
                             {value.createdAt.toDate().toDateString()}
                         </div>
                     </button>
-                    <div className="relative flex gap-x-2 text-end">
-                        <button
-                            onClick={(e) => setCurrMenu(`tainer:${value.name}`)}
-                        >
-                            <IcMore
-                                className={
-                                    currMenu === `tainer:${value.name}`
-                                        ? "rotate-90 text-xl text-secondary transition-all duration-300"
-                                        : "text-xl"
-                                }
-                            />
-                        </button>
-                        {currMenu === `tainer:${value.name}` && (
-                            <div
-                                ref={menuRef}
-                                className="menu top-[0%] left-[0%] translate-x-[-100%]"
-                            >
-                                <button
-                                    className="menu-item"
-                                    onClick={() => editTrainer(value)}
-                                >
-                                    <IcEdit className="icon" />
-                                    <span>Edit</span>
-                                </button>
-                                <button
-                                    className="menu-item"
-                                    onClick={() => {
-                                        deleteTrainer(
-                                            labelsData,
-                                            setLabelsData,
-                                            value.id
-                                        );
-                                        setSaved(false);
-                                    }}
-                                >
-                                    <IcBin className="icon" />
-                                    <span>delete</span>
-                                </button>
-                            </div>
-                        )}
-                    </div>
+                    <MoreMenu
+                        menuId={`trainer:${value.name}`}
+                        menuRef={menuRef}
+                        currMenu={currMenu}
+                        setCurrMenu={setCurrMenu}
+                        options={[
+                            ["edit", () => editHandler(value), IcEdit],
+                            ["delete", () => deleteHandler(value), IcBin],
+                        ]}
+                    />
                 </div>
             ))}
         </div>

@@ -1,5 +1,6 @@
 import React from "react";
 import { useGlobalContext } from "../../Contexts/GlobalContext";
+import { Button } from "../Button";
 import { IcEx } from "../icons";
 
 const ShowDetails = () => {
@@ -12,6 +13,7 @@ const ShowDetails = () => {
                 <div>
                     {model.details.map(([key, value], index) => (
                         <div
+                            key={key}
                             className={`grid grid-cols-2 px-2 py-1 ${
                                 index % 2 === 0 && "bg-dark/5"
                             }`}
@@ -23,13 +25,11 @@ const ShowDetails = () => {
                         </div>
                     ))}
                 </div>
-                <button
-                    className="mt-6 btn-secondary"
+                <Button
+                    text="Close"
                     onClick={() => setModel(null)}
-                >
-                    <IcEx className="icon" />
-                    <span>Close</span>
-                </button>
+                    Icon={IcEx}
+                />
             </div>
         </div>
     );

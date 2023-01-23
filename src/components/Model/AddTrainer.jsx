@@ -1,7 +1,8 @@
 import { Timestamp } from "firebase/firestore";
 import React from "react";
 import { useGlobalContext } from "../../Contexts/GlobalContext";
-import useSettings from "../../hooks/usePublish";
+import useSettings from "../../hooks/useSettings";
+import { Button } from "../Button";
 import { IcCancel, IcEx, IcLogin } from "../icons";
 
 const AddTrainer = () => {
@@ -76,7 +77,7 @@ const AddTrainer = () => {
             <div
                 className={`w-full space-y-4 rounded-lg border-2 border-dark/25 bg-light p-4 shadow-lg`}
             >
-                <div className="text-center text-xl text-primary">
+                <div className="text-xl text-center text-primary">
                     Add New Trainer
                 </div>
                 <div className="flex flex-col items-center gap-2">
@@ -118,7 +119,9 @@ const AddTrainer = () => {
                             Rooms...
                         </option>
                         {model.labelsData.rooms.map((room) => (
-                            <option value={room.name}>{room.name}</option>
+                            <option key={room.name} value={room.name}>
+                                {room.name}
+                            </option>
                         ))}
                     </select>
                 </div>
@@ -126,21 +129,17 @@ const AddTrainer = () => {
                     <div className=""></div>
                 </div>
                 <div className="flex gap-x-6">
-                    <button
+                    <Button
+                        text="add"
+                        type="success"
                         onClick={submitHandler}
-                        className="btn-success"
-                        type="submit"
-                    >
-                        <IcLogin className="icon" />
-                        <span>Add</span>
-                    </button>
-                    <button
-                        className="btn-secondary"
-                        onClick={(e) => setModel(null)}
-                    >
-                        <IcCancel className="icon" />
-                        <span>Cancel</span>
-                    </button>
+                        Icon={IcLogin}
+                    />
+                    <Button
+                        text="Cancel"
+                        onClick={submitHandler}
+                        Icon={IcCancel}
+                    />
                 </div>
             </div>
         </div>

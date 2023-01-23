@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../Contexts/AuthContext";
 import { useGlobalContext } from "../Contexts/GlobalContext";
+import { Button } from "./Button";
 import { IcEditor, IcLogin, IcLogout, IcSettings } from "./icons";
 
 const NavBar = () => {
@@ -22,7 +23,7 @@ const NavBar = () => {
                     </Link>
                 </div>
                 <ul className="flex items-center gap-x-6">
-                    <li className="capitalized font-semibold transition-all duration-300 hover:text-secondary">
+                    <li className="font-semibold transition-all duration-300 capitalized hover:text-secondary">
                         <Link
                             to="/documents"
                             className="flex items-center gap-x-1"
@@ -31,7 +32,7 @@ const NavBar = () => {
                             <span>Editor</span>
                         </Link>
                     </li>
-                    <li className="capitalized font-semibold transition-all duration-300 hover:text-secondary">
+                    <li className="font-semibold transition-all duration-300 capitalized hover:text-secondary">
                         <Link
                             to="/settings"
                             className="flex items-center gap-x-1"
@@ -40,26 +41,24 @@ const NavBar = () => {
                             <span>Settings</span>
                         </Link>
                     </li>
-                    {/* <li className="capitalized font-semibold transition-all duration-300 hover:text-secondary">
+                    {/* <li className="font-semibold transition-all duration-300 capitalized hover:text-secondary">
                         <Link to="/contact">2.Contact</Link>
                     </li> */}
-                    <li className="capitalized font-semibold transition-all duration-300 hover:text-secondary">
+                    <li className="font-semibold transition-all duration-300 capitalized hover:text-secondary">
                         {currUser ? (
-                            <button
-                                className="btn-danger"
+                            <Button
+                                type="danger"
+                                text="Logout"
                                 onClick={logoutHandler}
-                            >
-                                <IcLogout className="icon" />
-                                <span>Logout</span>
-                            </button>
+                                Icon={IcLogout}
+                            />
                         ) : (
-                            <button
-                                className="btn-success"
-                                onClick={(e) => setModel({ type: "login" })}
-                            >
-                                <IcLogin className="icon" />
-                                <span>Login</span>
-                            </button>
+                            <Button
+                                type="success"
+                                text="Login"
+                                onClick={() => setModel({ type: "login" })}
+                                Icon={IcLogin}
+                            />
                         )}
                     </li>
                 </ul>

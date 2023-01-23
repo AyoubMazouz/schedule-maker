@@ -1,8 +1,9 @@
 import { Timestamp } from "firebase/firestore";
 import React from "react";
 import { useGlobalContext } from "../../Contexts/GlobalContext";
-import useSettings from "../../hooks/usePublish";
-import { IcCancel, IcEx, IcLogin } from "../icons";
+import useSettings from "../../hooks/useSettings";
+import { Button } from "../Button";
+import { IcCancel, IcLogin } from "../icons";
 
 const AddRoom = () => {
     const { model, setModel, setAlert } = useGlobalContext();
@@ -74,21 +75,17 @@ const AddRoom = () => {
                     />
                 </div>
                 <div className="flex gap-x-6">
-                    <button
+                    <Button
+                        text="add"
+                        type="success"
                         onClick={submitHandler}
-                        className="btn-success"
-                        type="submit"
-                    >
-                        <IcLogin className="icon" />
-                        <span>Add</span>
-                    </button>
-                    <button
-                        className="btn-secondary"
-                        onClick={(e) => setModel(null)}
-                    >
-                        <IcCancel className="icon" />
-                        <span>Cancel</span>
-                    </button>
+                        Icon={IcLogin}
+                    />
+                    <Button
+                        text="Cancel"
+                        onClick={submitHandler}
+                        Icon={IcCancel}
+                    />
                 </div>
             </div>
         </div>

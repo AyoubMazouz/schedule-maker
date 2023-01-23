@@ -1,4 +1,5 @@
 import React from "react";
+import { Button } from "../../components/Button";
 import {
     IcBin,
     IcDelete,
@@ -6,17 +7,20 @@ import {
     IcExport,
     IcPlus,
 } from "../../components/icons";
+import MoreMenu from "../../components/MoreMenu";
 import { useGlobalContext } from "../../Contexts/GlobalContext";
 import useSettings from "../../hooks/usePublish";
 
 const Publish = () => {
     const { publishDocument, getPublishedDocuments, deletePublishedDocument } =
         useSettings();
-    const { setAlert, setModel } = useGlobalContext();
+    const { setModel } = useGlobalContext();
 
     const [loading, setLoading] = React.useState(false);
     const [file, setFile] = React.useState(null);
     const [documents, setDocuments] = React.useState([]);
+    const [currMenu, setCurrMenu] = React.useState(null);
+    const menuRef = React.useRef();
 
     React.useEffect(() => {
         getPublishedDocuments(setDocuments);
@@ -30,22 +34,30 @@ const Publish = () => {
         setLoading(false);
     };
 
+    const downloadHandler = (url) => {
+        const element = document.createElement("a");
+        element.setAttribute("href", url);
+        element.style.display = "none";
+        element.target = "_blank";
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+    };
+
     const deleteHandler = (id) => {
         setModel({ type: "delpubdoc", id });
     };
     return (
-        <div className="space-y-2 py-2">
-            <div className="mx-2 flex justify-between rounded-lg border p-2 shadow-md">
+        <div className="py-2 space-y-2">
+            <div className="flex justify-between p-2 mx-2 border rounded-lg shadow-md">
                 <div className="flex items-center gap-x-4">
-                    <button className="btn relative">
-                        <IcPlus className="icon" />
-                        <span>Open a file</span>
+                    <Button type="primary" text="Open" Icon={IcPlus}>
                         <input
                             type="file"
-                            className="absolute top-0 right-0 bottom-0 left-0 cursor-pointer opacity-0"
+                            className="absolute top-0 bottom-0 left-0 right-0 opacity-0 cursor-pointer"
                             onChange={(e) => setFile(e.target.files[0])}
                         />
-                    </button>
+                    </Button>
                     {file && (
                         <div>
                             FileName:{" "}
@@ -55,16 +67,15 @@ const Publish = () => {
                         </div>
                     )}
                 </div>
-                <button
-                    disabled={!file || loading}
-                    className="btn-success"
+                <Button
+                    type="success"
+                    text="publish"
                     onClick={publishHandler}
-                >
-                    <IcExport className="icon" />
-                    <span>Publish</span>
-                </button>
+                    Icon={IcExport}
+                    disabled={!file || loading}
+                />
             </div>
-            <div className="mx-2 rounded-lg border shadow-md">
+            <div className="mx-2 border rounded-lg shadow-md">
                 {documents.map((doc, docIndex) => (
                     <div
                         className={`menu-item group flex justify-between gap-x-2 ${
@@ -77,14 +88,20 @@ const Publish = () => {
                                 {doc.createdAt.toDate().toDateString()}
                             </div>
                         </div>
-                        <div className="flex">
-                            <a href={doc.url} download target="_blank">
-                                <IcDownload className="icon" />
-                            </a>
-                            <button onClick={(e) => deleteHandler(doc.id)}>
-                                <IcBin className="icon" />
-                            </button>
-                        </div>
+                        <MoreMenu
+                            menuId={`publish:${doc.id}`}
+                            menuRef={menuRef}
+                            currMenu={currMenu}
+                            setCurrMenu={setCurrMenu}
+                            options={[
+                                [
+                                    "download",
+                                    () => downloadHandler(doc.url),
+                                    IcDownload,
+                                ],
+                                ["delete", () => deleteHandler(doc.id), IcBin],
+                            ]}
+                        />
                     </div>
                 ))}
             </div>

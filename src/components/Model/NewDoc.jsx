@@ -2,15 +2,16 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { EMPTY_SCHEDUAL } from "../../constants";
 import { useGlobalContext } from "../../Contexts/GlobalContext";
-import useEditor from "../../hooks/useEditor";
-import { IcSave, IcRemove, IcEdit, IcEx, IcCancel } from "../icons";
+import useDocument from "../../hooks/useDocument";
+import { Button } from "../Button";
+import { IcSave, IcCancel } from "../icons";
 
 const NewDoc = () => {
     const navigate = useNavigate();
 
     const [docName, setDocName] = React.useState("");
-    const { setModel, setName, data, loadData } = useGlobalContext();
-    const { addNewDocument } = useEditor();
+    const { setModel, setName } = useGlobalContext();
+    const { addNewDocument } = useDocument();
 
     const createHandler = async () => {
         setModel(null);
@@ -35,18 +36,18 @@ const NewDoc = () => {
                         onChange={(e) => setDocName(e.target.value)}
                     />
                 </div>
-                <div className="mt-8 flex gap-x-6">
-                    <button className="btn-success" onClick={createHandler}>
-                        <IcSave className="icon" />
-                        <span>Save</span>
-                    </button>
-                    <button
-                        className="btn-secondary"
+                <div className="flex mt-8 gap-x-6">
+                    <Button
+                        text="save"
+                        type="success"
+                        onClick={createHandler}
+                        Icon={IcSave}
+                    />
+                    <Button
+                        text="Cancel"
                         onClick={() => setModel(null)}
-                    >
-                        <IcCancel className="icon" />
-                        <span>Cancel</span>
-                    </button>
+                        Icon={IcCancel}
+                    />
                 </div>
             </div>
         </div>

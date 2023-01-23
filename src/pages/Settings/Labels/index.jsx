@@ -2,7 +2,7 @@ import React from "react";
 import { useGlobalContext } from "../../../Contexts/GlobalContext";
 import useLabels from "../../../hooks/useLabels";
 import Events from "./Events";
-import Faculties from "./Faculties";
+import Levels from "./Levels";
 import OptionBar from "./OptionBar";
 import Rooms from "./Rooms";
 import Trainers from "./Trainers";
@@ -13,7 +13,7 @@ const Labels = ({ saved, setSaved }) => {
     const [labelsData, setLabelsData] = React.useState({
         trainers: [],
         rooms: [],
-        faculties: [],
+        levels: [],
         events: [],
     });
     const menuRef = React.useRef(null);
@@ -60,8 +60,8 @@ const Labels = ({ saved, setSaved }) => {
                     setLabelsData,
                 }}
             />
-            <div>Faculties:</div>
-            <Faculties
+            <div>levels:</div>
+            <Levels
                 {...{
                     currMenu,
                     setCurrMenu,

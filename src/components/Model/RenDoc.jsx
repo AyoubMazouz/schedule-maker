@@ -1,11 +1,12 @@
 import React from "react";
 import { useGlobalContext } from "../../Contexts/GlobalContext";
-import useEditor from "../../hooks/useEditor";
+import useDocument from "../../hooks/useDocument";
+import { Button } from "../Button";
 import { IcCancel, IcEdit } from "../icons";
 
 const RenDoc = () => {
     const { model, setModel } = useGlobalContext();
-    const { renameDocument } = useEditor();
+    const { renameDocument } = useDocument();
 
     const [newDocName, setNewDocName] = React.useState(model.value);
 
@@ -30,17 +31,17 @@ const RenDoc = () => {
                     />
                 </div>
                 <div className="flex mt-8 gap-x-6">
-                    <button className="btn-success" onClick={renameHandler}>
-                        <IcEdit className="icon" />
-                        <span>Rename</span>
-                    </button>
-                    <button
-                        className="btn-secondary"
+                    <Button
+                        text="Rename"
+                        type="success"
+                        onClick={renameHandler}
+                        Icon={IcEdit}
+                    />
+                    <Button
+                        text="Cancel"
                         onClick={() => setModel(null)}
-                    >
-                        <IcCancel className="icon" />
-                        <span>Cancel</span>
-                    </button>
+                        Icon={IcCancel}
+                    />
                 </div>
             </div>
         </div>

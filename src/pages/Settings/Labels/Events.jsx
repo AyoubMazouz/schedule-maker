@@ -1,13 +1,8 @@
 import React from "react";
-import {
-    IcDoc,
-    IcBin,
-    IcMore,
-    IcEdit,
-    IcEvent,
-} from "../../../components/icons";
+import { IcBin, IcEdit, IcEvent } from "../../../components/icons";
+import MoreMenu from "../../../components/MoreMenu";
 import { useGlobalContext } from "../../../Contexts/GlobalContext";
-import useSettings from "../../../hooks/usePublish";
+import useSettings from "../../../hooks/useSettings";
 
 const Events = ({
     currMenu,
@@ -28,7 +23,7 @@ const Events = ({
         ];
         setModel({ type: "showDetails", details });
     };
-    const editEvent = (value) => {
+    const editHandler = (value) => {
         setModel({
             type: "addEvent",
             labelsData,
@@ -38,8 +33,12 @@ const Events = ({
             update: true,
         });
     };
+    const deleteHandler = (value) => {
+        deleteEvent(labelsData, setLabelsData, value.id);
+        setSaved(false);
+    };
     return (
-        <div className="rounded-lg border-2 border-dark/25 shadow-lg">
+        <div className="border-2 rounded-lg shadow-lg border-dark/25">
             {labelsData.events.map((value, index) => (
                 <div
                     key={value}
@@ -51,55 +50,24 @@ const Events = ({
                         onClick={(e) => showDetails(value)}
                         className="grid w-full grid-cols-12"
                     >
-                        <div className="col-span-full space-x-1 text-left group-hover:underline sm:col-span-9">
-                            <IcEvent className="icon inline-block" />
+                        <div className="space-x-1 text-left col-span-full group-hover:underline sm:col-span-9">
+                            <IcEvent className="inline-block icon" />
                             <span>{value.name}</span>
                         </div>
-                        <div className="col-span-3 hidden md:block">
+                        <div className="hidden col-span-3 md:block">
                             {value.createdAt.toDate().toDateString()}
                         </div>
                     </button>
-                    <div className="relative flex gap-x-2 text-end">
-                        <button
-                            onClick={(e) => setCurrMenu(`event:${value.name}`)}
-                        >
-                            <IcMore
-                                className={
-                                    currMenu === `event:${value.name}`
-                                        ? "rotate-90 text-xl text-secondary transition-all duration-300"
-                                        : "text-xl"
-                                }
-                            />
-                        </button>
-                        {currMenu === `event:${value.name}` && (
-                            <div
-                                ref={menuRef}
-                                className="menu top-[0%] left-[0%] translate-x-[-100%]"
-                            >
-                                <button
-                                    className="menu-item"
-                                    onClick={() => editEvent(value)}
-                                >
-                                    <IcEdit className="icon" />
-                                    <span>Edit</span>
-                                </button>
-                                <button
-                                    className="menu-item"
-                                    onClick={() => {
-                                        deleteEvent(
-                                            labelsData,
-                                            setLabelsData,
-                                            value.id
-                                        );
-                                        setSaved(false);
-                                    }}
-                                >
-                                    <IcBin className="icon" />
-                                    <span>delete</span>
-                                </button>
-                            </div>
-                        )}
-                    </div>
+                    <MoreMenu
+                        menuId={`event:${value.name}`}
+                        menuRef={menuRef}
+                        currMenu={currMenu}
+                        setCurrMenu={setCurrMenu}
+                        options={[
+                            ["edit", () => editHandler(value), IcEdit],
+                            ["delete", () => deleteHandler(value), IcBin],
+                        ]}
+                    />
                 </div>
             ))}
         </div>

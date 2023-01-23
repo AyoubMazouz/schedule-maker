@@ -1,6 +1,7 @@
 import React from "react";
 import { useAuth } from "../../Contexts/AuthContext";
 import { useGlobalContext } from "../../Contexts/GlobalContext";
+import { Button } from "../Button";
 import { IcCancel, IcEx, IcLogin } from "../icons";
 
 const Login = () => {
@@ -34,7 +35,7 @@ const Login = () => {
                 className={`w-full rounded-lg border-2 border-dark/25 bg-light p-4 shadow-lg`}
             >
                 <div>{model.message}</div>
-                <form className="space-y-4" onSubmit={submitHandler}>
+                <div className="space-y-4">
                     <div className="text-center">
                         <div className="text-xl text-primary">LogIn</div>
                         <div>Only Authorized Admins are allowed here</div>
@@ -64,19 +65,19 @@ const Login = () => {
                         />
                     </div>
                     <div className="flex gap-x-6">
-                        <button className="btn-success" type="submit">
-                            <IcLogin className="icon" />
-                            <span>Log In</span>
-                        </button>
-                        <button
-                            className="btn-secondary"
-                            onClick={(e) => setModel(null)}
-                        >
-                            <IcCancel className="icon" />
-                            <span>Cancel</span>
-                        </button>
+                        <Button
+                            text="Log In"
+                            type="danger"
+                            onClick={submitHandler}
+                            Icon={IcLogin}
+                        />
+                        <Button
+                            text="Cancel"
+                            onClick={() => setModel(null)}
+                            Icon={IcCancel}
+                        />
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     );
