@@ -23,9 +23,7 @@ export const Button = ({
     return (
         <button
             disabled={disabled}
-            className={`btn-${type} ${
-                Icon ? "pl-4 pr-2" : "px-4"
-            } relative flex cursor-pointer items-center gap-x-1 rounded border-2 py-0.5 font-semibold capitalize shadow transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50`}
+            className={`btn-${type} ${Icon ? "pl-4 pr-2" : "px-4"}`}
             onClick={(e) => onClick(e)}
         >
             {children}

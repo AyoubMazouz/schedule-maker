@@ -1,4 +1,11 @@
-export const DAYS_TEXT = ["Mon", "Tue", "Wedy", "Tur", "Fri", "Sat"];
+export const DAYS_TEXT = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Tursday",
+    "Friday",
+    "Saturday",
+];
 
 export const SESSIONS_TEXT = [
     "08:30 - 10:30",
@@ -65,28 +72,28 @@ export const EMPTY_SCHEDUAL = {
             ["", "", "", null],
         ],
         [
-            ["", "", "", null],
-            ["", "", "", null],
-            ["", "", "", null],
-            ["", "", "", null],
+            ["", "", "", ""],
+            ["", "", "", ""],
+            ["", "", "", ""],
+            ["", "", "", ""],
         ],
         [
-            ["", "", "", null],
-            ["", "", "", null],
-            ["", "", "", null],
-            ["", "", "", null],
+            ["", "", "", ""],
+            ["", "", "", ""],
+            ["", "", "", ""],
+            ["", "", "", ""],
         ],
         [
-            ["", "", "", null],
-            ["", "", "", null],
-            ["", "", "", null],
-            ["", "", "", null],
+            ["", "", "", ""],
+            ["", "", "", ""],
+            ["", "", "", ""],
+            ["", "", "", ""],
         ],
         [
-            ["", "", "", null],
-            ["", "", "", null],
-            ["", "", "", null],
-            ["", "", "", null],
+            ["", "", "", ""],
+            ["", "", "", ""],
+            ["", "", "", ""],
+            ["", "", "", ""],
         ],
     ],
 };
@@ -96,7 +103,9 @@ export const PRIMARY_COL = "#DA0037";
 export const SECONDARY_COL = "#eee";
 export const LIGHT_COL = "#EDEDED";
 export const DARK_COL = "#171717";
+export const EVENT_COL = "#FFEDD5";
 
+export const DOMAIN_NAME = "https://schedual-maker.netlify.app";
 export const VERSION = "0.4.7";
 export const ABOUT_APP = (
     <p>

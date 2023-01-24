@@ -103,8 +103,8 @@ const OptionBar = () => {
             if (trainer) {
                 const preferedRooms = labelsData.trainers.filter(
                     (v) => v.name === trainer
-                )[0].preferedRooms;
-                setPreferedRooms(preferedRooms);
+                )[0]?.preferedRooms;
+                setPreferedRooms(preferedRooms || []);
             } else setPreferedRooms([]);
         }
     }, [selectedCell, data]);

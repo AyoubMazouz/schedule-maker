@@ -1,9 +1,12 @@
 import React from "react";
 import { Button } from "../../../components/Button";
+import { DropdownMenu } from "../../../components/DropdownMenu";
 import {
     IcBin,
     IcDown,
     IcEvent,
+    IcExport,
+    IcImport,
     IcLevel,
     IcNewDoc,
     IcRoom,
@@ -69,34 +72,46 @@ const OptionBar = ({
             setSaved,
         });
     };
+    const SaveMenuItem = () => (
+        <button
+            disabled={saved}
+            className={`menu-item relative ${
+                !saved &&
+                "after:absolute after:top-[38%] after:left-[0%] after:h-3 after:w-3 after:translate-x-[50%] after:translate-y-[-50%] after:animate-pulse after:rounded-full after:bg-emerald-500"
+            }`}
+            onClick={saveHandler}
+        >
+            <IcSave className="icon" />
+            <span>Save</span>
+        </button>
+    );
 
     return (
-        <div className="relative flex justify-between gap-6 p-2 border rounded-lg shadow-md">
-            <Button
-                text="add"
-                onClick={() => setCurrMenu("add")}
-                Icon={IcDown}
+        <div className="relative flex gap-6 p-2 border rounded-lg shadow-md">
+            <DropdownMenu
+                text="file"
+                menuRef={menuRef}
+                currMenu={currMenu}
+                setCurrMenu={setCurrMenu}
+                options={[
+                    <SaveMenuItem />,
+                    ["discard", discardChanges, IcBin, saved],
+                    ["Import", () => null, IcImport, true],
+                    ["Export as JSON", () => null, IcExport, true],
+                ]}
             />
-            {currMenu === "add" && (
-                <div ref={menuRef} className="menu top-[96%] left-[1%]">
-                    <button className="menu-item" onClick={addFacultyHandler}>
-                        <IcLevel className="icon" />
-                        <span>New Level</span>
-                    </button>
-                    <button className="menu-item" onClick={addTrainerHandler}>
-                        <IcUser className="icon" />
-                        <span>New Trainer</span>
-                    </button>
-                    <button className="menu-item" onClick={addRoomHandler}>
-                        <IcRoom className="icon" />
-                        <span>New Room</span>
-                    </button>
-                    <button className="menu-item" onClick={addEventHandler}>
-                        <IcEvent className="icon" />
-                        <span>New Event</span>
-                    </button>
-                </div>
-            )}
+            <DropdownMenu
+                text="add"
+                menuRef={menuRef}
+                currMenu={currMenu}
+                setCurrMenu={setCurrMenu}
+                options={[
+                    ["New Level", addFacultyHandler, IcLevel],
+                    ["New Trainer", addTrainerHandler, IcUser],
+                    ["New Room", addRoomHandler, IcRoom],
+                    ["New Event", addEventHandler, IcEvent],
+                ]}
+            />
             <div className="flex gap-x-6">
                 {/* <div className="relative overflow-hidden btn">
                     <input
@@ -119,19 +134,6 @@ const OptionBar = ({
                     <IcExport className="icon" />
                     <span>Export</span>
                 </button> */}
-                <Button
-                    type="success"
-                    text="save"
-                    disabled={saved}
-                    onClick={saveHandler}
-                    Icon={IcSave}
-                />
-                <Button
-                    text="discard"
-                    disabled={saved}
-                    onClick={discardChanges}
-                    Icon={IcBin}
-                />
             </div>
         </div>
     );

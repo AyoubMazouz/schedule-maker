@@ -15,22 +15,24 @@ const Model = () => {
     const { model } = useGlobalContext();
 
     const models = {
-        deldoc: <DelDoc />,
-        delpubdoc: <DelPubDoc />,
-        newdoc: <NewDoc />,
-        rendoc: <RenDoc />,
-        exit: <Exit />,
-        login: <Login />,
-        addLevel: <AddLevel />,
-        addTrainer: <AddTrainer />,
-        addRoom: <AddRoom />,
-        addEvent: <AddEvent />,
-        showDetails: <ShowDetails />,
+        deldoc: DelDoc,
+        delpubdoc: DelPubDoc,
+        newdoc: NewDoc,
+        rendoc: RenDoc,
+        exit: Exit,
+        login: Login,
+        addLevel: AddLevel,
+        addTrainer: AddTrainer,
+        addRoom: AddRoom,
+        addEvent: AddEvent,
+        showDetails: ShowDetails,
     };
 
     if (!model) return null;
 
-    return models[model.type] ? models[model.type] : null;
+    const Model = models[model.type];
+
+    return <Model />;
 };
 
 export default Model;

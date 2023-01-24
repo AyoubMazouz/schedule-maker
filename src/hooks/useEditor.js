@@ -4,7 +4,9 @@ import pdfFonts from "pdfmake/build/vfs_fonts";
 import {
     DARK_COL,
     DAYS_TEXT,
+    DOMAIN_NAME,
     EMPTY_SCHEDUAL,
+    EVENT_COL,
     LIGHT_COL,
     PRIMARY_COL,
     SECONDARY_COL,
@@ -28,33 +30,28 @@ const useEditor = () => {
         const getSessionObj = (text) => {
             return {
                 text: "\n" + text,
-                style: "tableBody",
-                fontSize: 28,
+                fontSize: 26,
                 lineHeight: 0.4,
-                alignment: "center",
                 color: "white",
             };
         };
-        const getLabel = (text) => {
-            let color = DARK_COL;
-
-            if (typeof text === "string" && text.includes("EFM")) color = "red";
-
+        const getLabel = (session, i) => {
+            if (i === 1)
+                return {
+                    text: session[3]
+                        ? `${session[1]} ${session[3]}`
+                        : session[1],
+                    fontSize: 14,
+                };
+            else if (i === 2)
+                return {
+                    text: session[i],
+                    fontSize: 24,
+                    alignment: "right",
+                };
             return {
-                text,
-                color,
-                style: "tableBody",
-                fontSize: 18,
-            };
-        };
-        const getRoomLabel = (text) => {
-            if (!text) return;
-
-            return {
-                text: text.toLowerCase() !== "teams" ? "Room " + text : text,
-                color: DARK_COL,
-                style: "tableBody",
-                fontSize: 18,
+                text: session[i],
+                fontSize: 20,
             };
         };
 
@@ -65,31 +62,26 @@ const useEditor = () => {
                     {
                         text: "\n" + DAYS_TEXT[index],
                         style: "tableBody",
-                        fontSize: 28,
+                        fontSize: 26,
                         lineHeight: 0.4,
                         color: LIGHT_COL,
                     },
                 ]);
                 return day.map((session) => {
                     return [
-                        getLabel(session[0]),
-                        getLabel(session[1]),
-                        getRoomLabel(session[2]),
+                        getLabel(session, 0),
+                        getLabel(session, 1),
+                        getLabel(session, 2),
                     ];
                 });
             });
         };
 
-        const getFillColor = (
-            data,
-            schedualIndex,
-            rowIndex,
-            node,
-            columnIndex
-        ) => {
+        const getFillColor = (data, schedualIndex, rowIndex, columnIndex) => {
             if (rowIndex === 0 && columnIndex === 0) return null;
-
             if (rowIndex === 0 || columnIndex === 0) return PRIMARY_COL;
+            if (data[schedualIndex].schedual[rowIndex - 1][columnIndex - 1][3])
+                return EVENT_COL;
             else
                 return data[schedualIndex].schedual[rowIndex - 1][
                     columnIndex - 1
@@ -99,6 +91,24 @@ const useEditor = () => {
         };
         //
         const content = [];
+
+        data.forEach((schedual, index) => {
+            content.push({
+                text: `${schedual.group} ${new Array(55 - schedual.group.length)
+                    .fill(" . ")
+                    .join("")} ${index + 1}`,
+                linkToPage: `${index + 2}`,
+                fontSize: 18,
+            });
+            if (index === data.length - 1)
+                content.push({
+                    text: `Made with: ${DOMAIN_NAME}`,
+                    link: DOMAIN_NAME,
+                    fontSize: 18,
+                    pageBreak: "after",
+                });
+        });
+
         data.forEach((schedual, schedualIndex) => {
             content.push({
                 style: "tableExample",
@@ -123,7 +133,6 @@ const useEditor = () => {
                             data,
                             schedualIndex,
                             rowIndex,
-                            node,
                             columnIndex
                         );
                     },
@@ -137,14 +146,19 @@ const useEditor = () => {
             content.push({
                 text: `TotalHours: ${schedual.totalHours}`,
                 fontSize: 18,
+            });
+            content.push({
+                text: `${schedualIndex + 1}`,
+                fontSize: 22,
                 pageBreak: "after",
+                alignment: "right",
             });
         });
 
         const doc = {
             pageSize: "A4",
             pageOrientation: "landscape",
-            pageMargins: 10,
+            pageMargins: [10, 10],
             defaultStyle: {
                 font: "Roboto",
             },
