@@ -63,14 +63,15 @@ const Cell = ({ session, schedualIndex, dayIndex, sessionIndex }) => {
             className={`${getBorder()} ${isComplete()} relative box-border h-[5.5rem] cursor-pointer overflow-hidden px-2 text-start`}
         >
             <div className="text-lg font-semibold">{session[0]}</div>
-            <div className="text-primary">{session[1]}</div>
+            <div className="">
+                <span>{session[1] + " "}</span>
+                <span className="font-semibold text-primary">{session[3]}</span>
+            </div>
             {session[2] && (
-                <div className="text-lg">
-                    {session[2].trim() && session[2] !== "TEAMS" && "Salle: "}
+                <div className="text-lg font-semibold text-right">
                     {session[2]}
                 </div>
             )}
-            <div className="absolute top-[0%] right-[0%]">{session[3]}</div>
         </div>
     );
 };

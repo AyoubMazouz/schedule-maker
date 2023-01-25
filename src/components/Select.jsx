@@ -7,6 +7,7 @@ export const Select = ({
     notRecommended = [],
     label = "",
     defaultValue = "",
+    styles = "",
 }) => {
     const ls = values.filter((v) => {
         if (recommended.includes(v.name)) return false;
@@ -16,7 +17,7 @@ export const Select = ({
     return (
         <select
             name={label}
-            className="input"
+            className={`input cursor-pointer ${styles}`}
             value={defaultValue}
             onChange={(e) => onChange(e.target.value)}
         >
@@ -33,11 +34,7 @@ export const Select = ({
             })}
             {ls.map((value) => {
                 const name = value?.name ? value.name : value;
-                return value ? (
-                    <option className="" value={name}>
-                        {name}
-                    </option>
-                ) : null;
+                return value ? <option value={name}>{name}</option> : null;
             })}
             {notRecommended.map((value) => {
                 const name = value?.name ? value.name : value;

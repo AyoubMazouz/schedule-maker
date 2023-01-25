@@ -4,6 +4,8 @@ import useEditor from "../../hooks/useEditor";
 import { IcBin, IcPlus, IcTime } from "../../components/icons";
 import { useEditorContext } from "../../Contexts/EditorContext";
 import useLabels from "../../hooks/useLabels";
+import { Select } from "../../components/Select";
+import { Button } from "../../components/Button";
 
 const DocumentsBar = () => {
     const { setSaved } = useEditorContext();
@@ -96,18 +98,19 @@ const DocumentsBar = () => {
     };
 
     return (
-        <div className="flex flex-col gap-y-3 p-2">
+        <div className="flex flex-col p-2 gap-y-3">
             {data.map((schedual, schedualIndex) =>
                 schedualIndex === currSchedual ? (
-                    <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg border-2 border-dark/25 bg-primary p-2">
-                        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-light text-lg font-bold text-primary">
+                    <div className="flex flex-wrap items-center justify-between gap-2 p-2 border rounded-lg bg-primary">
+                        <div className="flex items-center justify-center w-6 h-6 font-bold rounded-full text bg-light text-primary">
                             {schedualIndex + 1}
                         </div>
-                        <select
-                            name="group"
-                            className="input bg-primary text-light ring-light focus:bg-light focus:ring-secondary"
-                            placeholder="Select a group..."
-                            value={schedual.group}
+                        <Select
+                            styles="px-1 text-sm"
+                            values={labels.groups}
+                            defaultValue={schedual.group}
+                            notRecommended={usedGroups}
+                            label="groups"
                             onChange={(e) =>
                                 editSchedualInfoHandler(
                                     schedualIndex,
@@ -115,61 +118,39 @@ const DocumentsBar = () => {
                                     e.target.value
                                 )
                             }
-                        >
-                            <option value="" disabled className="text-light">
-                                Group...
-                            </option>
-                            {labels.groups.map((group) => {
-                                return (
-                                    <option
-                                        value={group}
-                                        className={
-                                            usedGroups.includes(group)
-                                                ? "bg-rose-600 text-light"
-                                                : "text-light"
-                                        }
-                                    >
-                                        {group}
-                                    </option>
-                                );
-                            })}
-                        </select>
-                        <button
-                            className="btn-danger rounded-full p-1"
+                        />
+                        <Button
+                            Icon={IcBin}
+                            label={["delete schedual"]}
+                            styles="text-light"
                             onClick={(e) =>
                                 deleteSchedualHandler(schedualIndex)
                             }
-                        >
-                            <IcBin className="icon" />
-                        </button>
+                        />
                     </div>
                 ) : (
                     <button
-                        className="flex items-center gap-2 rounded-lg border-2 border-dark/25 p-2"
+                        className="flex items-center gap-2 p-2 text-sm font-semibold transition-all duration-300 border rounded-lg bg-light hover:bg-secondary"
                         onClick={(e) => selectSchedualHandler(schedualIndex)}
                     >
-                        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-lg font-bold text-light">
+                        <div className="flex items-center justify-center w-6 h-6 font-bold rounded-full bg-primary text-light">
                             {schedualIndex + 1}
                         </div>
                         <div className="">{schedual.group}</div>
-                        <div className="ml-auto flex items-center gap-x-1 font-semibold text-primary">
+                        <div className="flex items-center ml-auto gap-x-1 text-primary">
                             <span>{schedual.totalHours}</span>
                             <IcTime className="icon" />
                         </div>
                     </button>
                 )
             )}
-            <div>
-                <button
-                    className="btn-success w-full justify-center"
-                    id="new_doc"
-                    disabled={loading}
-                    onClick={addNewSchedualHandler}
-                >
-                    <IcPlus className="icon" />
-                    <span className="text-center">Add</span>
-                </button>
-            </div>
+            <Button
+                type="success"
+                Icon={IcPlus}
+                text="add"
+                onClick={addNewSchedualHandler}
+                styles="flex justify-center"
+            />
         </div>
     );
 };

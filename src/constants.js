@@ -99,14 +99,14 @@ export const EMPTY_SCHEDUAL = {
 };
 
 // Colors.
-export const PRIMARY_COL = "#DA0037";
-export const SECONDARY_COL = "#eee";
-export const LIGHT_COL = "#EDEDED";
-export const DARK_COL = "#171717";
-export const EVENT_COL = "#FFEDD5";
+export const PRIMARY_COL = "#3F72AF";
+export const SECONDARY_COL = "#E0DEDE";
+export const LIGHT_COL = "#F9F7F7";
+export const DARK_COL = "#112D4E";
+export const EVENT_COL = "#BAB8B8";
 
 export const DOMAIN_NAME = "https://schedual-maker.netlify.app";
-export const VERSION = "0.4.7";
+export const VERSION = "1.4.1";
 export const ABOUT_APP = (
     <p>
         <b>Schedual Maker</b> is a Web App made with react.<br></br>This App

@@ -1,10 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
+    * {
+        scrollbar-width: thin;
+        scrollbar-color: #3F72AF #E0DEDE;
+    }
+    html {
+        @apply text-dark scroll-smooth font-source;
+    }
     body {
-        @apply bg-light text-dark font-mono scroll-smooth
+        @apply bg-light
     }
 }
 
@@ -68,7 +77,6 @@
     .textbox {
         @apply flex flex-wrap items-center gap-2 p-2 border rounded-lg;
     }
-
 }
 
 @layer utilities{
@@ -88,4 +96,5 @@
     .border {
         @apply border-2 border-dark/25
     }
+
 }

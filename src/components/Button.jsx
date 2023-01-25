@@ -9,13 +9,14 @@ export const Button = ({
     children = null,
     disabled = false,
     label = "",
+    styles = "",
 }) => {
     if (!text)
         return (
             <button
                 className={`group relative flex h-8 w-8 items-center justify-center rounded transition-all duration-300 hover:bg-dark/25 ${
                     trigger ? "bg-primary/25" : ""
-                }`}
+                } ${styles}`}
                 onClick={(e) => onClick(e)}
             >
                 {label ? <Label label={label} /> : null}
@@ -25,7 +26,7 @@ export const Button = ({
     return (
         <button
             disabled={disabled}
-            className={`btn-${type} ${
+            className={`btn-${type} ${styles} ${
                 Icon ? "pl-4 pr-2" : "px-4"
             } group relative`}
             onClick={(e) => onClick(e)}

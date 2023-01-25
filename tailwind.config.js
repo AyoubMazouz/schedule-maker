@@ -10,7 +10,7 @@ module.exports = {
                 secondary: "#E0DEDE",
             },
             fontFamily: {
-                oswald: "'Oswald', sans-serif",
+                source: "'Source Sans Pro', sans-serif",
             },
         },
     },
