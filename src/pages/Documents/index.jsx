@@ -13,11 +13,14 @@ import {
 } from "../../components/icons";
 import OptionBar from "./OptionBar";
 import useDocument from "../../hooks/useDocument";
+import { usePdf } from "../../hooks/usePdf";
+import MoreMenu from "../../components/MoreMenu";
 
 const Documents = () => {
-    const { exportDocument, downloadAsPdf } = useEditor();
-    const { getAllDocuments } = useDocument();
     const { setModel, data, setAlert } = useGlobalContext();
+    const { exportDocument } = useEditor();
+    const { getAllDocuments } = useDocument();
+    const { exportAsPdf } = usePdf();
 
     const [documents, setDocuments] = React.useState([]);
 
@@ -55,7 +58,7 @@ const Documents = () => {
     };
 
     const downloadHandler = (doc) => {
-        downloadAsPdf(JSON.parse(doc.data), doc.name);
+        exportAsPdf(JSON.parse(doc.data), doc.name);
         setAlert({
             type: "success",
             message: `Document ${doc.name} has started downloading...`,
@@ -112,67 +115,35 @@ const Documents = () => {
                                     {value.modifiedAt.toDate().toDateString()}
                                 </div>
                             </Link>
-                            <div className="relative flex gap-x-2 text-end">
-                                <button
-                                    onClick={(e) => setCurrMenu(value.name)}
-                                >
-                                    <IcMore
-                                        className={
-                                            currMenu === value.name
-                                                ? "rotate-90 text-xl text-secondary transition-all duration-300"
-                                                : "text-xl"
-                                        }
-                                    />
-                                </button>
-                                {currMenu === value.name && (
-                                    <div
-                                        ref={menuRef}
-                                        className="menu top-[0%] left-[0%] translate-x-[-100%]"
-                                    >
-                                        <button
-                                            className="menu-item"
-                                            onClick={() =>
-                                                renameHandler(value.name)
-                                            }
-                                        >
-                                            <IcEdit className="icon" />
-                                            <span>rename</span>
-                                        </button>
-                                        <button
-                                            className="menu-item"
-                                            onClick={exportHandler}
-                                        >
-                                            <IcExport className="icon" />
-                                            <span>Export</span>
-                                        </button>
-                                        <button
-                                            className="menu-item"
-                                            onClick={(e) =>
-                                                downloadHandler(value)
-                                            }
-                                        >
-                                            <IcDownload className="icon" />
-                                            <span>Download</span>
-                                        </button>
-                                        <button
-                                            className="menu-item"
-                                            onClick={() =>
-                                                deleteHandler(value.name)
-                                            }
-                                        >
-                                            <IcBin className="icon" />
-                                            <span>delete</span>
-                                        </button>
-                                        <button
-                                            className="menu-item"
-                                            onClick={() => showDetails(value)}
-                                        >
-                                            <IcAbout className="icon" />
-                                            <span>Details</span>
-                                        </button>
-                                    </div>
-                                )}
-                            </div>
+                            <MoreMenu
+                                menuId={`documents:${value.name}`}
+                                menuRef={menuRef}
+                                currMenu={currMenu}
+                                setCurrMenu={setCurrMenu}
+                                options={[
+                                    [
+                                        "rename",
+                                        () => renameHandler(value.name),
+                                        IcEdit,
+                                    ],
+                                    ["export", exportHandler, IcExport],
+                                    [
+                                        "download",
+                                        () => downloadHandler(value),
+                                        IcDownload,
+                                    ],
+                                    [
+                                        "delete",
+                                        () => deleteHandler(value.name),
+                                        IcBin,
+                                    ],
+                                    [
+                                        "details",
+                                        () => showDetails(value),
+                                        IcAbout,
+                                    ],
+                                ]}
+                            />
                         </div>
                     ))}
                 </div>

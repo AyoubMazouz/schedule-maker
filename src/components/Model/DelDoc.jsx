@@ -1,12 +1,12 @@
 import React from "react";
 import { useGlobalContext } from "../../Contexts/GlobalContext";
-import useEditor from "../../hooks/useEditor";
+import useDocument from "../../hooks/useDocument";
 import { Button } from "../Button";
 import { IcBin, IcCancel } from "../icons";
 
 const DelDoc = () => {
     const { model, setModel, setAlert } = useGlobalContext();
-    const { deleteDocument } = useEditor();
+    const { deleteDocument } = useDocument();
 
     return (
         <div className="fixed top-[4rem] left-[50%] z-40 w-full max-w-[600px] translate-x-[-50%] px-4">

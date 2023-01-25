@@ -24,27 +24,35 @@ const Cell = ({ session, schedualIndex, dayIndex, sessionIndex }) => {
                         return "border-2 border-l-0 border-emerald-500";
                     }
                     return "border-2 border-emerald-500";
-                } else if (sessionIndex % 2 !== 0 && sessionIndex - 1 === z) {
+                } else if (
+                    fusionMode &&
+                    sessionIndex % 2 !== 0 &&
+                    sessionIndex - 1 === z
+                ) {
                     return "border-2 border-l-0 border-emerald-500";
-                } else if (sessionIndex % 2 === 0 && sessionIndex + 1 === z) {
+                } else if (
+                    fusionMode &&
+                    sessionIndex % 2 === 0 &&
+                    sessionIndex + 1 === z
+                ) {
                     return "border-2 border-r-0 border-emerald-500";
                 }
             }
         }
 
         if (dayIndex === 0 && sessionIndex === 0)
-            return "border-[1px] border-t-0 border-l-0";
+            return "border-[1px] border-dark/50 border-t-0 border-l-0";
         if (dayIndex === 0 && sessionIndex === 3)
-            return "border-[1px] border-t-0 border-r-0";
+            return "border-[1px] border-dark/50 border-t-0 border-r-0";
         if (dayIndex === 5 && sessionIndex === 0)
-            return "border-[1px] border-b-0 border-l-0";
+            return "border-[1px] border-dark/50 border-b-0 border-l-0";
         if (dayIndex === 5 && sessionIndex === 3)
-            return "border-[1px] border-b-0 border-r-0";
-        if (dayIndex === 0) return "border-[1px] border-t-0";
-        if (sessionIndex === 0) return "border-[1px] border-l-0";
-        if (sessionIndex === 3) return "border-[1px] border-r-0";
-        if (dayIndex === 5) return "border-[1px] border-b-0";
-        return "border-[1px]";
+            return "border-[1px] border-dark/50 border-b-0 border-r-0";
+        if (dayIndex === 0) return "border-[1px] border-dark/50 border-t-0";
+        if (sessionIndex === 0) return "border-[1px] border-dark/50 border-l-0";
+        if (sessionIndex === 3) return "border-[1px] border-dark/50 border-r-0";
+        if (dayIndex === 5) return "border-[1px] border-dark/50 border-b-0";
+        return "border-[1px] border-dark/50";
     };
 
     return (
@@ -52,7 +60,7 @@ const Cell = ({ session, schedualIndex, dayIndex, sessionIndex }) => {
             onClick={(e) =>
                 setSelectedCell([schedualIndex, dayIndex, sessionIndex])
             }
-            className={`${getBorder()} ${isComplete()} relative  box-border h-[5.5rem] cursor-pointer overflow-hidden border-dark/50 px-2 text-start`}
+            className={`${getBorder()} ${isComplete()} relative box-border h-[5.5rem] cursor-pointer overflow-hidden px-2 text-start`}
         >
             <div className="text-lg font-semibold">{session[0]}</div>
             <div className="text-primary">{session[1]}</div>

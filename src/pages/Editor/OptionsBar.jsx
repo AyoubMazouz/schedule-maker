@@ -5,7 +5,6 @@ import useLabels from "../../hooks/useLabels";
 import useEditor from "../../hooks/useEditor";
 import {
     IcBin,
-    IcDown,
     IcExport,
     IcFusion,
     IcImport,
@@ -18,17 +17,18 @@ import useDocument from "../../hooks/useDocument";
 import { Select } from "../../components/Select";
 import { DropdownMenu } from "../../components/DropdownMenu";
 import { Button } from "../../components/Button";
+import { usePdf } from "../../hooks/usePdf";
 
 const OptionBar = () => {
     const { saved, setSaved, setFusionMode, fusionMode, selectedCell } =
         useEditorContext();
     const { data, setData, loadData, setModel, setAlert, setName } =
         useGlobalContext();
-    const { importDocument, exportDocument, downloadAsPdf, clearCell } =
-        useEditor();
+    const { importDocument, exportDocument, clearCell } = useEditor();
     const { addNewDocument } = useDocument();
     const { getLabels } = useLabels();
     const { editField } = useEditor();
+    const { exportAsPdf } = usePdf();
 
     const { nameid } = useParams();
     const navigate = useNavigate();
@@ -126,7 +126,7 @@ const OptionBar = () => {
     };
 
     const downloadHandler = () => {
-        downloadAsPdf(data, nameid);
+        exportAsPdf(data, nameid);
         setAlert({ type: "success", message: "Download has started..." });
         setCurrMenu(null);
     };
@@ -170,13 +170,6 @@ const OptionBar = () => {
             fusionMode
         );
         if (res) setSaved(false);
-    };
-
-    const isComplete = (session) => {
-        if (session[0].trim() && session[1].trim() && session[2].trim())
-            return "all";
-        else if (session[0].trim() || session[1].trim() || session[2].trim())
-            return "some";
     };
 
     const SaveMenuItem = () => (
@@ -223,6 +216,10 @@ const OptionBar = () => {
             />
             <div className="flex gap-x-2">
                 <Button
+                    label={[
+                        "Fusion Mode",
+                        "Let's you fill two fields at once.",
+                    ]}
                     Icon={IcFusion}
                     onClick={() => setFusionMode((x) => !x)}
                     trigger={fusionMode}
@@ -230,7 +227,11 @@ const OptionBar = () => {
             </div>
             {selectedCell ? (
                 <div className="flex items-center gap-x-2">
-                    <Button Icon={IcBin} onClick={clearCellHandler} />
+                    <Button
+                        Icon={IcBin}
+                        label={["clear"]}
+                        onClick={clearCellHandler}
+                    />
                     <Select
                         label="trainers"
                         notRecommended={unavailableTrainers}
@@ -295,7 +296,9 @@ const OptionBar = () => {
                         </div>
                     </div>
                 </div>
-            ) : null}
+            ) : (
+                <div></div>
+            )}
         </div>
     );
 };

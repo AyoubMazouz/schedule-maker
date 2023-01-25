@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../Contexts/AuthContext";
 import { useGlobalContext } from "../Contexts/GlobalContext";
 import { Button } from "./Button";
@@ -9,10 +9,15 @@ const NavBar = () => {
     const { setModel, setAlert } = useGlobalContext();
     const { logout, currUser } = useAuth();
 
+    const location = useLocation();
+
     const logoutHandler = async () => {
         logout();
         setAlert({ type: "success", message: `Goodbye "${currUser.email}"` });
     };
+
+    if (location.pathname.includes("editor")) return null;
+
     return (
         <nav className="flex justify-center">
             <div className="m-2 flex h-[3.3rem] w-full max-w-[1400px] items-center justify-between rounded-lg border p-2 shadow-md">
