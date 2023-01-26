@@ -22,15 +22,14 @@ import { usePdf } from "../../hooks/usePdf";
 const OptionBar = () => {
     const { saved, setSaved, setFusionMode, fusionMode, selectedCell } =
         useEditorContext();
-    const { data, setData, loadData, setModel, setAlert, setName } =
-        useGlobalContext();
+    const { data, setData, setModel, setAlert } = useGlobalContext();
     const { importDocument, exportDocument, clearCell } = useEditor();
     const { addNewDocument } = useDocument();
     const { getLabels } = useLabels();
     const { editField } = useEditor();
     const { exportAsPdf } = usePdf();
 
-    const { nameid } = useParams();
+    const { userId, docId } = useParams();
     const navigate = useNavigate();
 
     const menuRef = React.useRef(null);
@@ -62,11 +61,6 @@ const OptionBar = () => {
         return () =>
             document.removeEventListener("mousedown", handleClickOutside);
     }, [menuRef]);
-
-    React.useEffect(() => {
-        setName(nameid);
-        loadData(nameid);
-    }, [nameid]);
 
     React.useEffect(() => {
         if (selectedCell) {
@@ -111,12 +105,12 @@ const OptionBar = () => {
 
     const saveHandler = async () => {
         setCurrMenu(null);
-        await addNewDocument(data, nameid);
+        await addNewDocument(data, userId, docId);
         setSaved(true);
     };
 
     const exitHandler = async () => {
-        if (saved) navigate("/documents");
+        if (saved) navigate("/documents/" + userId);
         else
             setModel({
                 type: "exit",
@@ -126,13 +120,13 @@ const OptionBar = () => {
     };
 
     const downloadHandler = () => {
-        exportAsPdf(data, nameid);
+        exportAsPdf(data, docId);
         setAlert({ type: "success", message: "Download has started..." });
         setCurrMenu(null);
     };
 
     const exportHandler = () => {
-        exportDocument(data, nameid);
+        exportDocument(data, docId);
         setCurrMenu(null);
     };
     const newDocHandler = (e) => {
@@ -241,7 +235,7 @@ const OptionBar = () => {
                                 sessionIndex
                             ][0]
                         }
-                        onChange={(v) => editFieldHandler(0, v)}
+                        onChange={(e) => editFieldHandler(0, e.target.value)}
                     />
                     <Select
                         label="modules"
@@ -251,7 +245,7 @@ const OptionBar = () => {
                                 sessionIndex
                             ][1]
                         }
-                        onChange={(v) => editFieldHandler(1, v)}
+                        onChange={(e) => editFieldHandler(1, e.target.value)}
                     />
                     <Select
                         label="rooms"
@@ -263,7 +257,7 @@ const OptionBar = () => {
                                 sessionIndex
                             ][2]
                         }
-                        onChange={(v) => editFieldHandler(2, v)}
+                        onChange={(e) => editFieldHandler(2, e.target.value)}
                     />
                     <Select
                         label="events"
@@ -273,7 +267,7 @@ const OptionBar = () => {
                                 sessionIndex
                             ][3]
                         }
-                        onChange={(v) => editFieldHandler(3, v)}
+                        onChange={(e) => editFieldHandler(3, e.target.value)}
                     />
                     <div className="text-xs leading-3">
                         <div>

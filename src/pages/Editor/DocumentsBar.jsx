@@ -10,8 +10,7 @@ import { Button } from "../../components/Button";
 const DocumentsBar = () => {
     const { setSaved } = useEditorContext();
     const { data, setData, setAlert } = useGlobalContext();
-    const { loading, addNewSchedual, editSchedualInfo, deleteSchedual } =
-        useEditor();
+    const { addNewSchedual, editSchedualInfo, deleteSchedual } = useEditor();
     const { getLabels } = useLabels();
 
     const [currSchedual, setCurrSchedual] = React.useState(0);

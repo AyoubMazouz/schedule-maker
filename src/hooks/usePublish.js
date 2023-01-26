@@ -6,7 +6,8 @@ import {
     onSnapshot,
     query,
     collection,
-    orderBy,
+    where,
+    getDoc,
 } from "firebase/firestore";
 import {
     ref,
@@ -17,9 +18,9 @@ import {
 import { db, storage } from "../firebase";
 
 const usePublish = () => {
-    const publishDocument = (file, id) => {
+    const publishDocument = (userId, id, file) => {
         return new Promise(async (resolve, reject) => {
-            const storageRef = ref(storage, "publishedDocuments/" + id);
+            const storageRef = ref(storage, `publish/${userId}/${id}`);
 
             try {
                 const snapshot = await uploadBytesResumable(storageRef, file);
@@ -27,12 +28,23 @@ const usePublish = () => {
 
                 const document = {
                     id,
+                    userId,
                     url,
                     createdAt: Timestamp.now(),
                 };
 
-                await setDoc(doc(db, "publishedDocuments", id), document);
+                const snap = await getDoc(doc(db, "publish", userId));
 
+                if (snap.exists()) {
+                    const data = snap.data();
+                    await setDoc(doc(db, "publish", userId), {
+                        documents: [...data.documents, document],
+                    });
+                } else {
+                    await setDoc(doc(db, "publish", userId), {
+                        documents: [document],
+                    });
+                }
                 resolve(true);
             } catch (err) {
                 reject(err);
@@ -40,25 +52,18 @@ const usePublish = () => {
         });
     };
 
-    const getPublishedDocuments = (setDocs) => {
-        onSnapshot(
-            query(collection(db, "publishedDocuments"), orderBy("createdAt")),
-            (snap) => {
-                const docs = [];
-                snap.forEach((doc) => {
-                    const data = doc.data();
-                    docs.push(data);
-                });
-                setDocs(docs);
-            }
-        );
+    const getPublishedDocuments = (userId, setData) => {
+        onSnapshot(doc(db, "publish", userId), (snap) => {
+            if (snap.exists()) setData(snap.data().documents);
+            else setData([]);
+        });
     };
 
-    const deletePublishedDocument = (id) => {
+    const deletePublishedDocument = (userId, id) => {
         return new Promise(async (resolve, reject) => {
             try {
-                await deleteObject(ref(storage, `publishedDocuments/${id}`));
-                await deleteDoc(doc(db, "publishedDocuments", id));
+                await deleteObject(ref(storage, `publish/${userId}/${id}`));
+                await deleteDoc(doc(db, "publish", id));
                 resolve(true);
             } catch (e) {
                 reject(e);
@@ -66,31 +71,10 @@ const usePublish = () => {
         });
     };
 
-    const importSettings = (file, callback) => {
-        const reader = new FileReader();
-        reader.readAsText(file, "UTF-8");
-        reader.onload = async (readerEvent) => {
-            const json = readerEvent.target.result;
-            const document = JSON.parse(json);
-            callback(document);
-        };
-    };
-    const exportSettings = (data, fileName) => {
-        const jsonData = JSON.stringify(data);
-        const link = document.createElement("a");
-        link.href = "data:application/json," + jsonData;
-        link.download = `${fileName}.schedual-maker.json`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    };
-
     return {
         publishDocument,
         getPublishedDocuments,
         deletePublishedDocument,
-        importSettings,
-        exportSettings,
     };
 };
 

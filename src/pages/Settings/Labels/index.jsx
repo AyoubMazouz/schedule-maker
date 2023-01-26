@@ -1,4 +1,5 @@
 import React from "react";
+import { useAuth } from "../../../Contexts/AuthContext";
 import { useGlobalContext } from "../../../Contexts/GlobalContext";
 import useLabels from "../../../hooks/useLabels";
 import Events from "./Events";
@@ -8,14 +9,9 @@ import Rooms from "./Rooms";
 import Trainers from "./Trainers";
 
 const Labels = ({ saved, setSaved }) => {
-    const { getLabels } = useLabels();
-    const { setAlert } = useGlobalContext();
-    const [labelsData, setLabelsData] = React.useState({
-        trainers: [],
-        rooms: [],
-        levels: [],
-        events: [],
-    });
+    const { setAlert, labelsData, setLabelsData, loadLabelsData } =
+        useGlobalContext();
+    const { currUser } = useAuth();
     const menuRef = React.useRef(null);
     const [currMenu, setCurrMenu] = React.useState(null);
 
@@ -30,7 +26,7 @@ const Labels = ({ saved, setSaved }) => {
     }, [menuRef]);
 
     React.useEffect(() => {
-        getLabels().then((labels) => setLabelsData(labels));
+        loadLabelsData(currUser.uid);
     }, []);
 
     React.useEffect(() => {

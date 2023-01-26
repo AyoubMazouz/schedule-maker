@@ -2,20 +2,20 @@ import { setDoc, doc, getDoc, deleteDoc } from "firebase/firestore";
 import { db } from "../firebase";
 
 const useLabels = () => {
-    const deleteAllLabels = () => {
+    const deleteAllLabels = (userId) => {
         return new Promise(async (resolve, reject) => {
-            await deleteDoc(doc(db, "settings", "labels"));
+            await deleteDoc(doc(db, "labels", userId));
             resolve(true);
         });
     };
 
-    const setLabels = (data) => {
-        return setDoc(doc(db, "settings", "labels"), data);
+    const setLabels = (userId, data) => {
+        return setDoc(doc(db, "labels", userId), data);
     };
 
-    const getLabels = () => {
+    const getLabels = (userId) => {
         return new Promise(async (resolve, reject) => {
-            const snapshot = await getDoc(doc(db, "settings", "labels"));
+            const snapshot = await getDoc(doc(db, "labels", userId));
 
             if (snapshot.exists()) {
                 const data = snapshot.data();

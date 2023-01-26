@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { EMPTY_SCHEDUAL } from "../../constants";
+import { useAuth } from "../../Contexts/AuthContext";
 import { useGlobalContext } from "../../Contexts/GlobalContext";
 import useDocument from "../../hooks/useDocument";
 import { Button } from "../Button";
@@ -9,15 +10,16 @@ import { IcSave, IcCancel } from "../icons";
 const NewDoc = () => {
     const navigate = useNavigate();
 
-    const [docName, setDocName] = React.useState("");
-    const { setModel, setName } = useGlobalContext();
+    const { setModel, setDocId } = useGlobalContext();
+    const { currUser } = useAuth();
     const { addNewDocument } = useDocument();
+    const [newDocId, setNewDocId] = React.useState("");
 
     const createHandler = async () => {
         setModel(null);
-        await addNewDocument([EMPTY_SCHEDUAL], docName);
-        setName(docName);
-        navigate("/editor/" + docName);
+        await addNewDocument([EMPTY_SCHEDUAL], currUser.uid, newDocId);
+        setDocId(newDocId);
+        navigate("/editor/" + newDocId);
     };
 
     return (
@@ -29,8 +31,8 @@ const NewDoc = () => {
                 <input
                     type="text"
                     className="input"
-                    value={docName}
-                    onChange={(e) => setDocName(e.target.value)}
+                    value={newDocId}
+                    onChange={(e) => setNewDocId(e.target.value)}
                 />
             </div>
             <div className="model-btn-container">

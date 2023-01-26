@@ -1,3 +1,5 @@
+import { Timestamp } from "firebase/firestore";
+
 const useSettings = () => {
     const addLevel = (data, setData, value) => {
         const levels = [...data.levels, value].sort((a, b) => a.name > b.name);
@@ -123,6 +125,44 @@ const useSettings = () => {
         };
         setData(labelsDoc);
     };
+    const exportSettings = (data) => {
+        const jsonData = JSON.stringify(data);
+        const link = document.createElement("a");
+        link.href = "data:application/json," + jsonData;
+        link.download = `schedual-maker.settings.json`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+    const importSettigs = (file, callback) => {
+        const reader = new FileReader();
+        reader.readAsText(file, "UTF-8");
+        reader.onload = async (readerEvent) => {
+            const json = readerEvent.target.result;
+            const document = await JSON.parse(json);
+            const d = {
+                createdAt: Timestamp.now(),
+                modiefiedAt: Timestamp.now(),
+            };
+            document.levels = document.levels.map((l) => ({
+                ...l,
+                ...d,
+            }));
+            document.trainers = document.trainers.map((t) => ({
+                ...t,
+                ...d,
+            }));
+            document.rooms = document.rooms.map((r) => ({
+                ...r,
+                ...d,
+            }));
+            document.events = document.events.map((e) => ({
+                ...e,
+                ...d,
+            }));
+            callback(document);
+        };
+    };
 
     return {
         addLevel,
@@ -137,6 +177,8 @@ const useSettings = () => {
         deleteRoom,
         deleteTrainer,
         deleteEvent,
+        exportSettings,
+        importSettigs,
     };
 };
 

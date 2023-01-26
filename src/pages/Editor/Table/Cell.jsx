@@ -5,10 +5,8 @@ const Cell = ({ session, schedualIndex, dayIndex, sessionIndex }) => {
     const { setSelectedCell, selectedCell, fusionMode } = useEditorContext();
 
     const isComplete = () => {
-        if (session[0].trim() && session[1].trim() && session[2].trim())
-            return "bg-dark/10";
-        else if (session[0].trim() || session[1].trim() || session[2].trim())
-            return "bg-secondary";
+        if (session[0] && session[1] && session[2]) return "bg-dark/10";
+        else if (session[0] || session[1] || session[2]) return "bg-secondary";
         return "";
     };
 
@@ -54,7 +52,6 @@ const Cell = ({ session, schedualIndex, dayIndex, sessionIndex }) => {
         if (dayIndex === 5) return "border-[1px] border-dark/50 border-b-0";
         return "border-[1px] border-dark/50";
     };
-
     return (
         <div
             onClick={(e) =>

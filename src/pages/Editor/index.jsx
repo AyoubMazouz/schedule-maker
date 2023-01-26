@@ -4,13 +4,19 @@ import DocumentsBar from "./DocumentsBar";
 import OptionsBar from "./OptionsBar";
 import Table from "./Table/Index";
 import { EditorContextProvider } from "../../Contexts/EditorContext";
+import { useParams } from "react-router-dom";
+import { useAuth } from "../../Contexts/AuthContext";
 
 const Editor = () => {
-    const { data, name, setAlert } = useGlobalContext();
+    const { data, loadData } = useGlobalContext();
+    const { currUser } = useAuth();
+
+    const { docId } = useParams();
 
     React.useEffect(() => {
-        document.title = `SH-Maker - Editor-${name}`;
-    }, [name]);
+        document.title = `SH-Maker - Editor-${docId}`;
+        loadData(currUser.uid, docId);
+    }, [docId]);
 
     // React.useEffect(() => {
     //     if (EditorContextProvider.saved) window.onbeforeunload = null;
@@ -42,6 +48,7 @@ const Editor = () => {
                         <div className="relative h-[65vh] space-y-2 overflow-x-hidden overflow-y-scroll p-2 md:h-[calc(100vh-5.5rem)]">
                             {data.map((_, schedualIndex) => (
                                 <Table
+                                    key={`table:${schedualIndex}`}
                                     {...{
                                         schedualIndex,
                                     }}

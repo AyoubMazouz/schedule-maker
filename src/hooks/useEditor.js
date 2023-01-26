@@ -117,13 +117,14 @@ const useEditor = () => {
             "",
             "",
             "",
+            "",
         ];
 
         if (fusionMode) {
             const offset = sessionIndex % 2 === 0 ? 1 : -1;
             copiedData[schedualIndex].schedual[dayIndex][
                 sessionIndex + offset
-            ] = ["", "", ""];
+            ] = ["", "", "", ""];
         }
 
         setData(copiedData);
@@ -178,8 +179,7 @@ const useEditor = () => {
 
                         // Count Total Hours.
                         if (schIndex === schedual)
-                            if (ses[0].trim() && ses[1].trim() && ses[2].trim())
-                                hoursCount += 2.5;
+                            if (ses[0] && ses[1] && ses[2]) hoursCount += 2.5;
                         return ses;
                     });
                 }),

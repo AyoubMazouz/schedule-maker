@@ -1,5 +1,6 @@
 import React from "react";
 import useDocument from "../hooks/useDocument";
+import useLabels from "../hooks/useLabels";
 
 const GlobalContext = React.createContext();
 
@@ -11,9 +12,16 @@ export const GlobalContextProvider = ({ children }) => {
     const [alert, setAlert] = React.useState(null);
     const [model, setModel] = React.useState(null);
     const [data, setData] = React.useState([]);
-    const [name, setName] = React.useState("");
+    const [labelsData, setLabelsData] = React.useState({
+        trainers: [],
+        rooms: [],
+        levels: [],
+        events: [],
+    });
+    const [docId, setDocId] = React.useState("");
 
     const { getDocument } = useDocument();
+    const { getLabels } = useLabels();
 
     React.useEffect(() => {
         const unsubscribe = setTimeout(() => {
@@ -22,16 +30,16 @@ export const GlobalContextProvider = ({ children }) => {
         return () => clearTimeout(unsubscribe);
     }, [alert]);
 
-    const loadData = (name) => {
-        return new Promise(async (resolve, reject) => {
-            if (!name) resolve(false);
-            const doc = await getDocument(name);
-            if (doc) {
-                setData(JSON.parse(doc.data));
-                setName(doc.name);
-                resolve(true);
-            }
-        });
+    const loadData = async (userId, docId) => {
+        const doc = await getDocument(userId, docId);
+        if (doc) {
+            setData(JSON.parse(doc.data));
+            setDocId(docId);
+        }
+    };
+    const loadLabelsData = async (userId) => {
+        const doc = await getLabels(userId);
+        if (doc) setLabelsData(doc);
     };
 
     return (
@@ -43,9 +51,12 @@ export const GlobalContextProvider = ({ children }) => {
                 setModel,
                 data,
                 setData,
-                name,
-                setName,
+                labelsData,
+                setLabelsData,
+                docId,
+                setDocId,
                 loadData,
+                loadLabelsData,
             }}
         >
             {children}

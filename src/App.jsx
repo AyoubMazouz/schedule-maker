@@ -36,7 +36,7 @@ function App() {
                                     element={<Settings />}
                                 />
                                 <Route
-                                    path="/editor/:nameid"
+                                    path="/editor/:docId"
                                     element={<Editor />}
                                 />
                                 <Route

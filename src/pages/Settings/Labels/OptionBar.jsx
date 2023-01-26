@@ -13,8 +13,10 @@ import {
     IcSave,
     IcUser,
 } from "../../../components/icons";
+import { useAuth } from "../../../Contexts/AuthContext";
 import { useGlobalContext } from "../../../Contexts/GlobalContext";
 import useLabels from "../../../hooks/useLabels";
+import useSettings from "../../../hooks/useSettings";
 
 const OptionBar = ({
     menuRef,
@@ -26,7 +28,9 @@ const OptionBar = ({
     setLabelsData,
 }) => {
     const { setModel } = useGlobalContext();
+    const { currUser } = useAuth();
     const { getLabels, setLabels } = useLabels();
+    const { importSettigs, exportSettings } = useSettings();
 
     const saveHandler = () => {
         setLabels(labelsData);
@@ -79,11 +83,29 @@ const OptionBar = ({
                 !saved &&
                 "after:absolute after:top-[38%] after:left-[0%] after:h-3 after:w-3 after:translate-x-[50%] after:translate-y-[-50%] after:animate-pulse after:rounded-full after:bg-emerald-500"
             }`}
-            onClick={saveHandler}
+            onClick={(e) => {
+                setLabels(currUser.uid, labelsData);
+                setSaved(true);
+            }}
         >
             <IcSave className="icon" />
             <span>Save</span>
         </button>
+    );
+    const ImportMenuItem = () => (
+        <div className="relative overflow-hidden menu-item">
+            <input
+                type="file"
+                accept=".json,.xls,.xlsm"
+                className="absolute top-0 bottom-0 left-0 right-0 opacity-0 cursor-pointer"
+                onChange={(e) => {
+                    importSettigs(e.target.files[0], setLabelsData);
+                    setSaved(false);
+                }}
+            />
+            <IcImport className="icon" />
+            <span>Import</span>
+        </div>
     );
 
     return (
@@ -96,8 +118,12 @@ const OptionBar = ({
                 options={[
                     <SaveMenuItem />,
                     ["discard", discardChanges, IcBin, saved],
-                    ["Import", () => null, IcImport, true],
-                    ["Export as JSON", () => null, IcExport, true],
+                    <ImportMenuItem />,
+                    [
+                        "Export as JSON",
+                        () => exportSettings(labelsData),
+                        IcExport,
+                    ],
                 ]}
             />
             <DropdownMenu

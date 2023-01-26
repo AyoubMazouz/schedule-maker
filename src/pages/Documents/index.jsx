@@ -1,6 +1,6 @@
 import React from "react";
 import useEditor from "../../hooks/useEditor";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useGlobalContext } from "../../Contexts/GlobalContext";
 import {
     IcAbout,
@@ -15,9 +15,11 @@ import OptionBar from "./OptionBar";
 import useDocument from "../../hooks/useDocument";
 import { usePdf } from "../../hooks/usePdf";
 import MoreMenu from "../../components/MoreMenu";
+import { useAuth } from "../../Contexts/AuthContext";
 
 const Documents = () => {
     const { setModel, data, setAlert } = useGlobalContext();
+    const { currUser } = useAuth();
     const { exportDocument } = useEditor();
     const { getAllDocuments } = useDocument();
     const { exportAsPdf } = usePdf();
@@ -26,7 +28,7 @@ const Documents = () => {
 
     React.useEffect(() => {
         document.title = `SH-Maker - Documents`;
-        getAllDocuments(setDocuments);
+        getAllDocuments(currUser.uid, setDocuments);
     }, []);
 
     const menuRef = React.useRef(null);
@@ -58,10 +60,10 @@ const Documents = () => {
     };
 
     const downloadHandler = (doc) => {
-        exportAsPdf(JSON.parse(doc.data), doc.name);
+        exportAsPdf(JSON.parse(doc.data), doc.id);
         setAlert({
             type: "success",
-            message: `Document ${doc.name} has started downloading...`,
+            message: `Document ${doc.id} has started downloading...`,
         });
     };
 
@@ -78,7 +80,6 @@ const Documents = () => {
     const showDetails = (v) => {
         const details = [
             ["id", v.id],
-            ["document name", v.name],
             ["created at", v.createdAt.toDate().toDateString()],
             ["modified at", v.modifiedAt.toDate().toDateString()],
         ];
@@ -97,15 +98,15 @@ const Documents = () => {
                             }`}
                         >
                             <Link
-                                to={"/editor/" + value.name}
+                                to={`/editor/${value.id}`}
                                 className="grid w-full grid-cols-12"
                             >
                                 <div className="space-x-1 text-left col-span-full group-hover:underline sm:col-span-9 md:col-span-6">
                                     <IcDoc className="inline-block icon" />
                                     <span>
-                                        {value.name.length > 30
-                                            ? value.name.slice(0, 38) + "..."
-                                            : value.name}
+                                        {value.id.length > 30
+                                            ? value.id.slice(0, 38) + "..."
+                                            : value.id}
                                     </span>
                                 </div>
                                 <div className="hidden col-span-3 sm:block">
@@ -116,14 +117,14 @@ const Documents = () => {
                                 </div>
                             </Link>
                             <MoreMenu
-                                menuId={`documents:${value.name}`}
+                                menuId={`documents:${value.id}`}
                                 menuRef={menuRef}
                                 currMenu={currMenu}
                                 setCurrMenu={setCurrMenu}
                                 options={[
                                     [
                                         "rename",
-                                        () => renameHandler(value.name),
+                                        () => renameHandler(value.id),
                                         IcEdit,
                                     ],
                                     ["export", exportHandler, IcExport],
@@ -134,7 +135,7 @@ const Documents = () => {
                                     ],
                                     [
                                         "delete",
-                                        () => deleteHandler(value.name),
+                                        () => deleteHandler(value.id),
                                         IcBin,
                                     ],
                                     [

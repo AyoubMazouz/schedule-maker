@@ -19,7 +19,7 @@ export const Select = ({
             name={label}
             className={`input cursor-pointer ${styles}`}
             value={defaultValue}
-            onChange={(e) => onChange(e.target.value)}
+            onChange={(e) => onChange(e)}
         >
             <option value="" disabled>
                 {label}...

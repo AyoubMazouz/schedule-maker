@@ -6,7 +6,7 @@ import {
     getDoc,
     onSnapshot,
     query,
-    orderBy,
+    where,
     collection,
     deleteDoc,
 } from "firebase/firestore";
@@ -16,40 +16,41 @@ const useDocument = () => {
     const [loading, setLoading] = React.useState(false);
 
     // Document.
-    const documentExists = (name) => {
+    const documentExists = (userId, id) => {
         return new Promise(async (resolve, reject) => {
-            const snapshot = await getDoc(doc(db, "documents", name));
+            const snapshot = await getDoc(doc(db, "documents", userId + id));
             if (snapshot.exists()) resolve(true);
             resolve(false);
         });
     };
 
-    const addNewDocument = (data, name) => {
+    const addNewDocument = (data, userId, id) => {
         return new Promise(async (resolve, reject) => {
             setLoading(true);
             const document = {
-                name,
+                id,
+                userId,
                 createdAt: Timestamp.now(),
                 modifiedAt: Timestamp.now(),
                 data: JSON.stringify(data),
             };
 
-            await setDoc(doc(db, "documents", name), document);
+            await setDoc(doc(db, "documents", userId + id), document);
             setLoading(false);
             resolve(true);
         });
     };
 
-    const getDocument = (name) => {
+    const getDocument = (userId, id) => {
         return new Promise(async (resolve, reject) => {
-            const snapshot = await getDoc(doc(db, "documents", name));
+            const snapshot = await getDoc(doc(db, "documents", userId + id));
             if (snapshot.exists()) resolve(snapshot.data());
         });
     };
 
-    const getAllDocuments = (setDocs) => {
+    const getAllDocuments = (userId, setDocs) => {
         onSnapshot(
-            query(collection(db, "documents"), orderBy("createdAt")),
+            query(collection(db, "documents"), where("userId", "in", [userId])),
             (snap) => {
                 const docs = [];
                 snap.forEach((doc) => {
@@ -61,26 +62,26 @@ const useDocument = () => {
         );
     };
 
-    const deleteDocument = (name) => {
+    const deleteDocument = (userId, id) => {
         return new Promise(async (resolve, reject) => {
             setLoading(true);
-            const snapshot = await deleteDoc(doc(db, "documents", name));
+            const snapshot = await deleteDoc(doc(db, "documents", userId + id));
             setLoading(false);
             resolve(snapshot);
         });
     };
 
-    const renameDocument = (name, newName) => {
+    const renameDocument = (userId, id, newId) => {
         return new Promise(async (reject, resolve) => {
             setLoading(true);
 
-            const document = await getDocument(name);
+            const document = await getDocument(id);
 
             if (doc) {
                 document.modifiedAt = Timestamp.now();
-                document.name = newName;
-                await deleteDocument(name);
-                await setDoc(doc(db, "documents", newName), document);
+                document.id = newId;
+                await deleteDocument(id);
+                await setDoc(doc(db, "documents", userId + newId), document);
 
                 setLoading(false);
                 resolve(true);
