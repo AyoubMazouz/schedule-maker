@@ -73,10 +73,8 @@ const AddTrainer = () => {
     };
 
     return (
-        <div className="fixed top-[4rem] left-[50%] z-40 w-full max-w-[600px] translate-x-[-50%] px-4">
-            <div
-                className={`w-full space-y-4 rounded-lg border-2 border-dark/25 bg-light p-4 shadow-lg`}
-            >
+        <>
+            <div className="space-y-6">
                 <div className="text-xl text-center text-primary">
                     Add New Trainer
                 </div>
@@ -125,24 +123,21 @@ const AddTrainer = () => {
                         ))}
                     </select>
                 </div>
-                <div>
-                    <div className=""></div>
-                </div>
-                <div className="flex gap-x-6">
-                    <Button
-                        text="add"
-                        type="success"
-                        onClick={submitHandler}
-                        Icon={IcLogin}
-                    />
-                    <Button
-                        text="Cancel"
-                        onClick={submitHandler}
-                        Icon={IcCancel}
-                    />
-                </div>
             </div>
-        </div>
+            <div className="model-btn-container">
+                <Button
+                    text="add"
+                    type="success"
+                    onClick={submitHandler}
+                    Icon={IcLogin}
+                />
+                <Button
+                    text="Cancel"
+                    onClick={(e) => setModel(null)}
+                    Icon={IcCancel}
+                />
+            </div>
+        </>
     );
 };
 

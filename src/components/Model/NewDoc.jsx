@@ -21,36 +21,32 @@ const NewDoc = () => {
     };
 
     return (
-        <div className="fixed top-[4rem] left-[50%] z-40 w-full max-w-[600px] translate-x-[-50%] px-4">
-            <div
-                className={`rounded-lg border-2 border-dark/25 bg-light p-4 text-center shadow-lg`}
-            >
-                <div className="flex flex-col gap-y-2">
-                    <label htmlFor="name" className="input-label">
-                        New Document Name:
-                    </label>
-                    <input
-                        type="text"
-                        className="input"
-                        value={docName}
-                        onChange={(e) => setDocName(e.target.value)}
-                    />
-                </div>
-                <div className="flex mt-8 gap-x-6">
-                    <Button
-                        text="save"
-                        type="success"
-                        onClick={createHandler}
-                        Icon={IcSave}
-                    />
-                    <Button
-                        text="Cancel"
-                        onClick={() => setModel(null)}
-                        Icon={IcCancel}
-                    />
-                </div>
+        <>
+            <div className="flex flex-col gap-y-2">
+                <label htmlFor="name" className="input-label">
+                    New Document Name:
+                </label>
+                <input
+                    type="text"
+                    className="input"
+                    value={docName}
+                    onChange={(e) => setDocName(e.target.value)}
+                />
             </div>
-        </div>
+            <div className="model-btn-container">
+                <Button
+                    text="save"
+                    type="success"
+                    onClick={createHandler}
+                    Icon={IcSave}
+                />
+                <Button
+                    text="Cancel"
+                    onClick={() => setModel(null)}
+                    Icon={IcCancel}
+                />
+            </div>
+        </>
     );
 };
 

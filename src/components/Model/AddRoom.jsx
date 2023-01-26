@@ -58,9 +58,8 @@ const AddRoom = () => {
             <div
                 className={`w-full space-y-4 rounded-lg border-2 border-dark/25 bg-light p-4 shadow-lg`}
             >
-                <div className="text-center">
-                    <div className="text-xl text-primary">LogIn</div>
-                    <div>Only Authorized Admins are allowed here</div>
+                <div className="text-xl text-center text-primary">
+                    Add New Room
                 </div>
                 <div className="flex flex-col items-center gap-2">
                     <label className="input-label" htmlFor="room">
@@ -83,7 +82,7 @@ const AddRoom = () => {
                     />
                     <Button
                         text="Cancel"
-                        onClick={submitHandler}
+                        onClick={(e) => setModel(null)}
                         Icon={IcCancel}
                     />
                 </div>

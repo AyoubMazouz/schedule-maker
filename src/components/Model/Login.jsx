@@ -30,56 +30,51 @@ const Login = () => {
     };
 
     return (
-        <div className="fixed top-[4rem] left-[50%] z-40 w-full max-w-[600px] translate-x-[-50%] px-4">
-            <div
-                className={`w-full rounded-lg border-2 border-dark/25 bg-light p-4 shadow-lg`}
-            >
-                <div>{model.message}</div>
-                <div className="space-y-4">
-                    <div className="text-center">
-                        <div className="text-xl text-primary">LogIn</div>
-                        <div>Only Authorized Admins are allowed here</div>
-                    </div>
-                    <div className="flex flex-col items-center gap-2">
-                        <label className="input-label" htmlFor="email">
-                            Email:
-                        </label>
-                        <input
-                            className="input max-w-[26rem]"
-                            type="text"
-                            name="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                        />
-                    </div>
-                    <div className="flex flex-col items-center gap-2">
-                        <label className="input-label" htmlFor="password">
-                            Password:
-                        </label>
-                        <input
-                            className="input max-w-[26rem]"
-                            type="password"
-                            name="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                        />
-                    </div>
-                    <div className="flex gap-x-6">
-                        <Button
-                            text="Log In"
-                            type="danger"
-                            onClick={submitHandler}
-                            Icon={IcLogin}
-                        />
-                        <Button
-                            text="Cancel"
-                            onClick={() => setModel(null)}
-                            Icon={IcCancel}
-                        />
-                    </div>
+        <>
+            <div className="space-y-6">
+                <div className="text-center">
+                    <div className="text-xl text-primary">LogIn</div>
+                    <div>Only Authorized Admins are allowed here</div>
+                </div>
+                <div className="flex flex-col items-center gap-2">
+                    <label className="input-label" htmlFor="email">
+                        Email:
+                    </label>
+                    <input
+                        className="input max-w-[26rem]"
+                        type="text"
+                        name="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                </div>
+                <div className="flex flex-col items-center gap-2">
+                    <label className="input-label" htmlFor="password">
+                        Password:
+                    </label>
+                    <input
+                        className="input max-w-[26rem]"
+                        type="password"
+                        name="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
                 </div>
             </div>
-        </div>
+            <div className="model-btn-container">
+                <Button
+                    text="Log In"
+                    type="success"
+                    onClick={submitHandler}
+                    Icon={IcLogin}
+                />
+                <Button
+                    text="Cancel"
+                    onClick={() => setModel(null)}
+                    Icon={IcCancel}
+                />
+            </div>
+        </>
     );
 };
 

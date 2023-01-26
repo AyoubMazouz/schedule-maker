@@ -32,7 +32,15 @@ const Model = () => {
 
     const Model = models[model.type];
 
-    return <Model />;
+    return (
+        <div className="fixed inset-0 z-40 flex justify-center px-4 py-24 bg-dark/25">
+            <div className="w-full max-w-[400px]">
+                <div className="px-2 py-4 space-y-6 overflow-hidden text-center border rounded-lg shadow-lg bg-light">
+                    <Model />
+                </div>
+            </div>
+        </div>
+    );
 };
 
 export default Model;

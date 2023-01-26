@@ -13,7 +13,7 @@ const OptionBar = () => {
         });
     };
     return (
-        <div className="flex justify-between p-2 m-2 border-2 rounded-lg shadow-md border-dark/25">
+        <div className="flex justify-between p-2 m-2 border rounded-lg shadow-md">
             <div className="flex gap-x-4">
                 <Button
                     type="success"

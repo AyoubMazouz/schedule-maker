@@ -22,7 +22,7 @@
 
     /* Buttons */
     .btn-base {
-        @apply border-2 rounded shadow pr-4 py-0.5 font-semibold capitalize cursor-pointer disabled:opacity-50 flex gap-x-1 items-center pl-1 disabled:cursor-not-allowed transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md;
+        @apply border-2 rounded shadow pr-4 py-0.5 font-semibold capitalize cursor-pointer disabled:opacity-50 flex gap-x-1 items-center pl-1 disabled:cursor-not-allowed transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md overflow-hidden;
     }
 
     .btn-primary {
@@ -42,20 +42,24 @@
     }
 
     .icon {
-        @apply text-2xl inline-block
+        @apply text-2xl inline-block cursor-pointer
     }
 
     .menu {
-        @apply absolute w-[12rem] bg-light border-2 border-dark/25 rounded-lg shadow-lg flex flex-col overflow-hidden z-20 text-dark
+        @apply absolute w-[12rem] bg-light border rounded-lg shadow-lg flex flex-col overflow-hidden z-20 text-dark
     }
     .menu-item {
-        @apply p-2 hover:bg-primary hover:text-light border-b-2 border-dark/25 w-full text-start disabled:bg-secondary disabled:hover:text-dark disabled:line-through flex gap-x-2 items-center transition-all ease-in-out duration-100 cursor-pointer disabled:cursor-not-allowed
+        @apply p-2 hover:bg-primary hover:text-light border-b-2 border-dark/50 w-full text-start disabled:bg-secondary disabled:hover:text-dark disabled:line-through flex gap-x-2 items-center transition-all ease-in-out duration-100 cursor-pointer disabled:cursor-not-allowed capitalize
+    }
+    
+    .model-btn-container {
+        @apply flex gap-x-4 justify-center
     }
     
     /* Form */
 
     .input {
-        @apply px-2 py-1 font-semibold bg-light ring-dark/25 ring-2 rounded focus:outline-none focus:ring-primary focus:text-primary
+        @apply px-2 py-1 font-semibold bg-light ring-dark/50 ring-2 rounded focus:outline-none focus:ring-primary focus:text-primary max-h-[1.75rem]
     }
 
     .input-label {
@@ -67,7 +71,7 @@
     }
 
     .textbox div {
-        @apply flex items-center gap-x-2 rounded-full border-2 border-dark/25 bg-dark/5 py-0.5 pl-3 pr-2  font-semibold text-dark
+        @apply flex items-center gap-x-2 rounded-full border-2 border-dark/50 bg-dark/5 py-0.5 pl-3 pr-2  font-semibold text-dark
     }
 
     .textbox input {
@@ -75,7 +79,7 @@
     }
 
     .textbox {
-        @apply flex flex-wrap items-center gap-2 p-2 border rounded-lg;
+        @apply flex flex-wrap gap-2 p-2 border rounded-lg min-h-[6rem];
     }
 }
 
@@ -94,7 +98,7 @@
     }
 
     .border {
-        @apply border-2 border-dark/25
+        @apply border-2 border-dark/50
     }
 
 }

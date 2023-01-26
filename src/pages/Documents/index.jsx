@@ -89,7 +89,7 @@ const Documents = () => {
         <div className="flex justify-center">
             <div className="w-full max-w-[1400px]">
                 <OptionBar />
-                <div className="mx-2 border-2 rounded-lg shadow-lg border-dark/25">
+                <div className="mx-2 border rounded-lg shadow-lg">
                     {documents.map((value, docIndex) => (
                         <div
                             className={`menu-item group flex justify-between text-center ${
