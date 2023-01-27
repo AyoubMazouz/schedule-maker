@@ -1,25 +1,24 @@
 import { Timestamp } from "firebase/firestore";
 import React from "react";
-import { useGlobalContext } from "../../Contexts/GlobalContext";
-import useSettings from "../../hooks/useSettings";
-import { Button } from "../Button";
-import { IcCancel, IcEx, IcLogin } from "../icons";
+import { useGlobalContext } from "../../../Contexts/GlobalContext";
+import useSettings from "../../../hooks/useSettings";
+import { Button } from "../../Button";
+import { IcCancel, IcEx, IcLogin } from "../../icons";
 
-const AddLevel = () => {
-    const { model, setModel, setAlert } = useGlobalContext();
-    const { addLevel, updateLevel } = useSettings();
+const UpdateLevel = () => {
+    const { model, setModel, setAlert, labelsData, setLabelsData } =
+        useGlobalContext();
+    const { updateLevel } = useSettings();
 
-    const [level, setLevel] = React.useState("");
-    const [numberOfGroups, setNumberOfGroups] = React.useState(0);
+    const [levelInput, setLevelInput] = React.useState("");
+    const [numOfGrps, setNumOfGrps] = React.useState(0);
     const [modules, setModules] = React.useState([]);
     const [moduleInput, setModuleInput] = React.useState("");
 
     React.useEffect(() => {
-        if (model.update) {
-            setLevel(model.value.name);
-            setNumberOfGroups(model.value.numberOfGroups);
-            setModules(model.value.modules);
-        }
+        setLevelInput(model.level.value);
+        setNumOfGrps(model.level.numOfGrps);
+        setModules(model.level.modules);
     }, []);
 
     const enterKeyPressHandler = (e) => {
@@ -37,38 +36,24 @@ const AddLevel = () => {
     };
 
     const submitHandler = (e) => {
-        e.preventDefault();
-
-        const newFaculty = {
-            id: model.labelsData.levels.length,
-            name: level,
-            numberOfGroups,
-            modules,
-            createdAt: Timestamp.now(),
-            modifiedAt: Timestamp.now(),
-        };
-
-        if (model.update) {
-            newFaculty.id = model.value.id;
-            updateLevel(
-                model.labelsData,
-                model.setLabelsData,
-                model.value.id,
-                newFaculty
-            );
+        const res = updateLevel(
+            labelsData,
+            setLabelsData,
+            model.level,
+            levelInput,
+            numOfGrps,
+            modules
+        );
+        if (res) {
+            model.setSaved(false);
+            setModel(null);
         } else {
-            const alreadyExist = model.labelsData.levels.filter(
-                (f) => f.name === level
-            ).length;
-            if (alreadyExist)
-                return setAlert({
-                    type: "warn",
-                    message: `faculty "${level}" already exists!`,
-                });
-            addLevel(model.labelsData, model.setLabelsData, newFaculty);
+            setAlert({
+                type: "warn",
+                message: `faculty "${levelInput}" already exists!`,
+            });
+            setLevelInput("");
         }
-        model.setSaved(false);
-        setModel(null);
     };
 
     const removeModuleHandler = (value) => {
@@ -79,7 +64,7 @@ const AddLevel = () => {
     return (
         <>
             <div className="space-y-6">
-                <div className="text-xl text-center text-primary">
+                <div className="text-center text-xl text-primary">
                     Add New Level
                 </div>
                 <div className="flex flex-col items-center gap-2">
@@ -90,8 +75,10 @@ const AddLevel = () => {
                         className="input max-w-[26rem]"
                         type="text"
                         name="level"
-                        value={level}
-                        onChange={(e) => setLevel(e.target.value.toUpperCase())}
+                        value={levelInput}
+                        onChange={(e) =>
+                            setLevelInput(e.target.value.toUpperCase())
+                        }
                     />
                 </div>
                 <div className="flex flex-col items-center gap-2">
@@ -102,8 +89,8 @@ const AddLevel = () => {
                         className="input max-w-[26rem]"
                         type="number"
                         name="numberOfGroups"
-                        value={numberOfGroups}
-                        onChange={(e) => setNumberOfGroups(e.target.value)}
+                        value={numOfGrps}
+                        onChange={(e) => setNumOfGrps(e.target.value)}
                     />
                 </div>
                 <div className="textbox">
@@ -147,4 +134,4 @@ const AddLevel = () => {
     );
 };
 
-export default AddLevel;
+export default UpdateLevel;

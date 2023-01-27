@@ -16,12 +16,17 @@ const SideBar = ({ tabsLs, saved }) => {
         <div className="flex flex-col">
             {tabsLs.map((tab, index) =>
                 saved ? (
-                    <Link to={`/settings/${tab}`} className="menu-item">
+                    <Link
+                        key={tab}
+                        to={`/settings/${tab}`}
+                        className="menu-item"
+                    >
                         {icons[index]}
                         <span>{tab}</span>
                     </Link>
                 ) : (
                     <button
+                        key={tab}
                         className="menu-item"
                         onClick={() =>
                             setAlert({

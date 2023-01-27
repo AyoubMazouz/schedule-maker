@@ -1,22 +1,20 @@
-import { Timestamp } from "firebase/firestore";
 import React from "react";
-import { useGlobalContext } from "../../Contexts/GlobalContext";
-import useSettings from "../../hooks/useSettings";
-import { Button } from "../Button";
-import { IcCancel, IcEx, IcLogin } from "../icons";
+import { useGlobalContext } from "../../../Contexts/GlobalContext";
+import useSettings from "../../../hooks/useSettings";
+import { Button } from "../../Button";
+import { IcCancel, IcEx, IcLogin } from "../../icons";
 
-const AddTrainer = () => {
-    const { model, setModel, setAlert } = useGlobalContext();
-    const { addTrainer, updateTrainer } = useSettings();
+const UpdateTrainer = () => {
+    const { model, setModel, setAlert, labelsData, setLabelsData } =
+        useGlobalContext();
+    const { updateTrainer } = useSettings();
 
-    const [trainer, setTrainer] = React.useState("");
+    const [trainerInput, setTrainerInput] = React.useState("");
     const [preferedRooms, setPreferedRooms] = React.useState([]);
 
     React.useEffect(() => {
-        if (model.update) {
-            setTrainer(model.value.name);
-            setPreferedRooms(model.value.preferedRooms);
-        }
+        setTrainerInput(model.trainer.value);
+        setPreferedRooms(model.trainer.preferedRooms);
     }, []);
 
     const addNewRoomHandler = (e) => {
@@ -39,44 +37,30 @@ const AddTrainer = () => {
     };
 
     const submitHandler = (e) => {
-        e.preventDefault();
-
-        const newtrainer = {
-            id: model.labelsData.trainers.length,
-            name: trainer,
-            preferedRooms,
-            createdAt: Timestamp.now(),
-            modifiedAt: Timestamp.now(),
-        };
-
-        if (model.update) {
-            newtrainer.id = model.value.id;
-            updateTrainer(
-                model.labelsData,
-                model.setLabelsData,
-                model.value.id,
-                newtrainer
-            );
+        const res = updateTrainer(
+            labelsData,
+            setLabelsData,
+            model.trainer,
+            trainerInput,
+            preferedRooms
+        );
+        if (res) {
+            model.setSaved(false);
+            setModel(null);
         } else {
-            const alreadyExist = model.labelsData.trainers.filter(
-                (f) => f.name === trainer
-            ).length;
-            if (alreadyExist)
-                return setAlert({
-                    type: "warn",
-                    message: `Trainer "${trainer}" already exists!`,
-                });
-            addTrainer(model.labelsData, model.setLabelsData, newtrainer);
+            setAlert({
+                type: "warn",
+                message: `Trainer "${trainerInput}" already exists!`,
+            });
+            setTrainerInput("");
         }
-        model.setSaved(false);
-        setModel(null);
     };
 
     return (
         <>
             <div className="space-y-6">
-                <div className="text-xl text-center text-primary">
-                    Add New Trainer
+                <div className="text-center text-xl text-primary">
+                    Update Trainer
                 </div>
                 <div className="flex flex-col items-center gap-2">
                     <label className="input-label" htmlFor="trainer">
@@ -86,12 +70,12 @@ const AddTrainer = () => {
                         className="input max-w-[26rem]"
                         type="text"
                         name="trainer"
-                        value={trainer}
+                        value={trainerInput}
                         onChange={(e) => {
                             const value =
                                 e.target.value.charAt(0).toUpperCase() +
                                 e.target.value.slice(1);
-                            setTrainer(value);
+                            setTrainerInput(value);
                         }}
                     />
                 </div>
@@ -116,9 +100,9 @@ const AddTrainer = () => {
                         <option value="" disabled>
                             Rooms...
                         </option>
-                        {model.labelsData.rooms.map((room) => (
-                            <option key={room.name} value={room.name}>
-                                {room.name}
+                        {labelsData.rooms.map((room) => (
+                            <option key={room.value} value={room.value}>
+                                {room.value}
                             </option>
                         ))}
                     </select>
@@ -141,4 +125,4 @@ const AddTrainer = () => {
     );
 };
 
-export default AddTrainer;
+export default UpdateTrainer;

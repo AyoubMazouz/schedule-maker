@@ -1141,14 +1141,6 @@ body{
   margin-top: auto;
 }
 
-.mt-4{
-  margin-top: 1rem;
-}
-
-.mt-8{
-  margin-top: 2rem;
-}
-
 .ml-auto{
   margin-left: auto;
 }
@@ -1265,16 +1257,16 @@ body{
   max-width: 600px;
 }
 
+.max-w-\[400px\]{
+  max-width: 400px;
+}
+
 .max-w-\[1400px\]{
   max-width: 1400px;
 }
 
 .max-w-\[800px\]{
   max-width: 800px;
-}
-
-.max-w-\[400px\]{
-  max-width: 400px;
 }
 
 .translate-x-\[-50\%\]{

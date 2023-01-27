@@ -17,21 +17,18 @@ const Trainers = ({
     const showDetails = (v) => {
         const details = [
             ["id", v.id],
-            ["trainer", v.name],
+            ["trainer", v.value],
             ["created at", v.createdAt.toDate().toDateString()],
             ["modified at", v.modifiedAt.toDate().toDateString()],
             ["prefered rooms", v.preferedRooms.join(", ")],
         ];
         setModel({ type: "showDetails", details });
     };
-    const editHandler = (value) => {
+    const editHandler = (trainer) => {
         setModel({
-            type: "addTrainer",
-            labelsData,
-            setLabelsData,
+            type: "updateTrainer",
             setSaved,
-            value,
-            update: true,
+            trainer,
         });
     };
     const deleteHandler = (value) => {
@@ -39,34 +36,34 @@ const Trainers = ({
         setSaved(false);
     };
     return (
-        <div className="border-2 rounded-lg shadow-lg border-dark/25">
-            {labelsData.trainers.map((value, index) => (
+        <div className="rounded-lg border-2 border-dark/25 shadow-lg">
+            {labelsData.trainers.map((trainer, index) => (
                 <div
-                    key={value.name}
+                    key={trainer.value}
                     className={`menu-item group flex justify-between text-center ${
                         index % 2 === 0 && "bg-dark/5"
                     }`}
                 >
                     <button
-                        onClick={(e) => showDetails(value)}
+                        onClick={(e) => showDetails(trainer)}
                         className="grid w-full grid-cols-12"
                     >
-                        <div className="space-x-1 text-left col-span-full group-hover:underline sm:col-span-9">
-                            <IcUser className="inline-block icon" />
-                            <span>{value.name}</span>
+                        <div className="col-span-full space-x-1 text-left group-hover:underline sm:col-span-9">
+                            <IcUser className="icon inline-block" />
+                            <span>{trainer.value}</span>
                         </div>
-                        <div className="hidden col-span-3 md:block">
-                            {value.createdAt.toDate().toDateString()}
+                        <div className="col-span-3 hidden md:block">
+                            {trainer.createdAt.toDate().toDateString()}
                         </div>
                     </button>
                     <MoreMenu
-                        menuId={`trainer:${value.name}`}
+                        menuId={`trainer:${trainer.value}`}
                         menuRef={menuRef}
                         currMenu={currMenu}
                         setCurrMenu={setCurrMenu}
                         options={[
-                            ["edit", () => editHandler(value), IcEdit],
-                            ["delete", () => deleteHandler(value), IcBin],
+                            ["edit", () => editHandler(trainer), IcEdit],
+                            ["delete", () => deleteHandler(trainer), IcBin],
                         ]}
                     />
                 </div>

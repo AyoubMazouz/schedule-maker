@@ -32,11 +32,6 @@ const OptionBar = ({
     const { getLabels, setLabels } = useLabels();
     const { importSettigs, exportSettings } = useSettings();
 
-    const saveHandler = () => {
-        setLabels(labelsData);
-        setSaved(true);
-    };
-
     const discardChanges = () => {
         getLabels().then((data) => {
             setLabelsData(data);
@@ -44,7 +39,7 @@ const OptionBar = ({
         setSaved(true);
     };
 
-    const addFacultyHandler = () => {
+    const addLevelHandler = () => {
         setModel({
             type: "addLevel",
             labelsData,
@@ -63,8 +58,6 @@ const OptionBar = ({
     const addRoomHandler = () => {
         setModel({
             type: "addRoom",
-            labelsData,
-            setLabelsData,
             setSaved,
         });
     };
@@ -93,11 +86,11 @@ const OptionBar = ({
         </button>
     );
     const ImportMenuItem = () => (
-        <div className="relative overflow-hidden menu-item">
+        <div className="menu-item relative overflow-hidden">
             <input
                 type="file"
                 accept=".json,.xls,.xlsm"
-                className="absolute top-0 bottom-0 left-0 right-0 opacity-0 cursor-pointer"
+                className="absolute top-0 bottom-0 left-0 right-0 cursor-pointer opacity-0"
                 onChange={(e) => {
                     importSettigs(e.target.files[0], setLabelsData);
                     setSaved(false);
@@ -109,7 +102,7 @@ const OptionBar = ({
     );
 
     return (
-        <div className="relative flex gap-6 p-2 border rounded-lg shadow-md">
+        <div className="relative flex gap-6 rounded-lg border p-2 shadow-md">
             <DropdownMenu
                 text="file"
                 menuRef={menuRef}
@@ -132,7 +125,7 @@ const OptionBar = ({
                 currMenu={currMenu}
                 setCurrMenu={setCurrMenu}
                 options={[
-                    ["New Level", addFacultyHandler, IcLevel],
+                    ["New Level", addLevelHandler, IcLevel],
                     ["New Trainer", addTrainerHandler, IcUser],
                     ["New Room", addRoomHandler, IcRoom],
                     ["New Event", addEventHandler, IcEvent],

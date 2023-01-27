@@ -17,7 +17,7 @@ const NewDoc = () => {
 
     const createHandler = async () => {
         setModel(null);
-        await addNewDocument([EMPTY_SCHEDUAL], currUser.uid, newDocId);
+        await addNewDocument(currUser.uid, newDocId, [EMPTY_SCHEDUAL]);
         setDocId(newDocId);
         navigate("/editor/" + newDocId);
     };

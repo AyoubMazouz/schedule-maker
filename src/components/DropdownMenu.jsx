@@ -31,10 +31,12 @@ export const DropdownMenu = ({
             {currMenu === text && (
                 <div ref={menuRef} className="menu top-[96%] left-[1%]">
                     {options.map((Option) => {
-                        if (React.isValidElement(Option)) return Option;
+                        if (React.isValidElement(Option))
+                            return <div key={Option[0]}>{Option}</div>;
                         const [text, callback, Icon, disabled] = Option;
                         return (
                             <button
+                                key={text}
                                 disabled={disabled}
                                 className="menu-item "
                                 onClick={(e) => callback(e)}
