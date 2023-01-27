@@ -18,28 +18,24 @@ import { Select } from "../../components/Select";
 import { DropdownMenu } from "../../components/DropdownMenu";
 import { Button } from "../../components/Button";
 import { usePdf } from "../../hooks/usePdf";
+import { useAuth } from "../../Contexts/AuthContext";
 
 const OptionBar = () => {
     const { saved, setSaved, setFusionMode, fusionMode, selectedCell } =
         useEditorContext();
-    const { data, setData, setModel, setAlert } = useGlobalContext();
+    const { data, setData, setModel, setAlert, labelsData, loadLabelsData } =
+        useGlobalContext();
+    const { currUser } = useAuth();
     const { importDocument, exportDocument, clearCell } = useEditor();
     const { addNewDocument } = useDocument();
-    const { getLabels } = useLabels();
     const { editField } = useEditor();
     const { exportAsPdf } = usePdf();
 
-    const { userId, docId } = useParams();
+    const { docId } = useParams();
     const navigate = useNavigate();
 
     const menuRef = React.useRef(null);
     const [currMenu, setCurrMenu] = React.useState(null);
-    const [labelsData, setLabelsData] = React.useState({
-        levels: [],
-        trainers: [],
-        rooms: [],
-        events: [],
-    });
     const [modules, setModules] = React.useState([]);
 
     const [unavailableTrainers, setUnavailableTrainers] = React.useState([]);
@@ -47,10 +43,8 @@ const OptionBar = () => {
     const [preferedRooms, setPreferedRooms] = React.useState([]);
 
     React.useEffect(() => {
-        getLabels().then((labels) => {
-            setLabelsData(labels);
-        });
-    }, []);
+        loadLabelsData(currUser.uid);
+    }, [menuRef]);
 
     React.useEffect(() => {
         function handleClickOutside(e) {
@@ -98,19 +92,21 @@ const OptionBar = () => {
                 const preferedRooms = labelsData.trainers.filter(
                     (v) => v.name === trainer
                 )[0]?.preferedRooms;
-                setPreferedRooms(preferedRooms || []);
-            } else setPreferedRooms([]);
+                if (preferedRooms)
+                    setPreferedRooms([...preferedRooms, "Teams"]);
+                else setPreferedRooms(["Teams"]);
+            } else setPreferedRooms(["Teams"]);
         }
     }, [selectedCell, data]);
 
     const saveHandler = async () => {
         setCurrMenu(null);
-        await addNewDocument(data, userId, docId);
+        await addNewDocument(currUser.uid, docId, data);
         setSaved(true);
     };
 
     const exitHandler = async () => {
-        if (saved) navigate("/documents/" + userId);
+        if (saved) navigate("/documents");
         else
             setModel({
                 type: "exit",

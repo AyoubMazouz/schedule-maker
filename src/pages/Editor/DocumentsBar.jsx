@@ -6,40 +6,36 @@ import { useEditorContext } from "../../Contexts/EditorContext";
 import useLabels from "../../hooks/useLabels";
 import { Select } from "../../components/Select";
 import { Button } from "../../components/Button";
+import { useAuth } from "../../Contexts/AuthContext";
 
 const DocumentsBar = () => {
     const { setSaved } = useEditorContext();
-    const { data, setData, setAlert } = useGlobalContext();
+    const { data, setData, setAlert, labelsData, loadLabelsData } =
+        useGlobalContext();
     const { addNewSchedual, editSchedualInfo, deleteSchedual } = useEditor();
-    const { getLabels } = useLabels();
+    const { currUser } = useAuth();
 
     const [currSchedual, setCurrSchedual] = React.useState(0);
-    const [labels, setLabels] = React.useState({
-        levels: [],
-        trainers: [],
-        rooms: [],
-        events: [],
-        groups: [],
-    });
 
+    const [groups, setGroups] = React.useState([]);
     const [usedGroups, setUsedGroups] = React.useState([]);
+
     React.useEffect(() => {
-        getLabels().then((labels) => {
-            const groups = [];
-            labels.levels.forEach((level) => {
-                for (let i = 1; i <= level.numberOfGroups; i++) {
-                    groups.push(`${level.name} ${i}`);
-                }
-            });
-            setLabels({
-                trainers: labels.trainers,
-                rooms: labels.rooms,
-                groups,
-            });
-        });
+        loadLabelsData(currUser.uid);
     }, []);
+
+    React.useEffect(() => {
+        const groups = [];
+        labelsData.levels.forEach((level) => {
+            for (let i = 1; i <= level.numberOfGroups; i++) {
+                groups.push(`${level.name} ${i}`);
+            }
+        });
+        setGroups(groups);
+    }, [labelsData]);
     React.useEffect(() => {
         setUsedGroups(data.map((schedual) => schedual.group));
+        setGroups(groups.filter((grp) => !usedGroups.includes(grp)));
     }, [data]);
 
     const addNewSchedualHandler = () => {
@@ -106,7 +102,7 @@ const DocumentsBar = () => {
                         </div>
                         <Select
                             styles="px-1 text-sm"
-                            values={labels.groups}
+                            values={groups}
                             defaultValue={schedual.group}
                             notRecommended={usedGroups}
                             label="groups"

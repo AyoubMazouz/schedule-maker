@@ -3,12 +3,19 @@ import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../../Contexts/AuthContext";
 import { useGlobalContext } from "../../Contexts/GlobalContext";
 import { Button } from "../Button";
-import { IcDown, IcEditor, IcLogin, IcLogout, IcSettings } from "../icons";
+import {
+    IcDown,
+    IcEditor,
+    IcLogin,
+    IcLogout,
+    IcSettings,
+    IcUser,
+} from "../icons";
 import { Logo } from "./Logo";
 
 const NavBar = () => {
     const { setModel, setAlert } = useGlobalContext();
-    const { logout, currUser } = useAuth();
+    const { logout, currUser, isRoot } = useAuth();
 
     const location = useLocation();
 
@@ -25,7 +32,7 @@ const NavBar = () => {
             document.removeEventListener("mousedown", handleClickOutside);
     }, [menuRef]);
 
-    const logoutHandler = async () => {
+    const logoutHandler = () => {
         logout();
         setAlert({ type: "success", message: `Goodbye "${currUser.email}"` });
     };
@@ -63,6 +70,15 @@ const NavBar = () => {
                                         ref={menuRef}
                                         className="menu top-[110%] right-[0%]"
                                     >
+                                        {isRoot && (
+                                            <button
+                                                className="menu-item"
+                                                onClick={(e) => ""}
+                                            >
+                                                <IcUser className="icon" />
+                                                <span>Add New Admin</span>
+                                            </button>
+                                        )}
                                         <Link
                                             to="/settings"
                                             className="menu-item"
@@ -72,7 +88,7 @@ const NavBar = () => {
                                         </Link>
                                         <button
                                             className="text-red-600 menu-item hover:bg-red-600 hover:text-white"
-                                            onClick={(e) => logout()}
+                                            onClick={logoutHandler}
                                         >
                                             <IcLogout className="icon" />
                                             <span>Sign out</span>

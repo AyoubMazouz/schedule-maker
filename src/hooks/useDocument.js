@@ -24,7 +24,7 @@ const useDocument = () => {
         });
     };
 
-    const addNewDocument = (data, userId, id) => {
+    const addNewDocument = (userId, id, data) => {
         return new Promise(async (resolve, reject) => {
             setLoading(true);
             const document = {
