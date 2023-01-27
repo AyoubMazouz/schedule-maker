@@ -1,9 +1,81 @@
 import { Timestamp } from "firebase/firestore";
+import { LabelsType, Level, Trainer, Room, Event } from "../types";
+
+interface AddLevel {
+    (
+        data: LabelsType,
+        setData: (a: LabelsType) => void,
+        value: string,
+        numOfGrps: number,
+        modules: string[]
+    ): boolean;
+}
+interface AddTrainer {
+    (
+        data: LabelsType,
+        setData: (a: LabelsType) => void,
+        value: string,
+        preferedRooms: string[]
+    ): boolean;
+}
+interface AddRoom {
+    (
+        data: LabelsType,
+        setData: (a: LabelsType) => void,
+        value: string
+    ): boolean;
+}
+interface AddEvent {
+    (
+        data: LabelsType,
+        setData: (a: LabelsType) => void,
+        value: string
+    ): boolean;
+}
+interface Delete {
+    (data: LabelsType, setData: (a: LabelsType) => void, id: number): void;
+}
+interface UpdateLevel {
+    (
+        data: LabelsType,
+        setData: (a: LabelsType) => void,
+        level: Level,
+        value: string,
+        numOfGrps: number,
+        modules: string[]
+    ): boolean;
+}
+interface UpdateTrainer {
+    (
+        data: LabelsType,
+        setData: (a: LabelsType) => void,
+        trainer: Trainer,
+        value: string,
+        preferedRooms: string[]
+    ): boolean;
+}
+interface UpdateRoom {
+    (
+        data: LabelsType,
+        setData: (a: LabelsType) => void,
+        room: Room,
+        value: string
+    ): boolean;
+}
+interface UpdateEvent {
+    (
+        data: LabelsType,
+        setData: (a: LabelsType) => void,
+        event: Event,
+        value: string
+    ): boolean;
+}
 
 const useSettings = () => {
-    const addLevel = (data, setData, value, numOfGrps, modules) => {
+    // Add.
+    const addLevel: AddLevel = (data, setData, value, numOfGrps, modules) => {
         const alreadyExists = data.levels.filter(
-            (t) => t.value === value
+            (l: Level) => l.value === value
         ).length;
         if (alreadyExists) return false;
         const newLevel = {
@@ -14,8 +86,8 @@ const useSettings = () => {
             createdAt: Timestamp.now(),
             modifiedAt: Timestamp.now(),
         };
-        const levels = [...data.levels, newLevel].sort(
-            (a, b) => a.value > b.value
+        const levels = [...data.levels, newLevel].sort((a: Level, b: Level) =>
+            a.value > b.value ? 1 : -1
         );
         const labelsDoc = {
             rooms: data.rooms,
@@ -26,9 +98,9 @@ const useSettings = () => {
         setData(labelsDoc);
         return true;
     };
-    const addTrainer = (data, setData, value, preferedRooms) => {
+    const addTrainer: AddTrainer = (data, setData, value, preferedRooms) => {
         const alreadyExists = data.trainers.filter(
-            (t) => t.value === value
+            (t: Trainer) => t.value === value
         ).length;
         if (alreadyExists) return false;
         const newTrainer = {
@@ -38,8 +110,8 @@ const useSettings = () => {
             createdAt: Timestamp.now(),
             modifiedAt: Timestamp.now(),
         };
-        const trainers = [...data.trainers, newTrainer].sort(
-            (a, b) => a.value > b.value
+        const trainers = [...data.trainers, newTrainer].sort((a, b) =>
+            a.value > b.value ? 1 : -1
         );
         const labelsDoc = {
             rooms: data.rooms,
@@ -50,7 +122,7 @@ const useSettings = () => {
         setData(labelsDoc);
         return true;
     };
-    const addRoom = (data, setData, value) => {
+    const addRoom: AddRoom = (data, setData, value) => {
         const alreadyExists = data.rooms.filter(
             (r) => r.value === value
         ).length;
@@ -61,8 +133,8 @@ const useSettings = () => {
             createdAt: Timestamp.now(),
             modifiedAt: Timestamp.now(),
         };
-        const rooms = [...data.rooms, newRoom].sort(
-            (a, b) => a.value > b.value
+        const rooms = [...data.rooms, newRoom].sort((a, b) =>
+            a.value > b.value ? 1 : -1
         );
         const labelsDoc = {
             trainers: data.trainers,
@@ -73,7 +145,7 @@ const useSettings = () => {
         setData(labelsDoc);
         return true;
     };
-    const addEvent = (data, setData, value) => {
+    const addEvent: AddEvent = (data, setData, value) => {
         const alreadyExists = data.events.filter(
             (e) => e.value === value
         ).length;
@@ -84,8 +156,8 @@ const useSettings = () => {
             createdAt: Timestamp.now(),
             modifiedAt: Timestamp.now(),
         };
-        const events = [...data.events, newEvent].sort(
-            (a, b) => a.value > b.value
+        const events = [...data.events, newEvent].sort((a, b) =>
+            a.value > b.value ? 1 : -1
         );
         const labelsDoc = {
             trainers: data.trainers,
@@ -97,17 +169,7 @@ const useSettings = () => {
         return true;
     };
     // Delete
-    const deleteTrainer = (data, setData, id) => {
-        const trainers = data.trainers.filter((trainer) => trainer.id !== id);
-        const labelsDoc = {
-            levels: data.levels,
-            rooms: data.rooms,
-            events: data.events,
-            trainers,
-        };
-        setData(labelsDoc);
-    };
-    const deleteLevel = (data, setData, id) => {
+    const deleteLevel: Delete = (data, setData, id) => {
         const levels = data.levels.filter((level) => level.id !== id);
         const labelsDoc = {
             trainers: data.trainers,
@@ -117,7 +179,17 @@ const useSettings = () => {
         };
         setData(labelsDoc);
     };
-    const deleteRoom = (data, setData, id) => {
+    const deleteTrainer: Delete = (data, setData, id) => {
+        const trainers = data.trainers.filter((trainer) => trainer.id !== id);
+        const labelsDoc = {
+            levels: data.levels,
+            rooms: data.rooms,
+            events: data.events,
+            trainers,
+        };
+        setData(labelsDoc);
+    };
+    const deleteRoom: Delete = (data, setData, id) => {
         const rooms = data.rooms.filter((room) => room.id !== id);
         const labelsDoc = {
             trainers: data.trainers,
@@ -127,7 +199,7 @@ const useSettings = () => {
         };
         setData(labelsDoc);
     };
-    const deleteEvent = (data, setData, id) => {
+    const deleteEvent: Delete = (data, setData, id) => {
         const events = data.events.filter((event) => event.id !== id);
         const labelsDoc = {
             trainers: data.trainers,
@@ -138,7 +210,14 @@ const useSettings = () => {
         setData(labelsDoc);
     };
     // Update
-    const updateLevel = (data, setData, level, value, numOfGrps, modules) => {
+    const updateLevel: UpdateLevel = (
+        data,
+        setData,
+        level,
+        value,
+        numOfGrps,
+        modules
+    ) => {
         let alreadyExists = false;
         const levels = data.levels.filter((l) => {
             if (l.value === value && l.id !== level.id) alreadyExists = true;
@@ -162,7 +241,13 @@ const useSettings = () => {
         setData(labelsDoc);
         return true;
     };
-    const updateTrainer = (data, setData, trainer, value, preferedRooms) => {
+    const updateTrainer: UpdateTrainer = (
+        data,
+        setData,
+        trainer,
+        value,
+        preferedRooms
+    ) => {
         let alreadyExists = false;
         const trainers = data.trainers.filter((t) => {
             if (t.value === value && t.id !== trainer.id) alreadyExists = true;
@@ -185,7 +270,7 @@ const useSettings = () => {
         setData(labelsDoc);
         return true;
     };
-    const updateRoom = (data, setData, room, value) => {
+    const updateRoom: UpdateRoom = (data, setData, room, value) => {
         let alreadyExists = false;
         const rooms = data.rooms.filter((r) => {
             if (r.value === value && r.id !== room.id) alreadyExists = true;
@@ -207,7 +292,7 @@ const useSettings = () => {
         setData(labelsDoc);
         return true;
     };
-    const updateEvent = (data, setData, event, value) => {
+    const updateEvent: UpdateEvent = (data, setData, event, value) => {
         let alreadyExists = false;
         const events = data.events.filter((e) => {
             if (e.value === value && e.id !== event.id) alreadyExists = true;
@@ -229,7 +314,7 @@ const useSettings = () => {
         setData(labelsDoc);
         return true;
     };
-    const exportSettings = (data) => {
+    const exportSettings = (data: LabelsType) => {
         const jsonData = JSON.stringify(data);
         const link = document.createElement("a");
         link.href = "data:application/json," + jsonData;
@@ -238,29 +323,29 @@ const useSettings = () => {
         link.click();
         document.body.removeChild(link);
     };
-    const importSettigs = (file, callback) => {
+    const importSettings = (file: any, callback: (a: LabelsType) => void) => {
         const reader = new FileReader();
         reader.readAsText(file, "UTF-8");
-        reader.onload = async (readerEvent) => {
+        reader.onload = async (readerEvent: any) => {
             const json = readerEvent.target.result;
-            const document = await JSON.parse(json);
+            const document = JSON.parse(json);
             const d = {
                 createdAt: Timestamp.now(),
                 modifiedAt: Timestamp.now(),
             };
-            document.levels = document.levels.map((l) => ({
+            document.levels = document.levels.map((l: Level) => ({
                 ...l,
                 ...d,
             }));
-            document.trainers = document.trainers.map((t) => ({
+            document.trainers = document.trainers.map((t: Trainer) => ({
                 ...t,
                 ...d,
             }));
-            document.rooms = document.rooms.map((r) => ({
+            document.rooms = document.rooms.map((r: Room) => ({
                 ...r,
                 ...d,
             }));
-            document.events = document.events.map((e) => ({
+            document.events = document.events.map((e: Event) => ({
                 ...e,
                 ...d,
             }));
@@ -282,7 +367,7 @@ const useSettings = () => {
         deleteTrainer,
         deleteEvent,
         exportSettings,
-        importSettigs,
+        importSettings,
     };
 };
 

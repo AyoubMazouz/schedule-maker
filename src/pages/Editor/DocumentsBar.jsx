@@ -42,6 +42,12 @@ const DocumentsBar = () => {
         if (addNewSchedual(data, setData, setAlert)) {
             setCurrSchedual(data.length);
             setSaved(false);
+        } else {
+            setAlert({
+                type: "warn",
+                message:
+                    "You should finish the previous table or at least fill the 'group' field.",
+            });
         }
 
         const newDoc = document.getElementById(`new_doc`);
@@ -63,16 +69,15 @@ const DocumentsBar = () => {
         }, 10);
     };
 
-    const editSchedualInfoHandler = (schedualIndex, info, value) => {
-        const res = editSchedualInfo(
-            data,
-            setData,
-            setAlert,
-            schedualIndex,
-            info,
-            value
-        );
-        if (res) setSaved(false);
+    const editSchedualGrpHandler = (schedualIndex, value) => {
+        if (editSchedualInfo(data, setData, schedualIndex, value)) {
+            setSaved(false);
+        } else {
+            setAlert({
+                type: "warn",
+                message: "You have already created a Schedual for this group",
+            });
+        }
     };
 
     const deleteSchedualHandler = (schedualIndex) => {
@@ -93,11 +98,11 @@ const DocumentsBar = () => {
     };
 
     return (
-        <div className="flex flex-col p-2 gap-y-3">
+        <div className="flex flex-col gap-y-3 p-2">
             {data.map((schedual, schedualIndex) =>
                 schedualIndex === currSchedual ? (
-                    <div className="flex flex-wrap items-center justify-between gap-2 p-2 border rounded-lg bg-primary">
-                        <div className="flex items-center justify-center w-6 h-6 font-bold rounded-full text bg-light text-primary">
+                    <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg border bg-primary p-2">
+                        <div className="text flex h-6 w-6 items-center justify-center rounded-full bg-light font-bold text-primary">
                             {schedualIndex + 1}
                         </div>
                         <Select
@@ -107,9 +112,8 @@ const DocumentsBar = () => {
                             notRecommended={usedGroups}
                             label="groups"
                             onChange={(e) =>
-                                editSchedualInfoHandler(
+                                editSchedualGrpHandler(
                                     schedualIndex,
-                                    "group",
                                     e.target.value
                                 )
                             }
@@ -125,14 +129,14 @@ const DocumentsBar = () => {
                     </div>
                 ) : (
                     <button
-                        className="flex items-center gap-2 p-2 text-sm font-semibold transition-all duration-300 border rounded-lg bg-light hover:bg-secondary"
+                        className="flex items-center gap-2 rounded-lg border bg-light p-2 text-sm font-semibold transition-all duration-300 hover:bg-secondary"
                         onClick={(e) => selectSchedualHandler(schedualIndex)}
                     >
-                        <div className="flex items-center justify-center w-6 h-6 font-bold rounded-full bg-primary text-light">
+                        <div className="flex h-6 w-6 items-center justify-center rounded-full bg-primary font-bold text-light">
                             {schedualIndex + 1}
                         </div>
                         <div className="">{schedual.group}</div>
-                        <div className="flex items-center ml-auto gap-x-1 text-primary">
+                        <div className="ml-auto flex items-center gap-x-1 text-primary">
                             <span>{schedual.totalHours}</span>
                             <IcTime className="icon" />
                         </div>

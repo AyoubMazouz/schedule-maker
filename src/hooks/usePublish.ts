@@ -4,9 +4,6 @@ import {
     deleteDoc,
     Timestamp,
     onSnapshot,
-    query,
-    collection,
-    where,
     getDoc,
 } from "firebase/firestore";
 import {
@@ -16,9 +13,10 @@ import {
     deleteObject,
 } from "firebase/storage";
 import { db, storage } from "../firebase";
+import { PublishedDocument } from "../types";
 
 const usePublish = () => {
-    const publishDocument = (userId, id, file) => {
+    const publishDocument = (userId: string, id: number, file: any) => {
         return new Promise(async (resolve, reject) => {
             const storageRef = ref(storage, `publish/${userId}/${id}`);
 
@@ -52,18 +50,21 @@ const usePublish = () => {
         });
     };
 
-    const getPublishedDocuments = (userId, setData) => {
+    const getPublishedDocuments = (
+        userId: string,
+        setData: (a: PublishedDocument[]) => void
+    ) => {
         onSnapshot(doc(db, "publish", userId), (snap) => {
             if (snap.exists()) setData(snap.data().documents);
             else setData([]);
         });
     };
 
-    const deletePublishedDocument = (userId, id) => {
+    const deletePublishedDocument = (userId: string, id: number) => {
         return new Promise(async (resolve, reject) => {
             try {
                 await deleteObject(ref(storage, `publish/${userId}/${id}`));
-                await deleteDoc(doc(db, "publish", id));
+                await deleteDoc(doc(db, "publish", `${id}`));
                 resolve(true);
             } catch (e) {
                 reject(e);

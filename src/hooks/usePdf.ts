@@ -2,7 +2,6 @@ import React from "react";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 import {
-    DARK_COL,
     DAYS_TEXT,
     DOMAIN_NAME,
     EVENT_COL,
@@ -11,6 +10,7 @@ import {
     SECONDARY_COL,
     SESSIONS_TEXT,
 } from "../constants";
+import { Schedual } from "../types";
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 pdfMake.fonts = {
@@ -22,7 +22,7 @@ pdfMake.fonts = {
 };
 
 export const usePdf = () => {
-    const getSessionObj = (text) => {
+    const getSessionObj = (text: string) => {
         return {
             text: "\n" + text,
             fontSize: 26,
@@ -30,7 +30,7 @@ export const usePdf = () => {
             color: "white",
         };
     };
-    const getLabel = (session, i) => {
+    const getLabel = (session: string[], i: number) => {
         if (i === 1)
             return {
                 text: session[3] ? `${session[1]} ${session[3]}` : session[1],
@@ -47,9 +47,9 @@ export const usePdf = () => {
             fontSize: 20,
         };
     };
-    const tableData = (data) => {
+    const tableData = (data: string[][][]) => {
         const copiedData = JSON.parse(JSON.stringify(data));
-        return copiedData.map((day, index) => {
+        return copiedData.map((day: any, index: number) => {
             day.unshift([
                 {
                     text: "\n" + DAYS_TEXT[index],
@@ -59,7 +59,7 @@ export const usePdf = () => {
                     color: LIGHT_COL,
                 },
             ]);
-            return day.map((session) => {
+            return day.map((session: string[]) => {
                 return [
                     getLabel(session, 0),
                     getLabel(session, 1),
@@ -69,7 +69,12 @@ export const usePdf = () => {
         });
     };
 
-    const getFillColor = (data, schedualIndex, rowIndex, columnIndex) => {
+    const getFillColor = (
+        data: Schedual[],
+        schedualIndex: number,
+        rowIndex: number,
+        columnIndex: number
+    ) => {
         if (rowIndex === 0 && columnIndex === 0) return null;
         if (rowIndex === 0 || columnIndex === 0) return PRIMARY_COL;
         if (data[schedualIndex].schedual[rowIndex - 1][columnIndex - 1][3])
@@ -81,8 +86,8 @@ export const usePdf = () => {
                 ? SECONDARY_COL
                 : null;
     };
-    const exportAsPdf = (data, docName) => {
-        const content = [];
+    const exportAsPdf = (data: Schedual[], docName: string) => {
+        const content: any = [];
 
         data.forEach((schedual, index) => {
             content.push({
@@ -101,7 +106,7 @@ export const usePdf = () => {
                 });
         });
 
-        data.forEach((schedual, schedualIndex) => {
+        data.forEach((schedual: Schedual, schedualIndex) => {
             content.push({
                 style: "tableExample",
                 table: {
@@ -120,7 +125,11 @@ export const usePdf = () => {
                     ],
                 },
                 layout: {
-                    fillColor: function (rowIndex, node, columnIndex) {
+                    fillColor: function (
+                        rowIndex: number,
+                        node: any,
+                        columnIndex: number
+                    ) {
                         return getFillColor(
                             data,
                             schedualIndex,
@@ -147,7 +156,7 @@ export const usePdf = () => {
             });
         });
 
-        const doc = {
+        const doc: any = {
             pageSize: "A4",
             pageOrientation: "landscape",
             pageMargins: [10, 10],
@@ -156,7 +165,9 @@ export const usePdf = () => {
             },
             content,
         };
-        pdfMake.createPdf(doc, null, pdfMake.fonts).download(docName + ".pdf");
+        pdfMake
+            .createPdf(doc, undefined, pdfMake.fonts)
+            .download(docName + ".pdf");
     };
 
     return { exportAsPdf };

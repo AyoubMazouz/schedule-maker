@@ -30,7 +30,7 @@ const OptionBar = ({
     const { setModel } = useGlobalContext();
     const { currUser } = useAuth();
     const { getLabels, setLabels } = useLabels();
-    const { importSettigs, exportSettings } = useSettings();
+    const { importSettings, exportSettings } = useSettings();
 
     const discardChanges = () => {
         getLabels().then((data) => {
@@ -92,7 +92,7 @@ const OptionBar = ({
                 accept=".json,.xls,.xlsm"
                 className="absolute top-0 bottom-0 left-0 right-0 cursor-pointer opacity-0"
                 onChange={(e) => {
-                    importSettigs(e.target.files[0], setLabelsData);
+                    importSettings(e.target.files[0], setLabelsData);
                     setSaved(false);
                 }}
             />

@@ -1,8 +1,15 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useGlobalContext } from "../../Contexts/GlobalContext";
-import useLabels from "../../hooks/useLabels";
+import { DAYS_TEXT, SESSIONS_TEXT } from "../../constants";
 import useEditor from "../../hooks/useEditor";
+import { useEditorContext } from "../../Contexts/EditorContext";
+import useDocument from "../../hooks/useDocument";
+import { Select } from "../../components/Select";
+import { DropdownMenu } from "../../components/DropdownMenu";
+import { Button } from "../../components/Button";
+import { usePdf } from "../../hooks/usePdf";
+import { useAuth } from "../../Contexts/AuthContext";
 import {
     IcBin,
     IcExport,
@@ -12,13 +19,6 @@ import {
     IcNewDoc,
     IcSave,
 } from "../../components/icons";
-import { useEditorContext } from "../../Contexts/EditorContext";
-import useDocument from "../../hooks/useDocument";
-import { Select } from "../../components/Select";
-import { DropdownMenu } from "../../components/DropdownMenu";
-import { Button } from "../../components/Button";
-import { usePdf } from "../../hooks/usePdf";
-import { useAuth } from "../../Contexts/AuthContext";
 
 const OptionBar = () => {
     const { saved, setSaved, setFusionMode, fusionMode, selectedCell } =
@@ -151,7 +151,6 @@ const OptionBar = () => {
         const res = editField(
             data,
             setData,
-            setAlert,
             schedualIndex,
             dayIndex,
             sessionIndex,
@@ -159,7 +158,18 @@ const OptionBar = () => {
             value,
             fusionMode
         );
-        if (res) setSaved(false);
+        const sessionTextSplited = SESSIONS_TEXT[sessionIndex].split("-");
+        let message;
+        if (res) {
+            setSaved(false);
+        } else {
+            if (row === 0) {
+                message = `The professor "${value}" is not available on "${DAYS_TEXT[dayIndex]}", from "${sessionTextSplited[0]}" to "${sessionTextSplited[1]}" working with the group "${data[schedualIndex].group}" in classRoom number "${value}".`;
+            } else if (row === 2) {
+                message = `The Room number "${value}" is not available on "${DAYS_TEXT[dayIndex]}", from "${sessionTextSplited[0]}" to "${sessionTextSplited[1]}" it is ocupied by the group "${value}".`;
+            }
+            setAlert({ type: "warn", message });
+        }
     };
 
     const SaveMenuItem = () => (
@@ -176,12 +186,15 @@ const OptionBar = () => {
         </button>
     );
     const ImportMenuItem = () => (
-        <div className="relative overflow-hidden menu-item">
+        <div className="menu-item relative overflow-hidden">
             <input
                 type="file"
                 accept=".json,.xls,.xlsm"
-                className="absolute top-0 bottom-0 left-0 right-0 opacity-0 cursor-pointer"
-                onChange={(e) => importDocument(e.target.files[0], setData)}
+                className="absolute top-0 bottom-0 left-0 right-0 cursor-pointer opacity-0"
+                onChange={(e) => {
+                    importDocument(e.target.files[0], setData);
+                    setSaved(false);
+                }}
             />
             <IcImport className="icon" />
             <span>Import</span>
@@ -189,7 +202,7 @@ const OptionBar = () => {
     );
 
     return (
-        <div className="sticky top-0 z-30 flex items-center justify-between w-full p-2 gap-x-2">
+        <div className="sticky top-0 z-30 flex w-full items-center justify-between gap-x-2 p-2">
             <DropdownMenu
                 text="file"
                 menuRef={menuRef}
