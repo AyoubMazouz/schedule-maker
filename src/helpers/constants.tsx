@@ -55,7 +55,6 @@ export const ROOMS = [
 ];
 
 export const EMPTY_SCHEDUAL = {
-  id: 0,
   group: "",
   totalHours: "0",
   schedual: [

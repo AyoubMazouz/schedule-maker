@@ -30,7 +30,6 @@ export interface PublishedDocument {
 }
 
 export interface Schedual {
-  id: number;
   totalHours: string;
   group: string;
   schedual: string[][][];

@@ -183,8 +183,8 @@ const OptionBar = () => {
         type="file"
         accept=".json,.xls,.xlsm"
         className="absolute top-0 bottom-0 left-0 right-0 opacity-0 cursor-pointer"
-        onChange={(e) => {
-          importDocument(e, setData);
+        onChange={(e: any) => {
+          importDocument(e.target.files[0], setData);
           setSaved(false);
         }}
       />

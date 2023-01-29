@@ -5,14 +5,12 @@ import { IcBin, IcPlus, IcTime } from "../../helpers/icons";
 import { useEditorContext } from "../../Contexts/EditorContext";
 import { Select } from "../../components/Select";
 import { Button } from "../../components/Button";
-import { useAuth } from "../../Contexts/AuthContext";
 
 const DocumentsBar = () => {
   const { setSaved } = useEditorContext();
   const { data, setData, setAlert, labelsData } = useGlobalContext();
   const { addNewSchedual, editSchedualGrp, deleteSchedual, getGroups } =
     useEditor();
-  const { currUser } = useAuth();
 
   const [currSchedual, setCurrSchedual] = React.useState(0);
 
@@ -27,7 +25,7 @@ const DocumentsBar = () => {
     );
     setAvailableGroups(availableGroups);
     setUnavailableGroups(unavailableGroups);
-  }, [currSchedual, data]);
+  }, [currSchedual, labelsData]);
 
   const addNewSchedualHandler = () => {
     const res = addNewSchedual(data, setData, setAlert);
@@ -74,9 +72,14 @@ const DocumentsBar = () => {
   };
 
   const deleteSchedualHandler = (scheduleIndex) => {
-    if (scheduleIndex === data.length - 1) setCurrSchedual(scheduleIndex - 1);
-    const res = deleteSchedual(data, setData, data[scheduleIndex].id);
-    if (res) setSaved(false);
+    console.log(data);
+    const res = deleteSchedual(data, setData, data[scheduleIndex].group);
+    if (res) {
+      const currSchedule = scheduleIndex === 0 ? 0 : scheduleIndex - 1;
+      setCurrSchedual(currSchedule);
+      setSaved(false);
+    }
+    console.log(data);
   };
   const selectSchedualHandler = (scheduleIndex) => {
     setCurrSchedual(scheduleIndex);

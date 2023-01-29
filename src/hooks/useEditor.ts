@@ -1,4 +1,4 @@
-import XLSX from "xlsx";
+import React from "react";
 import { EMPTY_SCHEDUAL } from "../helpers/constants";
 import { LabelsType, Level, Schedual } from "../helpers/types";
 import useDocument from "./useDocument";
@@ -40,7 +40,7 @@ interface AddNewSchedual {
   (data: Schedual[], setData: (a: Schedual[]) => void): boolean;
 }
 interface DeleteSchedual {
-  (data: Schedual[], setData: (a: Schedual[]) => void, id: number): void;
+  (data: Schedual[], setData: (a: Schedual[]) => void, id: string): boolean;
 }
 
 interface GetGroups {
@@ -209,19 +209,23 @@ const useEditor = () => {
   };
 
   const addNewSchedual: AddNewSchedual = (data, setData) => {
+    const newSchedule = JSON.parse(JSON.stringify(EMPTY_SCHEDUAL));
     if (data.length === 0) {
-      setData([JSON.parse(JSON.stringify(EMPTY_SCHEDUAL))]);
+      setData([newSchedule]);
       return true;
     }
 
     if (!data[data.length - 1].group) return false;
 
-    setData([...data, JSON.parse(JSON.stringify(EMPTY_SCHEDUAL))]);
+    setData([...data, newSchedule]);
     return true;
   };
 
   const deleteSchedual: DeleteSchedual = (data, setData, id) => {
-    setData(data.filter((sch) => sch.id !== id));
+    const newData = data.filter((sch) => sch.group !== id);
+    if (data.length === newData.length) return false;
+    setData(newData);
+    return true;
   };
 
   const getGroups: GetGroups = (data, labelsData, currSchedual) => {
