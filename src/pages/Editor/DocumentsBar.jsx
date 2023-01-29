@@ -72,14 +72,12 @@ const DocumentsBar = () => {
   };
 
   const deleteSchedualHandler = (scheduleIndex) => {
-    console.log(data);
     const res = deleteSchedual(data, setData, data[scheduleIndex].group);
     if (res) {
       const currSchedule = scheduleIndex === 0 ? 0 : scheduleIndex - 1;
       setCurrSchedual(currSchedule);
       setSaved(false);
     }
-    console.log(data);
   };
   const selectSchedualHandler = (scheduleIndex) => {
     setCurrSchedual(scheduleIndex);

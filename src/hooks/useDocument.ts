@@ -24,7 +24,7 @@ interface GetDoc {
   (userId: string, id: string): Promise<boolean | DocumentData>;
 }
 interface GetAllDoc {
-  (userId: string, setDocs: (a: Document[]) => void): void;
+  (userId: string, setDocs: React.Dispatch<React.SetStateAction<any>>): void;
 }
 interface DeleteDoc {
   (userId: string, id: string): Promise<boolean>;
@@ -62,7 +62,7 @@ const useDocument = () => {
     });
   };
 
-  const getDocument: GetDoc = (userId: string, id: string) => {
+  const getDocument: GetDoc = (userId, id) => {
     return new Promise(async (resolve, reject) => {
       const snapshot = await getDoc(doc(db, "documents", userId + id));
       if (snapshot.exists()) resolve(snapshot.data());
@@ -70,10 +70,7 @@ const useDocument = () => {
     });
   };
 
-  const getAllDocuments: GetAllDoc = (
-    userId: string,
-    setDocs: (a: Document[]) => void
-  ) => {
+  const getAllDocuments: GetAllDoc = (userId, setDocs) => {
     onSnapshot(
       query(collection(db, "documents"), where("userId", "in", [userId])),
       (snap) => {
@@ -87,7 +84,7 @@ const useDocument = () => {
     );
   };
 
-  const deleteDocument: DeleteDoc = (userId: string, id: string) => {
+  const deleteDocument: DeleteDoc = (userId, id) => {
     return new Promise(async (resolve, reject) => {
       setLoading(true);
       const snapshot = await deleteDoc(doc(db, "documents", userId + id));

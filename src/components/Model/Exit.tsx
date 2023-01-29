@@ -7,7 +7,7 @@ import { Button } from "../Button";
 import { IcCancel, IcEx, IcTrue } from "../../helpers/icons";
 
 const Exit = () => {
-  const { setModel, docId, data, setAlert } = useGlobalContext();
+  const { model, setModel, docId, data, setAlert } = useGlobalContext();
   const { addNewDocument } = useDocument();
   const { currUser } = useAuth();
 
@@ -22,8 +22,8 @@ const Exit = () => {
           type="success"
           onClick={async () => {
             setModel(null);
-            navigate("/documents");
-            await addNewDocument(data, currUser.uid, docId);
+            navigate(model.to);
+            await addNewDocument(currUser.uid, docId, data);
             setAlert({
               type: "success",
               message: "Document has been saved!",
@@ -35,7 +35,7 @@ const Exit = () => {
           text="No"
           onClick={() => {
             setModel(null);
-            navigate("/documents");
+            navigate(model.to);
           }}
           Icon={IcEx}
         />

@@ -11,6 +11,7 @@ import MoreMenu from "../../components/MoreMenu";
 import { useAuth } from "../../Contexts/AuthContext";
 import { useGlobalContext } from "../../Contexts/GlobalContext";
 import useSettings from "../../hooks/usePublish";
+import { Link } from "react-router-dom";
 
 const Publish = () => {
   const { publishDocument, getPublishedDocuments, deletePublishedDocument } =
@@ -58,13 +59,13 @@ const Publish = () => {
     setModel({ type: "showDetails", details });
   };
   return (
-    <div className="space-y-2 py-2">
-      <div className="mx-2 flex justify-between rounded-lg border p-2 shadow-md">
+    <div className="py-2 space-y-2">
+      <div className="flex justify-between p-2 mx-2 border rounded-lg shadow-md">
         <div className="flex items-center gap-x-4">
           <Button type="primary" text="Open" Icon={IcPlus}>
             <input
               type="file"
-              className="absolute top-0 bottom-0 left-0 right-0 cursor-pointer opacity-0"
+              className="absolute top-0 bottom-0 left-0 right-0 opacity-0 cursor-pointer"
               onChange={(e) => setFile(e.target.files[0])}
             />
           </Button>
@@ -83,7 +84,12 @@ const Publish = () => {
           disabled={!file || loading}
         />
       </div>
-      <div className="mx-2 rounded-lg border shadow-md">
+      <div>
+        <Link
+          to={`/download/${currUser.uid}`}
+        >{`http://localhost:3000/download/${currUser.uid}`}</Link>
+      </div>
+      <div className="mx-2 border rounded-lg shadow-md">
         {documents.map((value, docIndex) => (
           <div
             className={`menu-item group flex justify-between gap-x-2 ${

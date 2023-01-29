@@ -1,37 +1,38 @@
 import {
-    HiOutlineX,
-    HiOutlineClock,
-    HiOutlineSave,
-    HiDotsVertical,
-    HiOutlineSaveAs,
-    HiOutlineMail,
-} from "react-icons/hi";
-import {
-    HiOutlineDocumentArrowUp,
-    HiOutlineDocumentArrowDown,
-    HiOutlineDocumentPlus,
-    HiPlus,
-    HiOutlineChevronDown,
-    HiOutlineInformationCircle,
-    HiOutlineTrash,
-    HiOutlineSquaresPlus,
-    HiOutlineClipboardDocumentCheck,
-    HiOutlineArrowLeftOnRectangle,
-    HiOutlinePencilSquare,
-    HiOutlineArrowUpTray,
-    HiOutlineArrowDownTray,
-    HiOutlineArrowRightOnRectangle,
-    HiOutlineDocumentText,
-    HiOutlineCog8Tooth,
-    HiOutlineBolt,
-    HiOutlineCheck,
-    HiOutlineNoSymbol,
-    HiOutlineBackspace,
-    HiOutlineNewspaper,
-    HiOutlineUser,
-    HiOutlineHome,
-    HiOutlineBookOpen,
+  HiOutlineDocumentArrowUp,
+  HiOutlineDocumentArrowDown,
+  HiOutlineDocumentPlus,
+  HiPlus,
+  HiOutlineChevronDown,
+  HiOutlineInformationCircle,
+  HiOutlineTrash,
+  HiOutlineSquaresPlus,
+  HiOutlineClipboardDocumentCheck,
+  HiOutlineArrowLeftOnRectangle,
+  HiOutlinePencilSquare,
+  HiOutlineArrowUpTray,
+  HiOutlineArrowDownTray,
+  HiOutlineArrowRightOnRectangle,
+  HiOutlineDocumentText,
+  HiOutlineCog8Tooth,
+  HiOutlineBolt,
+  HiOutlineCheck,
+  HiOutlineNoSymbol,
+  HiOutlineBackspace,
+  HiOutlineNewspaper,
+  HiOutlineUser,
+  HiOutlineHome,
+  HiOutlineBookOpen,
 } from "react-icons/hi2";
+import {
+  HiOutlineX,
+  HiOutlineClock,
+  HiOutlineSave,
+  HiDotsVertical,
+  HiOutlineSaveAs,
+  HiOutlineMail,
+} from "react-icons/hi";
+import { MdSelectAll } from "react-icons/md";
 
 export const IcEditor = HiOutlineBolt;
 export const IcSettings = HiOutlineCog8Tooth;
@@ -63,3 +64,4 @@ export const IcRoom = HiOutlineHome;
 export const IcUser = HiOutlineUser;
 export const IcEvent = HiOutlineNewspaper;
 export const IcLevel = HiOutlineBookOpen;
+export const IcSelectionNone = MdSelectAll;

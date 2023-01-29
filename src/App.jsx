@@ -12,6 +12,7 @@ import Settings from "./pages/Settings";
 import Home from "./pages/Home";
 import { AuthProvider } from "./Contexts/AuthContext";
 import PrivateRoute from "./helpers/PrivateRoute";
+import Publish from "./pages/Publish";
 
 function App() {
   return (
@@ -22,9 +23,11 @@ function App() {
             <NavBar />
             <Alert />
             <Model />
+
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/download/:userId" element={<Publish />} />
               {/* PrivateRoutes */}
               <Route element={<PrivateRoute />}>
                 <Route path="/settings" element={<Settings />} />

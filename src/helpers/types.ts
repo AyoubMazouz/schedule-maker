@@ -26,7 +26,7 @@ export interface PublishedDocument {
   id: number;
   userId: string;
   url: string;
-  createdAt: {};
+  createdAt: any;
 }
 
 export interface Schedual {
@@ -38,6 +38,13 @@ export interface Document {
   id: number;
   userId: string;
   data: string;
-  createdAt: {};
-  modifiedAt: {};
+  createdAt: any;
+  modifiedAt: any;
+}
+
+export interface PublishedDocument {
+  id: number;
+  userId: string;
+  createdAt: any;
+  url: string;
 }

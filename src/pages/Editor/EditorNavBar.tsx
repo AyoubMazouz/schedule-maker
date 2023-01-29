@@ -1,15 +1,15 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useGlobalContext } from "../Contexts/GlobalContext";
-import { DAYS_TEXT, SESSIONS_TEXT } from "../helpers/constants";
-import useEditor from "../hooks/useEditor";
-import { useEditorContext } from "../Contexts/EditorContext";
-import useDocument from "../hooks/useDocument";
-import { Select } from "./Select";
-import { DropdownMenu } from "./DropdownMenu";
-import { Button } from "./Button";
-import { usePdf } from "../hooks/usePdf";
-import { useAuth } from "../Contexts/AuthContext";
+import { useGlobalContext } from "../../Contexts/GlobalContext";
+import { DAYS_TEXT, SESSIONS_TEXT } from "../../helpers/constants";
+import useEditor from "../../hooks/useEditor";
+import { useEditorContext } from "../../Contexts/EditorContext";
+import useDocument from "../../hooks/useDocument";
+import { Select } from "../../components/Select";
+import { DropdownMenu } from "../../components/DropdownMenu";
+import { Button } from "../../components/Button";
+import { usePdf } from "../../hooks/usePdf";
+import { useAuth } from "../../Contexts/AuthContext";
 import {
   IcBin,
   IcExport,
@@ -18,13 +18,21 @@ import {
   IcLogout,
   IcNewDoc,
   IcSave,
-} from "../helpers/icons";
+  IcSelectionNone,
+  IcSettings,
+} from "../../helpers/icons";
 
 const OptionBar = () => {
-  const { saved, setSaved, setFusionMode, fusionMode, selectedCell } =
-    useEditorContext();
   const { data, setData, setModel, setAlert, labelsData, loadLabelsData } =
     useGlobalContext();
+  const {
+    saved,
+    setSaved,
+    setFusionMode,
+    fusionMode,
+    selectedCell,
+    setSelectedCell,
+  } = useEditorContext();
   const {
     importDocument,
     exportDocument,
@@ -103,7 +111,12 @@ const OptionBar = () => {
 
   const exitHandler = async () => {
     if (saved) navigate("/documents");
-    else setModel({ type: "exit" });
+    else setModel({ type: "exit", to: "/documents" });
+    setCurrMenu(null);
+  };
+  const goToSettingsHandler = async () => {
+    if (saved) navigate("/settings/labels");
+    else setModel({ type: "exit", to: "/settings/labels" });
     setCurrMenu(null);
   };
 
@@ -206,6 +219,7 @@ const OptionBar = () => {
           <ImportMenuItem />,
           ["Export as Json", exportHandler, IcExport, false],
           ["Export as pdf", downloadHandler, IcExport, false],
+          ["Settings", goToSettingsHandler, IcSettings, false],
           ["exit", exitHandler, IcLogout, false],
         ]}
       />
@@ -219,6 +233,11 @@ const OptionBar = () => {
       </div>
       {selectedCell ? (
         <div className="flex items-center gap-x-2">
+          <Button
+            label={["Select None"]}
+            Icon={IcSelectionNone}
+            onClick={() => setSelectedCell(null)}
+          />
           <Button Icon={IcBin} label={["clear"]} onClick={clearCellHandler} />
           <Select
             label="trainers"
