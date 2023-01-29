@@ -65,7 +65,7 @@ const Cell = ({ session, schedualIndex, dayIndex, sessionIndex }) => {
                 <span className="font-semibold text-primary">{session[3]}</span>
             </div>
             {session[2] && (
-                <div className="text-lg font-semibold text-right">
+                <div className="text-right text-lg font-semibold">
                     {session[2]}
                 </div>
             )}
