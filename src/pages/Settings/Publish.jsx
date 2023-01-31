@@ -1,12 +1,6 @@
 import React from "react";
 import { Button } from "../../components/Button";
-import {
-  IcBin,
-  IcDelete,
-  IcDownload,
-  IcExport,
-  IcPlus,
-} from "../../helpers/icons";
+import { IcBin, IcDownload, IcExport, IcPlus } from "../../helpers/icons";
 import MoreMenu from "../../components/MoreMenu";
 import { useAuth } from "../../Contexts/AuthContext";
 import { useGlobalContext } from "../../Contexts/GlobalContext";
@@ -87,7 +81,7 @@ const Publish = () => {
       <div>
         <Link
           to={`/download/${currUser.uid}`}
-        >{`http://localhost:3000/download/${currUser.uid}`}</Link>
+        >{`https://schedule-maker.nelify.app/download/${currUser.uid}`}</Link>
       </div>
       <div className="mx-2 border rounded-lg shadow-md">
         {documents.map((value, docIndex) => (

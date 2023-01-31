@@ -1,4 +1,3 @@
-import React from "react";
 import { EMPTY_SCHEDUAL } from "../helpers/constants";
 import { LabelsType, Level, Schedual } from "../helpers/types";
 import useDocument from "./useDocument";

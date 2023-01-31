@@ -8,60 +8,61 @@ import { getDoc, doc } from "firebase/firestore";
 const AuthContext = createContext();
 
 export function useAuth() {
-    return useContext(AuthContext);
+  return useContext(AuthContext);
 }
 
 export function AuthProvider({ children }) {
-    const [loading, setLoading] = useState(true);
-    const [currUser, setCurrUser] = useState(null);
-    const [userInfo, setUserInfo] = useState(null);
-    const [isRoot, setIsRoot] = useState(false);
-    const [isAdmin, setIsAdmin] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [currUser, setCurrUser] = useState(null);
+  const [userInfo, setUserInfo] = useState(null);
+  const [isRoot, setIsRoot] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const login = (email, password) =>
-        signInWithEmailAndPassword(auth, email, password);
+  const login = (email, password) =>
+    signInWithEmailAndPassword(auth, email, password);
 
-    const logout = () => {
-        signOut(auth);
-        navigate("/");
-    };
+  const logout = () => {
+    signOut(auth);
+    navigate("/");
+  };
 
-    useEffect(() => {
-        const unsubscribe = auth.onAuthStateChanged(async (user) => {
-            if (user) {
-                const snapshot = await getDoc(doc(db, "users", user.uid));
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        const snapshot = await getDoc(doc(db, "users", user.uid));
 
-                if (snapshot.exists()) {
-                    const data = snapshot.data();
-                    setUserInfo(data);
-                    if (data?.isAdmin) setIsAdmin(true);
-                    else if (data?.isRoot) setIsRoot(true);
-                }
+        if (snapshot.exists()) {
+          const data = snapshot.data();
+          setUserInfo(data);
+          if (data?.isAdmin) setIsAdmin(true);
+          else if (data?.isRoot) setIsRoot(true);
+        }
 
-                setCurrUser(user);
-                setLoading(false);
-            } else {
-                setCurrUser(null);
-                setIsRoot(false);
-            }
-        });
-        return () => unsubscribe();
-    }, []);
+        setCurrUser(user);
+        setLoading(false);
+      } else {
+        setCurrUser(null);
+        setIsRoot(false);
+        setLoading(false);
+      }
+    });
+    return () => unsubscribe();
+  }, []);
 
-    const value = {
-        currUser,
-        isRoot,
-        isAdmin,
-        login,
-        logout,
-        loading,
-    };
+  const value = {
+    currUser,
+    isRoot,
+    isAdmin,
+    login,
+    logout,
+    loading,
+  };
 
-    return (
-        <AuthContext.Provider value={value}>
-            {!loading && children}
-        </AuthContext.Provider>
-    );
+  return (
+    <AuthContext.Provider value={value}>
+      {!loading && children}
+    </AuthContext.Provider>
+  );
 }

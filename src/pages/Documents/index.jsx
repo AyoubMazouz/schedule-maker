@@ -1,6 +1,6 @@
 import React from "react";
 import useEditor from "../../hooks/useEditor";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useGlobalContext } from "../../Contexts/GlobalContext";
 import {
   IcAbout,
@@ -9,7 +9,6 @@ import {
   IcDownload,
   IcEdit,
   IcExport,
-  IcMore,
 } from "../../helpers/icons";
 import OptionBar from "./OptionBar";
 import useDocument from "../../hooks/useDocument";
@@ -89,7 +88,7 @@ const Documents = () => {
     <div className="flex justify-center">
       <div className="mx-2 w-full max-w-[1400px] space-y-2">
         <OptionBar />
-        <div className="rounded-lg border shadow-lg">
+        <div className="border rounded-lg shadow-lg">
           {documents.map((value, docIndex) => (
             <div
               className={`menu-item group flex justify-between text-center ${
@@ -100,18 +99,18 @@ const Documents = () => {
                 to={`/editor/${value.id}`}
                 className="grid w-full grid-cols-12"
               >
-                <div className="col-span-full space-x-1 text-left group-hover:underline sm:col-span-9 md:col-span-6">
-                  <IcDoc className="icon inline-block" />
+                <div className="space-x-1 text-left col-span-full group-hover:underline sm:col-span-9 md:col-span-6">
+                  <IcDoc className="inline-block icon" />
                   <span>
                     {value.id.length > 30
                       ? value.id.slice(0, 38) + "..."
                       : value.id}
                   </span>
                 </div>
-                <div className="col-span-3 hidden sm:block">
+                <div className="hidden col-span-3 sm:block">
                   {value.createdAt.toDate().toDateString()}
                 </div>
-                <div className="col-span-3 hidden md:block">
+                <div className="hidden col-span-3 md:block">
                   {value.modifiedAt.toDate().toDateString()}
                 </div>
               </Link>
