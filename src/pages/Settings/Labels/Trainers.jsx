@@ -20,7 +20,7 @@ const Trainers = ({
       ["trainer", v.value],
       ["created at", v.createdAt.toDate().toDateString()],
       ["modified at", v.modifiedAt.toDate().toDateString()],
-      ["prefered rooms", v.preferedRooms.join(", ")],
+      ["preferred rooms", v.preferredRooms.join(", ")],
     ];
     setModel({ type: "showDetails", details });
   };
@@ -36,7 +36,7 @@ const Trainers = ({
     setSaved(false);
   };
   return (
-    <div className="rounded-lg border-2 border-dark/25 shadow-lg">
+    <div className="border-2 rounded-lg shadow-lg border-dark/25">
       {labelsData.trainers.map((trainer, index) => (
         <div
           key={trainer.value}
@@ -48,11 +48,11 @@ const Trainers = ({
             onClick={(e) => showDetails(trainer)}
             className="grid w-full grid-cols-12"
           >
-            <div className="col-span-full space-x-1 text-left group-hover:underline sm:col-span-9">
-              <IcUser className="icon inline-block" />
+            <div className="space-x-1 text-left col-span-full group-hover:underline sm:col-span-9">
+              <IcUser className="inline-block icon" />
               <span>{trainer.value}</span>
             </div>
-            <div className="col-span-3 hidden md:block">
+            <div className="hidden col-span-3 md:block">
               {trainer.createdAt.toDate().toDateString()}
             </div>
           </button>

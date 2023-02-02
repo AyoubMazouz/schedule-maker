@@ -1,14 +1,14 @@
 import { EMPTY_SCHEDUAL } from "../helpers/constants";
-import { LabelsType, Level, Schedual } from "../helpers/types";
+import { LabelsType, Level, Schedule } from "../helpers/types";
 import useDocument from "./useDocument";
 
 interface ImportDoc {
-  (file: any, callback: (a: Schedual[]) => void): void;
+  (file: any, callback: (a: Schedule[]) => void): void;
 }
 interface ClearCell {
   (
-    data: Schedual[],
-    setData: (a: Schedual[]) => void,
+    data: Schedule[],
+    setData: (a: Schedule[]) => void,
     fusionMode: boolean,
     schedualIndex: number,
     dayIndex: number,
@@ -17,8 +17,8 @@ interface ClearCell {
 }
 interface EditField {
   (
-    data: Schedual[],
-    setData: (a: Schedual[]) => void,
+    data: Schedule[],
+    setData: (a: Schedule[]) => void,
     fusionMode: boolean,
     schedualIndex: number,
     dayIndex: number,
@@ -29,38 +29,38 @@ interface EditField {
 }
 interface EditSchedualGrp {
   (
-    data: Schedual[],
-    setData: (a: Schedual[]) => void,
+    data: Schedule[],
+    setData: (a: Schedule[]) => void,
     schedualIndex: number,
     value: string
   ): boolean;
 }
 interface AddNewSchedual {
-  (data: Schedual[], setData: (a: Schedual[]) => void): boolean;
+  (data: Schedule[], setData: (a: Schedule[]) => void): boolean;
 }
 interface DeleteSchedual {
-  (data: Schedual[], setData: (a: Schedual[]) => void, id: string): boolean;
+  (data: Schedule[], setData: (a: Schedule[]) => void, id: string): boolean;
 }
 
 interface GetGroups {
-  (data: Schedual[], labelsData: LabelsType, currSchedual: number): string[][];
+  (data: Schedule[], labelsData: LabelsType, currSchedual: number): string[][];
 }
 interface GetTrainers {
   (
-    data: Schedual[],
+    data: Schedule[],
     labelsData: LabelsType,
     selectedCell: number[]
   ): string[][];
 }
 interface GetRooms {
   (
-    data: Schedual[],
+    data: Schedule[],
     labelsData: LabelsType,
     selectedCell: number[]
   ): string[][];
 }
 interface GetModules {
-  (data: Schedual[], labelsData: LabelsType, selectedCell: number[]): string[];
+  (data: Schedule[], labelsData: LabelsType, selectedCell: number[]): string[];
 }
 interface GetEvents {
   (labelsData: LabelsType): string[];
@@ -69,7 +69,7 @@ interface GetEvents {
 const useEditor = () => {
   const { addNewDocument, loading } = useDocument();
 
-  const exportDocument = (data: Schedual[], fileName: string) => {
+  const exportDocument = (data: Schedule[], fileName: string) => {
     const jsonData = JSON.stringify(data);
     const link = document.createElement("a");
     link.href = "data:application/json," + jsonData;
@@ -291,7 +291,7 @@ const useEditor = () => {
       for (let p = 0; p < labelsData.trainers.length; p++) {
         const trainer = labelsData.trainers[p];
         if (currTrainer === trainer.value) {
-          const rooms = trainer.preferedRooms.filter(
+          const rooms = trainer.preferredRooms.filter(
             (r) => r !== currRoom && !unavailableRooms.includes(r)
           );
           preferredRooms.push(...rooms);

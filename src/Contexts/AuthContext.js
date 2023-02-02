@@ -1,34 +1,18 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React from "react";
 // Firebase Imports.
 import { auth, db } from "../firebase";
-import { signInWithEmailAndPassword, signOut } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
 import { getDoc, doc } from "firebase/firestore";
 
-const AuthContext = createContext();
+const AuthContext = React.createContext();
 
-export function useAuth() {
-  return useContext(AuthContext);
-}
+export const AuthProvider = ({ children }) => {
+  const [loading, setLoading] = React.useState(true);
+  const [currUser, setCurrUser] = React.useState(null);
+  const [userInfo, setUserInfo] = React.useState(null);
+  const [isRoot, setIsRoot] = React.useState(false);
+  const [isAdmin, setIsAdmin] = React.useState(false);
 
-export function AuthProvider({ children }) {
-  const [loading, setLoading] = useState(true);
-  const [currUser, setCurrUser] = useState(null);
-  const [userInfo, setUserInfo] = useState(null);
-  const [isRoot, setIsRoot] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
-
-  const navigate = useNavigate();
-
-  const login = (email, password) =>
-    signInWithEmailAndPassword(auth, email, password);
-
-  const logout = () => {
-    signOut(auth);
-    navigate("/");
-  };
-
-  useEffect(() => {
+  React.useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
         const snapshot = await getDoc(doc(db, "users", user.uid));
@@ -39,30 +23,28 @@ export function AuthProvider({ children }) {
           if (data?.isAdmin) setIsAdmin(true);
           else if (data?.isRoot) setIsRoot(true);
         }
-
         setCurrUser(user);
-        setLoading(false);
       } else {
         setCurrUser(null);
         setIsRoot(false);
-        setLoading(false);
       }
+      setLoading(false);
     });
     return () => unsubscribe();
   }, []);
 
-  const value = {
-    currUser,
-    isRoot,
-    isAdmin,
-    login,
-    logout,
-    loading,
-  };
-
   return (
-    <AuthContext.Provider value={value}>
+    <AuthContext.Provider
+      value={{
+        currUser,
+        userInfo,
+        isRoot,
+        isAdmin,
+        loading,
+      }}
+    >
       {!loading && children}
     </AuthContext.Provider>
   );
-}
+};
+export const useAuth = () => React.useContext(AuthContext);

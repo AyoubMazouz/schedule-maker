@@ -18,28 +18,6 @@
 }
 
 @layer components {
-    
-
-    /* Buttons */
-    .btn-base {
-        @apply border-2 rounded shadow pr-4 py-0.5 font-semibold capitalize cursor-pointer disabled:opacity-50 flex gap-x-1 items-center pl-1 disabled:cursor-not-allowed transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md overflow-hidden;
-    }
-
-    .btn-primary {
-        @apply bg-primary text-white border-dark btn-base hover:shadow-primary
-    }
-    .btn-secondary {
-        @apply  text-primary border-primary btn-base hover:shadow-primary
-    }
-    .btn-success {
-        @apply  bg-emerald-500 text-white border-emerald-800 btn-base hover:shadow-emerald-800
-    }
-    .btn-warn {
-        @apply  bg-amber-500 text-white border-orange-800 btn-base hover:shadow-amber-800
-    }
-    .btn-danger {
-        @apply  bg-red-500 text-white border-rose-800 btn-base hover:shadow-red-800
-    }
 
     .icon {
         @apply text-2xl inline-block cursor-pointer
@@ -84,18 +62,6 @@
 }
 
 @layer utilities{
-
-    /* Alert */
-
-    .alert-success {
-        @apply bg-emerald-500 text-white border-emerald-800
-    }
-    .alert-warn {
-        @apply bg-amber-500 text-white border-yellow-700
-    }
-    .alert-danger {
-        @apply bg-red-500 text-white border-rose-800
-    }
 
     .border {
         @apply border-2 border-dark/50

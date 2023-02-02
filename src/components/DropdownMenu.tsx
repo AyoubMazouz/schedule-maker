@@ -7,8 +7,6 @@ interface Type {
   setCurrMenu: React.Dispatch<React.SetStateAction<string | null>>;
   text: string;
   options: any[];
-  type?: "primary" | "secondary" | "success" | "warn" | "danger";
-  MenuIcon?: any;
 }
 
 export const DropdownMenu: React.FC<Type> = ({
@@ -17,8 +15,6 @@ export const DropdownMenu: React.FC<Type> = ({
   setCurrMenu,
   text,
   options,
-  type = "secondary",
-  MenuIcon = IcDown,
 }) => {
   React.useEffect(() => {
     function handleClickOutside(e: any) {
@@ -31,11 +27,11 @@ export const DropdownMenu: React.FC<Type> = ({
   return (
     <div>
       <button
-        className={`btn-${type} relative`}
+        className="group relative flex cursor-pointer items-center gap-x-1 overflow-hidden rounded border-2 border-primary py-0.5 pl-4 pr-2 font-semibold capitalize text-primary shadow transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md hover:shadow-primary disabled:cursor-not-allowed disabled:opacity-50"
         onClick={() => setCurrMenu(text)}
       >
-        <MenuIcon className="icon" />
         <span>{text}</span>
+        <IcDown className="mt-auto" />
       </button>
       {currMenu === text && (
         <div ref={menuRef} className="menu top-[96%] left-[1%]">

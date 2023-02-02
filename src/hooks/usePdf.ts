@@ -9,7 +9,7 @@ import {
   SECONDARY_COL,
   SESSIONS_TEXT,
 } from "../helpers/constants";
-import { Schedual } from "../helpers/types";
+import { Schedule } from "../helpers/types";
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 pdfMake.fonts = {
@@ -69,7 +69,7 @@ export const usePdf = () => {
   };
 
   const getFillColor = (
-    data: Schedual[],
+    data: Schedule[],
     schedualIndex: number,
     rowIndex: number,
     columnIndex: number
@@ -83,7 +83,7 @@ export const usePdf = () => {
         ? SECONDARY_COL
         : null;
   };
-  const exportAsPdf = (data: Schedual[], docName: string) => {
+  const exportAsPdf = (data: Schedule[], docName: string) => {
     const content: any = [];
 
     data.forEach((schedual, index) => {
@@ -103,7 +103,7 @@ export const usePdf = () => {
         });
     });
 
-    data.forEach((schedual: Schedual, schedualIndex) => {
+    data.forEach((schedual: Schedule, schedualIndex) => {
       content.push({
         style: "tableExample",
         table: {

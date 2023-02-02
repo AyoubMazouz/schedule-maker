@@ -15,7 +15,7 @@ interface AddTrainer {
     data: LabelsType,
     setData: (a: LabelsType) => void,
     value: string,
-    preferedRooms: string[]
+    preferredRooms: string[]
   ): boolean;
 }
 interface AddRoom {
@@ -43,7 +43,7 @@ interface UpdateTrainer {
     setData: (a: LabelsType) => void,
     trainer: Trainer,
     value: string,
-    preferedRooms: string[]
+    preferredRooms: string[]
   ): boolean;
 }
 interface UpdateRoom {
@@ -90,7 +90,7 @@ const useSettings = () => {
     setData(labelsDoc);
     return true;
   };
-  const addTrainer: AddTrainer = (data, setData, value, preferedRooms) => {
+  const addTrainer: AddTrainer = (data, setData, value, preferredRooms) => {
     const alreadyExists = data.trainers.filter(
       (t: Trainer) => t.value === value
     ).length;
@@ -98,7 +98,7 @@ const useSettings = () => {
     const newTrainer = {
       id: data.trainers.length,
       value,
-      preferedRooms,
+      preferredRooms,
       createdAt: Timestamp.now(),
       modifiedAt: Timestamp.now(),
     };
@@ -236,7 +236,7 @@ const useSettings = () => {
     setData,
     trainer,
     value,
-    preferedRooms
+    preferredRooms
   ) => {
     let alreadyExists = false;
     const trainers = data.trainers.filter((t) => {
@@ -247,7 +247,7 @@ const useSettings = () => {
     const newTrainer = {
       id: trainer.id,
       value: value,
-      preferedRooms,
+      preferredRooms,
       createdAt: trainer.createdAt,
       modifiedAt: Timestamp.now(),
     };

@@ -1,21 +1,19 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
+// Contexts.
 import { useAuth } from "../../Contexts/AuthContext";
 import { useGlobalContext } from "../../Contexts/GlobalContext";
+// Hooks.
+import { useUser } from "../../hooks/useUser";
+// Components.
 import { Button } from "../Button";
-import {
-  IcDown,
-  IcEditor,
-  IcLogin,
-  IcLogout,
-  IcSettings,
-  IcUser,
-} from "../../helpers/icons";
+import { IcEditor, IcLogin, IcLogout, IcSettings } from "../../helpers/icons";
 import { Logo } from "./Logo";
 
 const NavBar = () => {
   const { setModel, setAlert } = useGlobalContext();
-  const { logout, currUser, isRoot } = useAuth();
+  const { currUser } = useAuth();
+  const { signOut } = useUser();
 
   const location = useLocation();
 
@@ -32,7 +30,7 @@ const NavBar = () => {
   }, [menuRef]);
 
   const logoutHandler = () => {
-    logout();
+    signOut();
     setAlert({ type: "success", message: `Goodbye "${currUser.email}"` });
   };
 
@@ -63,12 +61,6 @@ const NavBar = () => {
                 </div>
                 {currMenu === "prfMenu" && (
                   <div ref={menuRef} className="menu top-[110%] right-[0%]">
-                    {isRoot && (
-                      <button className="menu-item" onClick={(e) => ""}>
-                        <IcUser className="icon" />
-                        <span>Add New Admin</span>
-                      </button>
-                    )}
                     <Link to="/settings" className="menu-item">
                       <IcSettings className="icon" />
                       <span>Settings</span>

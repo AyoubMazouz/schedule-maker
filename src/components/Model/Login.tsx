@@ -1,12 +1,15 @@
 import React from "react";
-import { useAuth } from "../../Contexts/AuthContext";
+// Contexts.
 import { useGlobalContext } from "../../Contexts/GlobalContext";
+// Hooks.
+import { useUser } from "../../hooks/useUser";
+// Components.
 import { Button } from "../Button";
-import { IcCancel, IcEx, IcLogin } from "../../helpers/icons";
+import { IcCancel, IcLogin } from "../../helpers/icons";
 
 const Login = () => {
-  const { model, setModel, setAlert } = useGlobalContext();
-  const { login } = useAuth();
+  const { setModel, setAlert } = useGlobalContext();
+  const { signIn } = useUser();
 
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -14,7 +17,7 @@ const Login = () => {
   const submitHandler = async (e: any) => {
     e.preventDefault();
     try {
-      const snapshot = await login(email, password);
+      const snapshot = await signIn(email, password);
       setAlert({
         type: "success",
         message: `Welcome back "${snapshot.user.email}!"`,

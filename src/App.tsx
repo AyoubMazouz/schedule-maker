@@ -1,15 +1,17 @@
+import "./css/App.css";
 import { Route, Routes } from "react-router-dom";
+// Components.
+import PrivateRoute from "./helpers/PrivateRoute";
 import Alert from "./components/Alert";
 import Footer from "./components/Footer";
 import Model from "./components/Model";
 import NavBar from "./components/NavBar";
-import "./css/App.css";
+// Pages.
 import Contact from "./pages/Contact";
 import Editor from "./pages/Editor";
 import Documents from "./pages/Documents";
 import Settings from "./pages/Settings";
 import Home from "./pages/Home";
-import PrivateRoute from "./helpers/PrivateRoute";
 import Publish from "./pages/Publish";
 
 function App() {

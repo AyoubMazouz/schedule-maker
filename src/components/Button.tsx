@@ -12,6 +12,16 @@ interface ButtonType {
   styles?: string;
 }
 
+const base =
+  "border-2 rounded shadow py-0.5 font-semibold capitalize cursor-pointer disabled:opacity-50 flex gap-x-1 items-center disabled:cursor-not-allowed transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md overflow-hidden group relative";
+const btn = {
+  primary: `${base} bg-primary text-white border-dark btn-base hover:shadow-primary`,
+  secondary: `${base} text-primary border-primary btn-base hover:shadow-primary`,
+  success: `${base} bg-emerald-500 text-white border-emerald-800 btn-base hover:shadow-emerald-800`,
+  warn: `${base} bg-amber-500 text-white border-orange-800 btn-base hover:shadow-amber-800`,
+  danger: `${base} bg-red-500 text-white border-rose-800 btn-base hover:shadow-red-800`,
+};
+
 export const Button: React.FC<ButtonType> = ({
   Icon,
   onClick = (e) => e,
@@ -38,9 +48,7 @@ export const Button: React.FC<ButtonType> = ({
   return (
     <button
       disabled={disabled}
-      className={`btn-${type} ${styles} ${
-        Icon ? "pl-4 pr-2" : "px-4"
-      } group relative`}
+      className={`${btn[type]} ${styles} ${Icon ? "pl-4 pr-2" : "px-4"}`}
       onClick={(e) => onClick(e)}
     >
       {children}

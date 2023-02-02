@@ -10,7 +10,7 @@ export interface Level extends BaseLabelsTypes {
   modules: string[];
 }
 export interface Trainer extends BaseLabelsTypes {
-  preferedRooms: string[];
+  preferredRooms: string[];
 }
 export interface Room extends BaseLabelsTypes {}
 export interface Event extends BaseLabelsTypes {}
@@ -29,7 +29,7 @@ export interface PublishedDocument {
   createdAt: any;
 }
 
-export interface Schedual {
+export interface Schedule {
   totalHours: string;
   group: string;
   schedual: string[][][];
