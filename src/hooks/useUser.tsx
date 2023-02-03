@@ -10,8 +10,10 @@ import {
 import { useNavigate } from "react-router-dom";
 import { setDoc, doc, getDoc, Timestamp } from "firebase/firestore";
 import { DEFAULT_PROFILE_IMG } from "../helpers/constants";
+import { User } from "../helpers/types";
 
 export const useUser = () => {
+  const [loading, setLoading] = React.useState(true);
   const navigate = useNavigate();
 
   const signUp = (
@@ -33,7 +35,7 @@ export const useUser = () => {
         );
         await updateProfile(credentials.user, { displayName: username });
         // User doc.
-        const document: any = {
+        const document: User = {
           email,
           username,
           phone: "",
@@ -53,12 +55,35 @@ export const useUser = () => {
       }
     });
 
-  const signIn = (email: string, password: string) =>
-    signInWithEmailAndPassword(auth, email, password);
+  const signIn = async (email: string, password: string) => {
+    setLoading(true);
+    try {
+      const snapshot = await signInWithEmailAndPassword(auth, email, password);
+      setLoading(false);
+      return snapshot.user.displayName;
+    } catch (e) {
+      setLoading(false);
+      return "failed";
+    }
+  };
 
   const signOut = () => {
     _signOut(auth);
     navigate("/");
   };
-  return { signUp, signIn, signOut };
+
+  const updateUserDoc = async (document: User) => {
+    setLoading(true);
+    try {
+      await setDoc(doc(db, "users", document.username), document);
+      setLoading(false);
+      return "success";
+    } catch (e) {
+      console.log(e);
+      setLoading(false);
+      return "failed";
+    }
+  };
+
+  return { loading, signUp, signIn, signOut, updateUserDoc };
 };

@@ -31,7 +31,7 @@
     }
     
     .model-btn-container {
-        @apply flex gap-x-4 justify-center
+        @apply flex gap-x-3 justify-center
     }
     
     /* Form */

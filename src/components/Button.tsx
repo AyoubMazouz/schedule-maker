@@ -13,7 +13,7 @@ interface ButtonType {
 }
 
 const base =
-  "border-2 rounded shadow py-0.5 font-semibold capitalize cursor-pointer disabled:opacity-50 flex gap-x-1 items-center disabled:cursor-not-allowed transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md overflow-hidden group relative cursor-pointer";
+  "border-2 rounded shadow py-0.5 font-semibold capitalize cursor-pointer disabled:opacity-50 flex gap-x-1 items-center disabled:cursor-not-allowed transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md overflow-hidden group relative cursor-pointer max-h-[2.1rem]";
 const btn = {
   primary: `${base} bg-primary text-white border-dark btn-base hover:shadow-primary`,
   secondary: `${base} text-primary border-primary btn-base hover:shadow-primary`,

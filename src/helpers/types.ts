@@ -49,3 +49,15 @@ export interface PublishedDocument {
   url: string;
   createdAt: any;
 }
+
+export interface User {
+  username: string;
+  uid: string;
+  phone: string;
+  email: string;
+  createdAt: any;
+  img: string;
+  org: string;
+  isAdmin?: boolean | undefined;
+  isRoot?: boolean | undefined;
+}

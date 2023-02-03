@@ -67,3 +67,4 @@ export const IcLevel = HiOutlineBookOpen;
 export const IcSelectionNone = MdSelectAll;
 export const IcCopy = HiOutlineClipboardDocument;
 export const IcCopied = HiOutlineClipboardDocumentCheck;
+export const IcNotAllowed = HiOutlineNoSymbol;

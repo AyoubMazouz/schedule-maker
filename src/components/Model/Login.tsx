@@ -6,29 +6,31 @@ import { useUser } from "../../hooks/useUser";
 // Components.
 import { Button } from "../Button";
 import { IcCancel, IcLogin } from "../../helpers/icons";
+import { useAuth } from "../../Contexts/AuthContext";
 
 const Login = () => {
   const { setModel, setAlert } = useGlobalContext();
+  const { currUser } = useAuth();
   const { signIn } = useUser();
 
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
 
-  const submitHandler = async (e: any) => {
-    e.preventDefault();
-    try {
-      const snapshot = await signIn(email, password);
+  const submitHandler = async () => {
+    const res = await signIn(email, password);
+
+    if (res === "success")
       setAlert({
         type: "success",
-        message: `Welcome back "${snapshot.user.email}!"`,
+        message: `Welcome back "${currUser.username}!"`,
       });
-    } catch (e) {
+    else
       setAlert({
         type: "danger",
         message:
           "Something went wrong, make sure you have the correct credentials and try again.",
       });
-    }
+
     setModel(null);
   };
 
