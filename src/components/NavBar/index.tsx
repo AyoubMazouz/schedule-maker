@@ -7,13 +7,7 @@ import { useGlobalContext } from "../../Contexts/GlobalContext";
 import { useUser } from "../../hooks/useUser";
 // Components.
 import { Button } from "../Button";
-import {
-  IcEditor,
-  IcLogin,
-  IcLogout,
-  IcSettings,
-  IcUser,
-} from "../../helpers/icons";
+import { IcEditor, IcLogin, IcLogout, IcSettings } from "../../helpers/icons";
 import { Logo } from "./Logo";
 
 const NavBar = () => {

@@ -108,7 +108,7 @@ export const DARK_COL = "#112D4E";
 export const EVENT_COL = "#BAB8B8";
 
 export const DOMAIN_NAME = "https://schedual-maker.netlify.app";
-export const VERSION = "1.5.0";
+export const VERSION = "1.6.0";
 export const ABOUT_APP = (
   <p>
     <b>Schedual Maker</b> is a Web App made with react.<br></br>This App helps

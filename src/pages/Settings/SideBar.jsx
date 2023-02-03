@@ -7,9 +7,10 @@ const SideBar = ({ tabsLs, saved }) => {
   const { setAlert } = useGlobalContext();
 
   const icons = [
+    <IcUser className="icon" />,
+    <IcUser className="icon" />,
     <IcLabels className="icon" />,
     <IcPublish className="icon" />,
-    <IcUser className="icon" />,
     <IcAbout className="icon" />,
   ];
 

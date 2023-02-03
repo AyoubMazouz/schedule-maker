@@ -15,11 +15,11 @@ const Settings = () => {
   const [saved, setSaved] = React.useState(true);
 
   const tabs = {
+    profile: <Profile />,
+    users: <Users />,
     labels: <Labels {...{ saved, setSaved }} />,
     publish: <Publish />,
-    users: <Users />,
     about: <About />,
-    profile: <Profile />,
   };
 
   const tabsLs = Object.keys(tabs);
