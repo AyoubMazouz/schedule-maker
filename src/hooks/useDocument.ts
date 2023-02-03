@@ -12,13 +12,13 @@ import {
   DocumentData,
 } from "firebase/firestore";
 import { db } from "../firebase";
-import { Schedual } from "../helpers/types";
+import { Schedule } from "../helpers/types";
 
 interface DocExists {
   (userId: string, id: string): Promise<boolean>;
 }
 interface AddNewDoc {
-  (userId: string, id: string, data: Schedual[]): Promise<boolean>;
+  (userId: string, id: string, data: Schedule[]): Promise<boolean>;
 }
 interface GetDoc {
   (userId: string, id: string): Promise<boolean | DocumentData>;

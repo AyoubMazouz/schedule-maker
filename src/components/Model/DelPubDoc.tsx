@@ -17,8 +17,12 @@ const DelPubDoc = () => {
         <Button
           text="delete"
           type="danger"
-          onClick={() => {
-            deletePublishedDocument(currUser.uid, model.id);
+          onClick={async () => {
+            await deletePublishedDocument(
+              currUser.uid,
+              model.id,
+              model.documents
+            );
             setModel(null);
             setAlert({
               type: "warn",

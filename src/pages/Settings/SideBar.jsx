@@ -1,12 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { IcLabels, IcPublish, IcAbout } from "../../helpers/icons";
+import { IcLabels, IcPublish, IcAbout, IcUser } from "../../helpers/icons";
 import { useGlobalContext } from "../../Contexts/GlobalContext";
 
 const SideBar = ({ tabsLs, saved }) => {
   const { setAlert } = useGlobalContext();
 
   const icons = [
+    <IcUser className="icon" />,
+    <IcUser className="icon" />,
     <IcLabels className="icon" />,
     <IcPublish className="icon" />,
     <IcAbout className="icon" />,

@@ -1,67 +1,47 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React from "react";
 // Firebase Imports.
 import { auth, db } from "../firebase";
-import { signInWithEmailAndPassword, signOut } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
 import { getDoc, doc } from "firebase/firestore";
 
-const AuthContext = createContext();
+const AuthContext = React.createContext();
 
-export function useAuth() {
-    return useContext(AuthContext);
-}
+export const AuthProvider = ({ children }) => {
+  const [loading, setLoading] = React.useState(true);
+  const [currUser, setCurrUser] = React.useState(null);
+  const [isRoot, setIsRoot] = React.useState(false);
+  const [isAdmin, setIsAdmin] = React.useState(false);
 
-export function AuthProvider({ children }) {
-    const [loading, setLoading] = useState(true);
-    const [currUser, setCurrUser] = useState(null);
-    const [userInfo, setUserInfo] = useState(null);
-    const [isRoot, setIsRoot] = useState(false);
-    const [isAdmin, setIsAdmin] = useState(false);
+  React.useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        const snapshot = await getDoc(doc(db, "users", user.displayName));
 
-    const navigate = useNavigate();
+        if (snapshot.exists()) {
+          const data = snapshot.data();
+          if (data?.isAdmin) setIsAdmin(true);
+          else if (data?.isRoot) setIsRoot(true);
+          setCurrUser(data);
+        }
+      } else {
+        setCurrUser(null);
+        setIsRoot(false);
+      }
+      setLoading(false);
+    });
+    return () => unsubscribe();
+  }, []);
 
-    const login = (email, password) =>
-        signInWithEmailAndPassword(auth, email, password);
-
-    const logout = () => {
-        signOut(auth);
-        navigate("/");
-    };
-
-    useEffect(() => {
-        const unsubscribe = auth.onAuthStateChanged(async (user) => {
-            if (user) {
-                const snapshot = await getDoc(doc(db, "users", user.uid));
-
-                if (snapshot.exists()) {
-                    const data = snapshot.data();
-                    setUserInfo(data);
-                    if (data?.isAdmin) setIsAdmin(true);
-                    else if (data?.isRoot) setIsRoot(true);
-                }
-
-                setCurrUser(user);
-                setLoading(false);
-            } else {
-                setCurrUser(null);
-                setIsRoot(false);
-            }
-        });
-        return () => unsubscribe();
-    }, []);
-
-    const value = {
+  return (
+    <AuthContext.Provider
+      value={{
         currUser,
         isRoot,
         isAdmin,
-        login,
-        logout,
         loading,
-    };
-
-    return (
-        <AuthContext.Provider value={value}>
-            {!loading && children}
-        </AuthContext.Provider>
-    );
-}
+      }}
+    >
+      {!loading && children}
+    </AuthContext.Provider>
+  );
+};
+export const useAuth = () => React.useContext(AuthContext);

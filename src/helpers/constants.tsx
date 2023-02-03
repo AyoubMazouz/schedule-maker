@@ -54,10 +54,10 @@ export const ROOMS = [
   "Teams",
 ];
 
-export const EMPTY_SCHEDUAL = {
+export const EMPTY_SCHEDULE = {
   group: "",
   totalHours: "0",
-  schedual: [
+  schedule: [
     [
       ["", "", "", ""],
       ["", "", "", ""],
@@ -97,6 +97,9 @@ export const EMPTY_SCHEDUAL = {
   ],
 };
 
+export const DEFAULT_PROFILE_IMG =
+  "https://firebasestorage.googleapis.com/v0/b/schedual-maker.appspot.com/o/default%2Fdefault-profile.png?alt=media&token=9a811eba-0f25-4b34-b7dd-1fe6009bb636";
+
 // Colors.
 export const PRIMARY_COL = "#3F72AF";
 export const SECONDARY_COL = "#E0DEDE";
@@ -105,7 +108,7 @@ export const DARK_COL = "#112D4E";
 export const EVENT_COL = "#BAB8B8";
 
 export const DOMAIN_NAME = "https://schedual-maker.netlify.app";
-export const VERSION = "1.5.0";
+export const VERSION = "1.6.0";
 export const ABOUT_APP = (
   <p>
     <b>Schedual Maker</b> is a Web App made with react.<br></br>This App helps

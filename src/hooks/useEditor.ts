@@ -1,67 +1,66 @@
-import React from "react";
-import { EMPTY_SCHEDUAL } from "../helpers/constants";
-import { LabelsType, Level, Schedual } from "../helpers/types";
+import { EMPTY_SCHEDULE } from "../helpers/constants";
+import { LabelsType, Level, Schedule } from "../helpers/types";
 import useDocument from "./useDocument";
 
 interface ImportDoc {
-  (file: any, callback: (a: Schedual[]) => void): void;
+  (file: any, callback: (a: Schedule[]) => void): void;
 }
 interface ClearCell {
   (
-    data: Schedual[],
-    setData: (a: Schedual[]) => void,
+    data: Schedule[],
+    setData: (a: Schedule[]) => void,
     fusionMode: boolean,
-    schedualIndex: number,
+    scheduleIndex: number,
     dayIndex: number,
     sessionIndex: number
   ): boolean;
 }
 interface EditField {
   (
-    data: Schedual[],
-    setData: (a: Schedual[]) => void,
+    data: Schedule[],
+    setData: (a: Schedule[]) => void,
     fusionMode: boolean,
-    schedualIndex: number,
+    scheduleIndex: number,
     dayIndex: number,
     sessionIndex: number,
     row: number,
     value: string
   ): boolean;
 }
-interface EditSchedualGrp {
+interface EditScheduleGrp {
   (
-    data: Schedual[],
-    setData: (a: Schedual[]) => void,
-    schedualIndex: number,
+    data: Schedule[],
+    setData: (a: Schedule[]) => void,
+    scheduleIndex: number,
     value: string
   ): boolean;
 }
-interface AddNewSchedual {
-  (data: Schedual[], setData: (a: Schedual[]) => void): boolean;
+interface AddNewSchedule {
+  (data: Schedule[], setData: (a: Schedule[]) => void): boolean;
 }
-interface DeleteSchedual {
-  (data: Schedual[], setData: (a: Schedual[]) => void, id: string): boolean;
+interface DeleteSchedule {
+  (data: Schedule[], setData: (a: Schedule[]) => void, id: string): boolean;
 }
 
 interface GetGroups {
-  (data: Schedual[], labelsData: LabelsType, currSchedual: number): string[][];
+  (data: Schedule[], labelsData: LabelsType, currSchedule: number): string[][];
 }
 interface GetTrainers {
   (
-    data: Schedual[],
+    data: Schedule[],
     labelsData: LabelsType,
     selectedCell: number[]
   ): string[][];
 }
 interface GetRooms {
   (
-    data: Schedual[],
+    data: Schedule[],
     labelsData: LabelsType,
     selectedCell: number[]
   ): string[][];
 }
 interface GetModules {
-  (data: Schedual[], labelsData: LabelsType, selectedCell: number[]): string[];
+  (data: Schedule[], labelsData: LabelsType, selectedCell: number[]): string[];
 }
 interface GetEvents {
   (labelsData: LabelsType): string[];
@@ -70,11 +69,11 @@ interface GetEvents {
 const useEditor = () => {
   const { addNewDocument, loading } = useDocument();
 
-  const exportDocument = (data: Schedual[], fileName: string) => {
+  const exportDocument = (data: Schedule[], fileName: string) => {
     const jsonData = JSON.stringify(data);
     const link = document.createElement("a");
     link.href = "data:application/json," + jsonData;
-    link.download = `${fileName}.schedual-maker.json`;
+    link.download = `${fileName}.schedule-maker.json`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -96,12 +95,12 @@ const useEditor = () => {
     data,
     setData,
     fusionMode,
-    schedualIndex,
+    scheduleIndex,
     dayIndex,
     sessionIndex
   ) => {
     const copiedData = data.map((sch) => sch);
-    copiedData[schedualIndex].schedual[dayIndex][sessionIndex] = [
+    copiedData[scheduleIndex].schedule[dayIndex][sessionIndex] = [
       "",
       "",
       "",
@@ -110,7 +109,7 @@ const useEditor = () => {
 
     if (fusionMode) {
       const offset = sessionIndex % 2 === 0 ? 1 : -1;
-      copiedData[schedualIndex].schedual[dayIndex][sessionIndex + offset] = [
+      copiedData[scheduleIndex].schedule[dayIndex][sessionIndex + offset] = [
         "",
         "",
         "",
@@ -122,12 +121,12 @@ const useEditor = () => {
     return true;
   };
 
-  // Schedual.
+  // schedule.
   const editField: EditField = (
     data,
     setData,
     fusionMode,
-    schedualIndex,
+    scheduleIndex,
     dayIndex,
     sessionIndex,
     row,
@@ -139,12 +138,12 @@ const useEditor = () => {
       if (row === 1) return sch;
       return {
         ...sch,
-        schedual: sch.schedual.map((d, dIndex) => {
+        schedule: sch.schedule.map((d, dIndex) => {
           return d.map((ses, sesIndex) => {
             // Check if Prof available.
             if (
               ses[0] === value &&
-              schIndex !== schedualIndex &&
+              schIndex !== scheduleIndex &&
               dIndex === dayIndex &&
               sesIndex === sessionIndex &&
               ses[2].toLowerCase() !== "teams"
@@ -155,7 +154,7 @@ const useEditor = () => {
             // Check if Room available.
             else if (
               ses[2] === value &&
-              schIndex !== schedualIndex &&
+              schIndex !== scheduleIndex &&
               dIndex === dayIndex &&
               sesIndex === sessionIndex &&
               ses[2].toLowerCase() !== "teams"
@@ -165,7 +164,7 @@ const useEditor = () => {
             }
 
             // Count Total Hours.
-            if (schIndex === schedualIndex)
+            if (schIndex === scheduleIndex)
               if (ses[0] && ses[1] && ses[2]) hoursCount += 2.5;
             return ses;
           });
@@ -177,20 +176,20 @@ const useEditor = () => {
 
     if (fusionMode) {
       const offset = sessionIndex % 2 === 0 ? 1 : -1;
-      copiedData[schedualIndex].schedual[dayIndex][sessionIndex + offset][row] =
+      copiedData[scheduleIndex].schedule[dayIndex][sessionIndex + offset][row] =
         value;
     }
 
-    copiedData[schedualIndex].totalHours = hoursCount.toString();
-    copiedData[schedualIndex].schedual[dayIndex][sessionIndex][row] = value;
+    copiedData[scheduleIndex].totalHours = hoursCount.toString();
+    copiedData[scheduleIndex].schedule[dayIndex][sessionIndex][row] = value;
     setData(copiedData);
     return true;
   };
 
-  const editSchedualGrp: EditSchedualGrp = (
+  const editScheduleGrp: EditScheduleGrp = (
     data,
     setData,
-    schedualIndex,
+    scheduleIndex,
     value
   ) => {
     let error = false;
@@ -203,13 +202,13 @@ const useEditor = () => {
     });
     if (error) return false;
 
-    copiedData[schedualIndex].group = value;
+    copiedData[scheduleIndex].group = value;
     setData(copiedData);
     return true;
   };
 
-  const addNewSchedual: AddNewSchedual = (data, setData) => {
-    const newSchedule = JSON.parse(JSON.stringify(EMPTY_SCHEDUAL));
+  const addNewSchedule: AddNewSchedule = (data, setData) => {
+    const newSchedule = JSON.parse(JSON.stringify(EMPTY_SCHEDULE));
     if (data.length === 0) {
       setData([newSchedule]);
       return true;
@@ -221,14 +220,14 @@ const useEditor = () => {
     return true;
   };
 
-  const deleteSchedual: DeleteSchedual = (data, setData, id) => {
+  const deleteschedule: DeleteSchedule = (data, setData, id) => {
     const newData = data.filter((sch) => sch.group !== id);
     if (data.length === newData.length) return false;
     setData(newData);
     return true;
   };
 
-  const getGroups: GetGroups = (data, labelsData, currSchedual) => {
+  const getGroups: GetGroups = (data, labelsData, currschedule) => {
     const groups: string[] = [];
     // Generate groups base on level and numOfGrps.
     labelsData.levels.forEach((level) => {
@@ -239,7 +238,7 @@ const useEditor = () => {
     const unavailableGroups: string[] = [];
     for (let i = 0; i < data.length; i++) {
       const grp = data[i].group;
-      if (grp && grp !== data[currSchedual].group) unavailableGroups.push(grp);
+      if (grp && grp !== data[currschedule].group) unavailableGroups.push(grp);
     }
     // Get available groups without including unavailable groups.
     const availableGroups = groups.filter(
@@ -258,10 +257,10 @@ const useEditor = () => {
     const availableTrainers: string[] = [];
     const unavailableTrainers: string[] = [];
     const currTrainer =
-      data[selectedCell[0]].schedual[selectedCell[1]][selectedCell[2]][0];
+      data[selectedCell[0]].schedule[selectedCell[1]][selectedCell[2]][0];
     // Get unavailable trainers.
     for (let s = 0; s < data.length; s++) {
-      const trainer = data[s].schedual[selectedCell[1]][selectedCell[2]][0];
+      const trainer = data[s].schedule[selectedCell[1]][selectedCell[2]][0];
       if (trainer && trainer !== currTrainer) unavailableTrainers.push(trainer);
     }
     // Get available trainers.
@@ -278,12 +277,12 @@ const useEditor = () => {
     const unavailableRooms: string[] = [];
     const preferredRooms = ["teams"];
     const [x, y, z] = selectedCell;
-    const currRoom = data[x].schedual[y][z][2];
+    const currRoom = data[x].schedule[y][z][2];
     const currTrainer =
-      data[selectedCell[0]].schedual[selectedCell[1]][selectedCell[2]][0];
+      data[selectedCell[0]].schedule[selectedCell[1]][selectedCell[2]][0];
     // Get unavailable rooms.
     for (let s = 0; s < data.length; s++) {
-      const room = data[s].schedual[y][z][2];
+      const room = data[s].schedule[y][z][2];
       if (room && room !== currRoom && room !== "Teams")
         unavailableRooms.push(room);
     }
@@ -292,7 +291,7 @@ const useEditor = () => {
       for (let p = 0; p < labelsData.trainers.length; p++) {
         const trainer = labelsData.trainers[p];
         if (currTrainer === trainer.value) {
-          const rooms = trainer.preferedRooms.filter(
+          const rooms = trainer.preferredRooms.filter(
             (r) => r !== currRoom && !unavailableRooms.includes(r)
           );
           preferredRooms.push(...rooms);
@@ -319,9 +318,9 @@ const useEditor = () => {
     importDocumentAsFile,
     editField,
     clearCell,
-    editSchedualGrp,
-    deleteSchedual,
-    addNewSchedual,
+    editScheduleGrp,
+    deleteschedule,
+    addNewSchedule,
     getGroups,
     getTrainers,
     getRooms,

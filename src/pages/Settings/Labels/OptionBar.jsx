@@ -86,11 +86,11 @@ const OptionBar = ({
     </button>
   );
   const ImportMenuItem = () => (
-    <div className="menu-item relative overflow-hidden">
+    <div className="relative overflow-hidden menu-item">
       <input
         type="file"
         accept=".json,.xls,.xlsm"
-        className="absolute top-0 bottom-0 left-0 right-0 cursor-pointer opacity-0"
+        className="absolute top-0 bottom-0 left-0 right-0 opacity-0 cursor-pointer"
         onChange={(e) => {
           importSettings(e.target.files[0], setLabelsData);
           setSaved(false);
@@ -102,7 +102,7 @@ const OptionBar = ({
   );
 
   return (
-    <div className="relative flex gap-6 rounded-lg border p-2 shadow-md">
+    <div className="relative flex gap-6 p-2 border rounded-lg shadow-md">
       <DropdownMenu
         text="file"
         menuRef={menuRef}
@@ -127,29 +127,6 @@ const OptionBar = ({
           ["New Event", addEventHandler, IcEvent],
         ]}
       />
-      <div className="flex gap-x-6">
-        {/* <div className="relative overflow-hidden btn">
-                    <input
-                        type="file"
-                        accept=".json,.xls,.xlsm"
-                        className="absolute top-0 bottom-0 left-0 right-0 opacity-0 cursor-pointer"
-                        onChange={(e) =>
-                            importSettings(e.target.files[0], setLabelsData)
-                        }
-                        />
-                        <IcImport className="icon" />
-                    <span>Import</span>
-                </div>
-                <button
-                    className="btn-success"
-                    onClick={(e) =>
-                        exportSettings(labelsData, "settings.sh-maker")
-                    }
-                    >
-                    <IcExport className="icon" />
-                    <span>Export</span>
-                </button> */}
-      </div>
     </div>
   );
 };

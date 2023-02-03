@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { EMPTY_SCHEDUAL } from "../../helpers/constants";
+import { EMPTY_SCHEDULE } from "../../helpers/constants";
 import { useAuth } from "../../Contexts/AuthContext";
 import { useGlobalContext } from "../../Contexts/GlobalContext";
 import useDocument from "../../hooks/useDocument";
@@ -17,7 +17,7 @@ const NewDoc = () => {
 
   const createHandler = async () => {
     setModel(null);
-    await addNewDocument(currUser.uid, newDocId, [EMPTY_SCHEDUAL]);
+    await addNewDocument(currUser.uid, newDocId, [EMPTY_SCHEDULE]);
     setDocId(newDocId);
     navigate("/editor/" + newDocId);
   };
