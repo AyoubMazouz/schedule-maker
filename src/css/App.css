@@ -994,6 +994,10 @@ body{
   width: 50%;
 }
 
+.w-\[3rem\]{
+  width: 3rem;
+}
+
 .max-w-\[1200px\]{
   max-width: 1200px;
 }
@@ -1046,6 +1050,10 @@ body{
   cursor: pointer;
 }
 
+.cursor-not-allowed{
+  cursor: not-allowed;
+}
+
 .grid-cols-2{
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
@@ -1074,8 +1082,16 @@ body{
   place-items: center;
 }
 
+.items-start{
+  align-items: flex-start;
+}
+
 .items-center{
   align-items: center;
+}
+
+.justify-start{
+  justify-content: flex-start;
 }
 
 .justify-center{
@@ -1164,6 +1180,24 @@ body{
   --tw-space-y-reverse: 0;
   margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(1rem * var(--tw-space-y-reverse));
+}
+
+.-space-y-3 > :not([hidden]) ~ :not([hidden]){
+  --tw-space-y-reverse: 0;
+  margin-top: calc(-0.75rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(-0.75rem * var(--tw-space-y-reverse));
+}
+
+.-space-y-2 > :not([hidden]) ~ :not([hidden]){
+  --tw-space-y-reverse: 0;
+  margin-top: calc(-0.5rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(-0.5rem * var(--tw-space-y-reverse));
+}
+
+.-space-y-1 > :not([hidden]) ~ :not([hidden]){
+  --tw-space-y-reverse: 0;
+  margin-top: calc(-0.25rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(-0.25rem * var(--tw-space-y-reverse));
 }
 
 .overflow-hidden{
@@ -1396,6 +1430,11 @@ body{
   padding-bottom: 0.5rem;
 }
 
+.px-3{
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+
 .py-6{
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
@@ -1518,6 +1557,14 @@ body{
 .text-light{
   --tw-text-opacity: 1;
   color: rgb(249 247 247 / var(--tw-text-opacity));
+}
+
+.text-dark\/50{
+  color: rgb(17 45 78 / 0.5);
+}
+
+.underline{
+  text-decoration-line: underline;
 }
 
 .opacity-0{
@@ -1717,6 +1764,10 @@ body{
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
+.hover\:text-light\/50:hover{
+  color: rgb(249 247 247 / 0.5);
+}
+
 .hover\:underline:hover{
   text-decoration-line: underline;
 }
@@ -1790,6 +1841,11 @@ body{
 
 .group:hover .group-hover\:bottom-\[-18\%\]{
   bottom: -18%;
+}
+
+.group:hover .group-hover\:text-light{
+  --tw-text-opacity: 1;
+  color: rgb(249 247 247 / var(--tw-text-opacity));
 }
 
 .group:hover .group-hover\:underline{

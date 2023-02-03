@@ -13,7 +13,7 @@ interface ButtonType {
 }
 
 const base =
-  "border-2 rounded shadow py-0.5 font-semibold capitalize cursor-pointer disabled:opacity-50 flex gap-x-1 items-center disabled:cursor-not-allowed transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md overflow-hidden group relative";
+  "border-2 rounded shadow py-0.5 font-semibold capitalize cursor-pointer disabled:opacity-50 flex gap-x-1 items-center disabled:cursor-not-allowed transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md overflow-hidden group relative cursor-pointer";
 const btn = {
   primary: `${base} bg-primary text-white border-dark btn-base hover:shadow-primary`,
   secondary: `${base} text-primary border-primary btn-base hover:shadow-primary`,
@@ -36,13 +36,17 @@ export const Button: React.FC<ButtonType> = ({
   if (!text)
     return (
       <button
-        className={`group relative flex h-8 w-8 items-center justify-center rounded transition-all duration-300 hover:bg-dark/25 ${
+        className={`${
           trigger ? "bg-primary/25" : ""
-        } ${styles}`}
+        } ${styles} group relative flex h-8 w-8 cursor-pointer items-center justify-center rounded transition-all duration-300 hover:bg-dark/25 disabled:cursor-not-allowed disabled:opacity-50`}
         onClick={(e) => onClick(e)}
+        disabled={disabled}
       >
         {label ? <Label label={label} /> : null}
-        <Icon className="icon" />
+        <Icon
+          className={`icon ${disabled && "cursor-not-allowed"}`}
+          disabled={disabled}
+        />
       </button>
     );
   return (

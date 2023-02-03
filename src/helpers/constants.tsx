@@ -54,10 +54,10 @@ export const ROOMS = [
   "Teams",
 ];
 
-export const EMPTY_SCHEDUAL = {
+export const EMPTY_SCHEDULE = {
   group: "",
   totalHours: "0",
-  schedual: [
+  schedule: [
     [
       ["", "", "", ""],
       ["", "", "", ""],
@@ -96,6 +96,9 @@ export const EMPTY_SCHEDUAL = {
     ],
   ],
 };
+
+export const DEFAULT_PROFILE_IMG =
+  "https://firebasestorage.googleapis.com/v0/b/schedual-maker.appspot.com/o/default%2Fdefault-profile.png?alt=media&token=9a811eba-0f25-4b34-b7dd-1fe6009bb636";
 
 // Colors.
 export const PRIMARY_COL = "#3F72AF";

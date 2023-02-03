@@ -1,9 +1,11 @@
 import React from "react";
 
 interface Type {
-  type: "text" | "password" | "email" | "number";
+  type: "text" | "password" | "email" | "number" | "textarea";
   value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void;
   placeholder?: string;
   label?: string;
   disabled?: boolean;
@@ -28,14 +30,24 @@ export const Input = ({
           {label}:
         </label>
       ) : null}
-      <input
-        className={`${inputStyle} max-h-[1.75rem] rounded bg-light px-2 py-1 font-semibold ring-2 ring-dark/50 focus:text-primary focus:outline-none focus:ring-primary`}
-        type={type}
-        value={value}
-        onChange={onChange}
-        placeholder={placeholder}
-        disabled={disabled}
-      />
+      {type === "textarea" ? (
+        <textarea
+          className={`${inputStyle} max-h-[1.75rem] rounded bg-light px-2 py-1 font-semibold ring-2 ring-dark/50 focus:text-primary focus:outline-none focus:ring-primary`}
+          value={value}
+          onChange={onChange}
+          placeholder={placeholder}
+          disabled={disabled}
+        ></textarea>
+      ) : (
+        <input
+          className={`${inputStyle} max-h-[1.75rem] rounded bg-light px-2 py-1 font-semibold ring-2 ring-dark/50 focus:text-primary focus:outline-none focus:ring-primary`}
+          type={type}
+          value={value}
+          onChange={onChange}
+          placeholder={placeholder}
+          disabled={disabled}
+        />
+      )}
     </div>
   );
 };

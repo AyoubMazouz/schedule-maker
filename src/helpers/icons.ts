@@ -23,6 +23,7 @@ import {
   HiOutlineUser,
   HiOutlineHome,
   HiOutlineBookOpen,
+  HiOutlineClipboardDocument,
 } from "react-icons/hi2";
 import {
   HiOutlineX,
@@ -44,7 +45,6 @@ export const IcLogin = HiOutlineArrowLeftOnRectangle;
 export const IcLabels = HiOutlineSquaresPlus;
 export const IcBin = HiOutlineTrash;
 export const IcAbout = HiOutlineInformationCircle;
-export const IcCopy = HiOutlineClipboardDocumentCheck;
 export const IcDown = HiOutlineChevronDown;
 export const IcMore = HiDotsVertical;
 export const IcExport = HiOutlineDocumentArrowUp;
@@ -65,3 +65,5 @@ export const IcUser = HiOutlineUser;
 export const IcEvent = HiOutlineNewspaper;
 export const IcLevel = HiOutlineBookOpen;
 export const IcSelectionNone = MdSelectAll;
+export const IcCopy = HiOutlineClipboardDocument;
+export const IcCopied = HiOutlineClipboardDocumentCheck;

@@ -32,7 +32,7 @@ export interface PublishedDocument {
 export interface Schedule {
   totalHours: string;
   group: string;
-  schedual: string[][][];
+  schedule: string[][][];
 }
 export interface Document {
   id: number;
@@ -44,7 +44,8 @@ export interface Document {
 
 export interface PublishedDocument {
   id: number;
-  userId: string;
-  createdAt: any;
+  username: string;
+  description: string;
   url: string;
+  createdAt: any;
 }

@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import About from "./About";
 import Labels from "./Labels";
+import { Profile } from "./Profile";
 import Publish from "./Publish";
 import SideBar from "./SideBar";
 import { Users } from "./Users";
@@ -18,6 +19,7 @@ const Settings = () => {
     publish: <Publish />,
     users: <Users />,
     about: <About />,
+    profile: <Profile />,
   };
 
   const tabsLs = Object.keys(tabs);

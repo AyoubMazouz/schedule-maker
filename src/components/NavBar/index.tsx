@@ -7,7 +7,13 @@ import { useGlobalContext } from "../../Contexts/GlobalContext";
 import { useUser } from "../../hooks/useUser";
 // Components.
 import { Button } from "../Button";
-import { IcEditor, IcLogin, IcLogout, IcSettings } from "../../helpers/icons";
+import {
+  IcEditor,
+  IcLogin,
+  IcLogout,
+  IcSettings,
+  IcUser,
+} from "../../helpers/icons";
 import { Logo } from "./Logo";
 
 const NavBar = () => {
@@ -57,10 +63,22 @@ const NavBar = () => {
                   } h-[2.25rem] w-[2.25rem] cursor-pointer overflow-hidden rounded-full opacity-90 shadow-md transition-all duration-300 hover:opacity-100`}
                   onClick={(e) => setCurrMenu("prfMenu")}
                 >
-                  <img className="aspect-1" src="/assets/default-profile.png" />
+                  <img className="aspect-1" src={currUser.img} />
                 </div>
                 {currMenu === "prfMenu" && (
                   <div ref={menuRef} className="menu top-[110%] right-[0%]">
+                    <Link to={"/settings/profile"} className="menu-item group">
+                      <img
+                        src={currUser.img}
+                        className="aspect-1 w-[3rem] rounded-md shadow"
+                      />
+                      <div className="-space-y-1">
+                        <span className="text-primary group-hover:text-light">
+                          @{currUser.username}
+                        </span>
+                        <div className="text-sm underline">Manage profile</div>
+                      </div>
+                    </Link>
                     <Link to="/settings" className="menu-item">
                       <IcSettings className="icon" />
                       <span>Settings</span>

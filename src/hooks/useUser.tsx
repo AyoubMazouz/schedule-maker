@@ -8,16 +8,8 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import {
-  setDoc,
-  doc,
-  getDocs,
-  collection,
-  where,
-  query,
-  getDoc,
-  Timestamp,
-} from "firebase/firestore";
+import { setDoc, doc, getDoc, Timestamp } from "firebase/firestore";
+import { DEFAULT_PROFILE_IMG } from "../helpers/constants";
 
 export const useUser = () => {
   const navigate = useNavigate();
@@ -46,6 +38,7 @@ export const useUser = () => {
           username,
           phone: "",
           org: "",
+          img: DEFAULT_PROFILE_IMG,
           uid: credentials.user.uid,
           createdAt: Timestamp.now(),
         };

@@ -70,25 +70,25 @@ export const usePdf = () => {
 
   const getFillColor = (
     data: Schedule[],
-    schedualIndex: number,
+    scheduleIndex: number,
     rowIndex: number,
     columnIndex: number
   ) => {
     if (rowIndex === 0 && columnIndex === 0) return null;
     if (rowIndex === 0 || columnIndex === 0) return PRIMARY_COL;
-    if (data[schedualIndex].schedual[rowIndex - 1][columnIndex - 1][3])
+    if (data[scheduleIndex].schedule[rowIndex - 1][columnIndex - 1][3])
       return EVENT_COL;
     else
-      return data[schedualIndex].schedual[rowIndex - 1][columnIndex - 1][0]
+      return data[scheduleIndex].schedule[rowIndex - 1][columnIndex - 1][0]
         ? SECONDARY_COL
         : null;
   };
   const exportAsPdf = (data: Schedule[], docName: string) => {
     const content: any = [];
 
-    data.forEach((schedual, index) => {
+    data.forEach((schedule, index) => {
       content.push({
-        text: `${schedual.group} ${new Array(55 - schedual.group.length)
+        text: `${schedule.group} ${new Array(55 - schedule.group.length)
           .fill(" . ")
           .join("")} ${index + 1}`,
         linkToPage: `${index + 2}`,
@@ -103,7 +103,7 @@ export const usePdf = () => {
         });
     });
 
-    data.forEach((schedual: Schedule, schedualIndex) => {
+    data.forEach((schedule: Schedule, scheduleIndex) => {
       content.push({
         style: "tableExample",
         table: {
@@ -118,7 +118,7 @@ export const usePdf = () => {
               getSessionObj(SESSIONS_TEXT[2]),
               getSessionObj(SESSIONS_TEXT[3]),
             ],
-            ...tableData(schedual.schedual),
+            ...tableData(schedule.schedule),
           ],
         },
         layout: {
@@ -127,21 +127,21 @@ export const usePdf = () => {
             node: any,
             columnIndex: number
           ) {
-            return getFillColor(data, schedualIndex, rowIndex, columnIndex);
+            return getFillColor(data, scheduleIndex, rowIndex, columnIndex);
           },
         },
       });
 
       content.push({
-        text: `Group: ${schedual.group}`,
+        text: `Group: ${schedule.group}`,
         fontSize: 18,
       });
       content.push({
-        text: `TotalHours: ${schedual.totalHours}`,
+        text: `TotalHours: ${schedule.totalHours}`,
         fontSize: 18,
       });
       content.push({
-        text: `${schedualIndex + 1}`,
+        text: `${scheduleIndex + 1}`,
         fontSize: 22,
         pageBreak: "after",
         alignment: "right",

@@ -1,36 +1,88 @@
 import React from "react";
 import { Button } from "../../components/Button";
-import { IcBin, IcDownload, IcExport, IcPlus } from "../../helpers/icons";
+import {
+  IcBin,
+  IcDownload,
+  IcNewDoc,
+  IcCopy,
+  IcCopied,
+  IcPublish,
+} from "../../helpers/icons";
 import MoreMenu from "../../components/MoreMenu";
 import { useAuth } from "../../Contexts/AuthContext";
 import { useGlobalContext } from "../../Contexts/GlobalContext";
-import useSettings from "../../hooks/usePublish";
 import { Link } from "react-router-dom";
+import { Input } from "../../components/Input";
+import usePublish from "../../hooks/usePublish";
+
+const INITIAL_STATE = {
+  id: "",
+  file: null,
+  copied: false,
+  description: "",
+};
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "FILE":
+      return {
+        ...state,
+        id: action.payload.value.name,
+        file: action.payload.value,
+      };
+    case "REMOVE_FILE":
+      return { ...state, file: null };
+    case "COPY":
+      return { ...state, copied: !state.copied };
+    case "ID":
+      return { ...state, id: action.payload.value };
+    case "DESCRIPTION":
+      return { ...state, description: action.payload.value };
+    default:
+      return state;
+  }
+};
 
 const Publish = () => {
-  const { publishDocument, getPublishedDocuments, deletePublishedDocument } =
-    useSettings();
-  const { setModel } = useGlobalContext();
+  const { setModel, setAlert } = useGlobalContext();
   const { currUser } = useAuth();
-  const [loading, setLoading] = React.useState(false);
-  const [file, setFile] = React.useState(null);
-  const [documents, setDocuments] = React.useState([]);
-  const [currMenu, setCurrMenu] = React.useState(null);
+  const { publishDocument, getPublishedDocuments, loading } = usePublish();
+
+  const [state, dispatch] = React.useReducer(reducer, INITIAL_STATE);
   const menuRef = React.useRef();
+  const [currMenu, setCurrMenu] = React.useState(null);
+  const [documents, setDocuments] = React.useState([]);
 
   React.useEffect(() => {
-    getPublishedDocuments(currUser.uid, setDocuments);
+    getPublishedDocuments(currUser.username, setDocuments);
   }, []);
 
-  const publishHandler = async () => {
-    setLoading(true);
-    if (file) {
-      await publishDocument(currUser.uid, file.name, file);
+  const handlePublish = async () => {
+    try {
+      const res = await publishDocument(
+        currUser.username,
+        state.id,
+        state.file,
+        state.description
+      );
+      if (res === "success")
+        setAlert({
+          type: "success",
+          message: `the document "${state.id}" has been published successfully!`,
+        });
+    } catch (e) {
+      switch (e.message) {
+        case "FILE_EXISTS":
+          setAlert({
+            type: "warn",
+            message: `The title ${state.id} already used for another document, please chose another name.`,
+          });
+      }
+      console.log(e);
     }
-    setLoading(false);
   };
 
-  const downloadHandler = (url) => {
+  const handleDownload = (url) => {
     const element = document.createElement("a");
     element.setAttribute("href", url);
     element.style.display = "none";
@@ -40,58 +92,105 @@ const Publish = () => {
     document.body.removeChild(element);
   };
 
-  const deleteHandler = (id) => {
-    setModel({ type: "delpubdoc", id });
-  };
-
-  const showDetails = (v) => {
+  const handleDetail = (v) => {
     const details = [
-      ["id", v.id],
+      ["title", v.id],
       ["created at", v.createdAt.toDate().toDateString()],
+      ["description", v.description],
       ["URL", v.url],
     ];
     setModel({ type: "showDetails", details });
   };
+
+  const publishPageUrl = window.location.href.replace(
+    "settings/publish",
+    "publish/" + currUser.username
+  );
+
   return (
-    <div className="py-2 space-y-2">
-      <div className="flex justify-between p-2 mx-2 border rounded-lg shadow-md">
-        <div className="flex items-center gap-x-4">
-          <Button type="primary" text="Open" Icon={IcPlus}>
+    <div className="p-2 space-y-6">
+      {/* Url. */}
+      <div className="flex items-center justify-between px-3 py-2 font-semibold underline border rounded-lg shadow-md text-dark/50">
+        <Link to={"/publish/" + currUser.username}>{publishPageUrl}</Link>
+        <Button
+          Icon={state.copied ? IcCopied : IcCopy}
+          onClick={(e) => dispatch({ type: "COPY" })}
+          label={state.copied ? ["copied"] : ["copy"]}
+          styles="bg-primary text-white"
+          disabled={state.copied}
+        />
+      </div>
+      {/* File dialog. */}
+      <div className="flex justify-between">
+        <div className="flex items-center gap-x-6">
+          <Button
+            type="secondary"
+            text={`${state.file ? state.file.name : "select file"}`}
+            Icon={IcNewDoc}
+            styles="py-4 text-lg"
+          >
             <input
               type="file"
               className="absolute top-0 bottom-0 left-0 right-0 opacity-0 cursor-pointer"
-              onChange={(e) => setFile(e.target.files[0])}
+              onChange={(e) =>
+                dispatch({
+                  type: "FILE",
+                  payload: { value: e.target.files[0] },
+                })
+              }
             />
           </Button>
-          {file && (
-            <div>
-              FileName:{" "}
-              <span className="font-semibold text-primary">{file.name}</span>
-            </div>
-          )}
+          <Button
+            label={["remove file"]}
+            Icon={IcBin}
+            onClick={(e) => dispatch({ type: "REMOVE_FILE" })}
+          />
         </div>
         <Button
-          type="success"
           text="publish"
-          onClick={publishHandler}
-          Icon={IcExport}
-          disabled={!file || loading}
+          type="success"
+          Icon={IcPublish}
+          onClick={handlePublish}
+          disabled={loading}
         />
       </div>
-      <div>
-        <Link
-          to={`/download/${currUser.uid}`}
-        >{`https://schedule-maker.nelify.app/download/${currUser.uid}`}</Link>
-      </div>
-      <div className="mx-2 border rounded-lg shadow-md">
+
+      {state.file ? (
+        <div className="space-y-3">
+          <Input
+            type="text"
+            label="title"
+            value={state.id}
+            placeholder="file name..."
+            onChange={(e) =>
+              dispatch({ type: "ID", payload: { value: e.target.value } })
+            }
+          />
+          <Input
+            type="textarea"
+            label="description"
+            value={state.description}
+            placeholder="file name..."
+            onChange={(e) =>
+              dispatch({
+                type: "DESCRIPTION",
+                payload: { value: e.target.value },
+              })
+            }
+          />
+        </div>
+      ) : null}
+      {/* Documents. */}
+      <div className="border rounded-lg shadow-md">
         {documents.map((value, docIndex) => (
           <div
+            key={value.id}
             className={`menu-item group flex justify-between gap-x-2 ${
               docIndex % 2 === 0 && "bg-dark/5"
             }`}
           >
             <div
-              onClick={(e) => showDetails(value)}
+              onClick={(e) => handleDetail(value)}
               className="grid grid-cols-12"
             >
               <div className="col-span-8">{value.id}</div>
@@ -105,8 +204,13 @@ const Publish = () => {
               currMenu={currMenu}
               setCurrMenu={setCurrMenu}
               options={[
-                ["download", () => downloadHandler(value.url), IcDownload],
-                ["delete", () => deleteHandler(value.id), IcBin],
+                ["download", () => handleDownload(value.url), IcDownload],
+                [
+                  "delete",
+                  () =>
+                    setModel({ type: "delpubdoc", id: value.id, documents }),
+                  IcBin,
+                ],
               ]}
             />
           </div>

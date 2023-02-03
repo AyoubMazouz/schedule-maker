@@ -23,7 +23,6 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/download/:userId" element={<Publish />} />
         {/* PrivateRoutes */}
         <Route element={<PrivateRoute />}>
           <Route path="/settings" element={<Settings />} />
@@ -31,6 +30,7 @@ function App() {
           <Route path="/editor/:docId" element={<Editor />} />
           <Route path="/documents" element={<Documents />} />
         </Route>
+        <Route path="/publish/:userId" element={<Publish />} />
       </Routes>
       <Footer />
     </div>
