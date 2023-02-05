@@ -109,6 +109,9 @@ export const LIGHT_COL = "#F9F7F7";
 export const DARK_COL = "#112D4E";
 export const EVENT_COL = "#BAB8B8";
 
+export const PROFILE_IMG_SIZE = 256;
+export const BANNER_SIZE = 1200;
+
 export const VERSION = "1.6.0";
 export const ABOUT_APP = (
   <p>

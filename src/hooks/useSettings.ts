@@ -1,5 +1,6 @@
 import { Timestamp } from "firebase/firestore";
 import { LabelsType, Level, Trainer, Room, Event } from "../helpers/types";
+import Resizer from "react-image-file-resizer";
 
 interface AddLevel {
   (
@@ -52,6 +53,14 @@ interface UpdateEvent {
   (data: LabelsType, event: Event, value: string, desc: string):
     | boolean
     | LabelsType;
+}
+
+interface ResizeImg {
+  (
+    file: File,
+    size: number,
+    callback: (a: string | File | Blob | ProgressEvent<FileReader>) => void
+  ): void;
 }
 
 const useSettings = () => {
@@ -330,6 +339,25 @@ const useSettings = () => {
     };
   };
 
+  const resizeImg: ResizeImg = async (file, size, callback) => {
+    let res: string | File | Blob | ProgressEvent<FileReader> = "";
+    try {
+      await Resizer.imageFileResizer(
+        file,
+        size,
+        size,
+        "JPEG",
+        86,
+        0,
+        callback,
+        "base64"
+      );
+    } catch (err) {
+      console.log(err);
+    }
+    return res;
+  };
+
   return {
     addLevel,
     addRoom,
@@ -345,6 +373,7 @@ const useSettings = () => {
     deleteEvent,
     exportSettings,
     importSettings,
+    resizeImg,
   };
 };
 

@@ -922,6 +922,10 @@ body{
   margin-left: auto;
 }
 
+.mt-8{
+  margin-top: 2rem;
+}
+
 .box-border{
   box-sizing: border-box;
 }
@@ -1008,6 +1012,14 @@ body{
 
 .h-\[9rem\]{
   height: 9rem;
+}
+
+.h-\[11rem\]{
+  height: 11rem;
+}
+
+.h-\[10rem\]{
+  height: 10rem;
 }
 
 .max-h-\[2\.1rem\]{
@@ -1471,8 +1483,20 @@ body{
   background-size: cover;
 }
 
+.object-cover{
+  object-fit: cover;
+}
+
 .p-2{
   padding: 0.5rem;
+}
+
+.p-1{
+  padding: 0.25rem;
+}
+
+.p-1\.5{
+  padding: 0.375rem;
 }
 
 .px-4{
