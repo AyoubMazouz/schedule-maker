@@ -25,17 +25,20 @@ const Events = ({
   };
   const editHandler = (event) => {
     setModel({
-      type: "updateEvent",
+      type: "UPDATE_EVENT",
       setSaved,
       event,
     });
   };
-  const deleteHandler = (value) => {
-    deleteEvent(labelsData, setLabelsData, value.id);
-    setSaved(false);
+  const deleteHandler = (event) => {
+    const res = deleteEvent(labelsData, event.value);
+    if (res) {
+      setLabelsData(res);
+      setSaved(false);
+    }
   };
   return (
-    <div className="rounded-lg border-2 border-dark/25 shadow-lg">
+    <div className="border-2 rounded-lg shadow-lg border-dark/25">
       {labelsData.events.map((event, index) => (
         <div
           key={event.value}
@@ -47,11 +50,11 @@ const Events = ({
             onClick={(e) => showDetails(event)}
             className="grid w-full grid-cols-12"
           >
-            <div className="col-span-full space-x-1 text-left group-hover:underline sm:col-span-9">
-              <IcEvent className="icon inline-block" />
+            <div className="space-x-1 text-left col-span-full group-hover:underline sm:col-span-9">
+              <IcEvent className="inline-block icon" />
               <span>{event.value}</span>
             </div>
-            <div className="col-span-3 hidden md:block">
+            <div className="hidden col-span-3 md:block">
               {event.createdAt.toDate().toDateString()}
             </div>
           </button>

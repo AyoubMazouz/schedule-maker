@@ -37,16 +37,16 @@ export const GlobalContextProvider = ({ children }) => {
     return () => clearTimeout(unsubscribe);
   }, [alert]);
 
-  const loadData = async (userId, docId) => {
-    const doc = await getDocument(userId, docId);
+  const loadData = async (username, docId) => {
+    const doc = await getDocument(username, docId);
     if (doc) {
       setData(JSON.parse(doc.data));
       setDocId(docId);
     }
   };
 
-  const loadLabelsData = async (userId) => {
-    const doc = await getLabels(userId);
+  const loadLabelsData = async (username) => {
+    const doc = await getLabels(username);
     if (doc) setLabelsData(doc);
   };
 

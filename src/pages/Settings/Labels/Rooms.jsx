@@ -25,18 +25,21 @@ const Rooms = ({
   };
   const editHandler = (room) => {
     setModel({
-      type: "updateRoom",
+      type: "UPDATE_ROOM",
       setSaved,
       room,
     });
   };
-  const deleteHandler = (value) => {
-    deleteRoom(labelsData, setLabelsData, value.id);
-    setSaved(false);
+  const deleteHandler = (room) => {
+    const res = deleteRoom(labelsData, room.value);
+    if (res) {
+      setLabelsData(res);
+      setSaved(false);
+    }
   };
 
   return (
-    <div className="rounded-lg border-2 border-dark/25 shadow-lg">
+    <div className="border-2 rounded-lg shadow-lg border-dark/25">
       {labelsData.rooms.map((room, index) => (
         <div
           key={room.value}
@@ -48,11 +51,11 @@ const Rooms = ({
             onClick={() => showDetails(room)}
             className="grid w-full grid-cols-12"
           >
-            <div className="col-span-full space-x-1 text-left group-hover:underline sm:col-span-9">
-              <IcRoom className="icon inline-block" />
+            <div className="space-x-1 text-left col-span-full group-hover:underline sm:col-span-9">
+              <IcRoom className="inline-block icon" />
               <span>{room.value}</span>
             </div>
-            <div className="col-span-3 hidden md:block">
+            <div className="hidden col-span-3 md:block">
               {room.createdAt.toDate().toDateString()}
             </div>
           </button>

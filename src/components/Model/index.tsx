@@ -10,41 +10,50 @@ import NewDoc from "./NewDoc";
 import RenDoc from "./RenDoc";
 import ShowDetails from "./ShowDetails";
 import AddEvent from "./settings/AddEvent";
-import UpdateRoom from "./settings/UpdateRoom";
-import UpdateEvent from "./settings/UpdateEvent";
-import UpdateTrainer from "./settings/UpdateTrainer";
-import UpdateLevel from "./settings/UpdateLevel";
+
+const CurrModel = ({ type }: { type: string }) => {
+  switch (type) {
+    case "deldoc":
+      return <DelDoc />;
+    case "delpubdoc":
+      return <DelPubDoc />;
+    case "newdoc":
+      return <NewDoc />;
+    case "rendoc":
+      return <RenDoc />;
+    case "exit":
+      return <Exit />;
+    case "login":
+      return <Login />;
+    case "showDetails":
+      return <ShowDetails />;
+
+    case "ADD_LEVEL":
+    case "UPDATE_LEVEL":
+      return <AddLevel />;
+    case "ADD_TRAINER":
+    case "UPDATE_TRAINER":
+      return <AddTrainer />;
+    case "ADD_ROOM":
+    case "UPDATE_ROOM":
+      return <AddRoom />;
+    case "ADD_EVENT":
+    case "UPDATE_EVENT":
+      return <AddEvent />;
+
+    default:
+      return null;
+  }
+};
 
 const Model = () => {
   const { model } = useGlobalContext();
-
   if (!model) return null;
-
-  const models: any = {
-    deldoc: DelDoc,
-    delpubdoc: DelPubDoc,
-    newdoc: NewDoc,
-    rendoc: RenDoc,
-    exit: Exit,
-    login: Login,
-    showDetails: ShowDetails,
-    addLevel: AddLevel,
-    addTrainer: AddTrainer,
-    addRoom: AddRoom,
-    addEvent: AddEvent,
-    updateRoom: UpdateRoom,
-    updateEvent: UpdateEvent,
-    updateTrainer: UpdateTrainer,
-    updateLevel: UpdateLevel,
-  };
-
-  const Model = models[model.type];
-
   return (
     <div className="fixed inset-0 z-40 flex justify-center px-4 py-24 bg-dark/25">
       <div className="w-full max-w-[400px]">
         <div className="px-2 py-4 space-y-6 overflow-hidden text-center border rounded-lg shadow-lg bg-light">
-          <Model />
+          <CurrModel type={model.type} />
         </div>
       </div>
     </div>

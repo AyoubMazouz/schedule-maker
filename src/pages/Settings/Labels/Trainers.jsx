@@ -26,7 +26,7 @@ const Trainers = ({
   };
   const editHandler = (trainer) => {
     setModel({
-      type: "updateTrainer",
+      type: "UPDATE_TRAINER",
       setSaved,
       trainer,
     });

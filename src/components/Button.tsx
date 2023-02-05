@@ -57,7 +57,7 @@ export const Button: React.FC<ButtonType> = ({
     >
       {children}
       <span>{text}</span>
-      <Icon className="icon" />
+      <Icon className={`icon ${disabled && "cursor-not-allowed"}`} />
     </button>
   );
 };

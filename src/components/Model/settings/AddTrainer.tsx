@@ -1,109 +1,182 @@
-import { Timestamp } from "firebase/firestore";
 import React from "react";
 import { useGlobalContext } from "../../../Contexts/GlobalContext";
 import useSettings from "../../../hooks/useSettings";
 import { Button } from "../../Button";
 import { IcCancel, IcEx, IcLogin } from "../../../helpers/icons";
-import { Room } from "../../../helpers/types";
+import { Room, Trainer } from "../../../helpers/types";
+import { isStrEmpty, treeCharsOrMore } from "../../../helpers/validation";
+import { Input } from "../../Input";
+
+const INITIAL_STATE = {
+  trainer: { value: "", error: "" },
+  desc: { value: "", error: "" },
+  preferredRooms: { value: [], error: "" },
+};
+
+const reducer = (state: any, action: any) => {
+  switch (action.type) {
+    case "TRAINER":
+      return {
+        ...state,
+        trainer: {
+          value:
+            action.payload.charAt(0).toUpperCase() + action.payload.slice(1),
+          error: treeCharsOrMore(action.payload)
+            ? ""
+            : "Trainer must be at least tree characters or more.",
+        },
+      };
+    case "DESC":
+      var error =
+        isStrEmpty(action.payload) || treeCharsOrMore(action.payload)
+          ? ""
+          : "description must be at least tree characters long!";
+      return { ...state, desc: { value: action.payload, error } };
+    case "ADD_ROOM":
+      return {
+        ...state,
+        preferredRooms: {
+          value: [...state.preferredRooms.value, action.payload],
+          error: "",
+        },
+      };
+    case "RM_ROOM":
+      return {
+        ...state,
+        preferredRooms: {
+          value: state.preferredRooms.value.filter(
+            (r: string) => r !== action.payload
+          ),
+          error: "",
+        },
+      };
+    default:
+      return state;
+  }
+};
 
 const AddTrainer = () => {
   const { model, setModel, setAlert, labelsData, setLabelsData } =
     useGlobalContext();
-  const { addTrainer } = useSettings();
+  const { addTrainer, updateTrainer } = useSettings();
 
-  const [trainerInput, setTrainerInput] = React.useState("");
-  const [preferedRooms, setPreferedRooms] = React.useState<string[]>([]);
+  const [state, dispatch] = React.useReducer(
+    reducer,
+    model.type === "ADD_TRAINER"
+      ? INITIAL_STATE
+      : {
+          trainer: { value: model.trainer.value, error: "" },
+          desc: { value: model.trainer.desc, error: "" },
+          preferredRooms: { value: model.trainer.preferredRooms, error: "" },
+        }
+  );
 
-  const addNewRoomHandler = (room: string) => {
-    const newPreferedRooms = preferedRooms.filter((r) => r !== room);
-
-    if (newPreferedRooms.length !== preferedRooms.length) {
+  const handleAddNewRoom = (room: string) => {
+    if (state.preferredRooms.value.includes(room))
       return setAlert({
         type: "warn",
-        message: `room number "${room} is already in the list"`,
+        message: `Room number "${room}" is already in the list`,
+      });
+    dispatch({ type: "ADD_ROOM", payload: room });
+  };
+
+  const submitHandler = () => {
+    // Check if room not empty and contains 1 char or more.
+    if (state.trainer.error) {
+      return setAlert({
+        type: "warn",
+        message: state.trainer.error,
       });
     }
-
-    setPreferedRooms((rooms) => [...rooms, room]);
-  };
-
-  const removeRoomHandler = (value: string) => {
-    const newPreferedRooms = preferedRooms.filter((room) => room !== value);
-    setPreferedRooms(newPreferedRooms);
-  };
-
-  const submitHandler = (e: any) => {
-    const res = addTrainer(
-      labelsData,
-      setLabelsData,
-      trainerInput,
-      preferedRooms
-    );
+    // Check if other conditions are met.
+    else if (state.desc.error)
+      return setAlert({
+        type: "warn",
+        message: state.desc.error,
+      });
+    // Check for errors or success.
+    const res =
+      model.type === "ADD_TRAINER"
+        ? addTrainer(
+            labelsData,
+            state.trainer.value,
+            state.preferredRooms.value,
+            state.desc.value
+          )
+        : updateTrainer(
+            labelsData,
+            model.trainer,
+            state.trainer.value,
+            state.preferredRooms.value,
+            state.desc.value
+          );
     if (res) {
+      setLabelsData(res);
       model.setSaved(false);
       setModel(null);
     } else {
       setAlert({
         type: "warn",
-        message: `Trainer "${trainerInput}" already exists!`,
+        message: `trainer "${state.trainer.value}" already exists!`,
       });
-      setTrainerInput("");
+      dispatch({ type: "TRAINER", payload: "" });
     }
   };
 
   return (
     <>
       <div className="space-y-6">
-        <div className="text-xl text-center text-primary">Add New Trainer</div>
-        <div className="flex flex-col items-center gap-2">
-          <label className="input-label" htmlFor="trainer">
-            Trainer:
-          </label>
-          <input
-            className="input max-w-[26rem]"
-            type="text"
-            name="trainer"
-            value={trainerInput}
-            onChange={(e) => {
-              const value =
-                e.target.value.charAt(0).toUpperCase() +
-                e.target.value.slice(1);
-              setTrainerInput(value);
-            }}
-          />
+        <div className="text-xl text-center text-primary">
+          {model.type === "ADD_TRAINER" ? "Add New Trainer" : "Update Trainer"}
         </div>
+        <Input
+          type="text"
+          label="trainer"
+          error={state.trainer.error}
+          placeholder="Trainer..."
+          required={true}
+          value={state.trainer.value}
+          onChange={(e) =>
+            dispatch({ type: "TRAINER", payload: e.target.value })
+          }
+        />
         <div className="textbox">
-          <span>Prefered Rooms: </span>
-          {preferedRooms.map((room) => (
-            <div key={room}>
+          <span>Preferred Rooms: </span>
+          {state.preferredRooms.value.map((room: string) => (
+            <div key={room} className="max-h-[1.75rem]">
               {room}
               <IcEx
-                id="preferedRooms"
-                onClick={(e) => removeRoomHandler(room)}
+                onClick={(e) => dispatch({ type: "RM_ROOM", payload: room })}
                 className="textbox-icon"
               />
             </div>
           ))}
           <select
-            name="preferedRooms"
             className="input"
-            value=""
-            onChange={(e) => addNewRoomHandler(e.target.value)}
+            onChange={(e) => handleAddNewRoom(e.target.value)}
           >
             <option value="" disabled>
-              Rooms...
+              rooms...
             </option>
-            {labelsData.rooms.map((room: Room) => (
-              <option key={room.value} value={room.value}>
-                {room.value}
+            {labelsData.rooms.map((rooms: Room) => (
+              <option key={rooms.value} value={rooms.value}>
+                {rooms.value}
               </option>
             ))}
           </select>
         </div>
+        <Input
+          type="textarea"
+          label="description"
+          error={state.desc.error}
+          placeholder="Description..."
+          value={state.desc.value}
+          onChange={(e) => dispatch({ type: "DESC", payload: e.target.value })}
+        />
       </div>
       <div className="model-btn-container">
         <Button
-          text="add"
+          text={model.type === "ADD_TRAINER" ? "Add" : "Update"}
           type="success"
           onClick={submitHandler}
           Icon={IcLogin}

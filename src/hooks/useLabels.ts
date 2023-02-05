@@ -9,30 +9,30 @@ import { db } from "../firebase";
 import { LabelsType } from "../helpers/types";
 
 interface DelAllLabels {
-  (userId: string): Promise<boolean>;
+  (username: string): Promise<boolean>;
 }
 interface SetLabels {
-  (userId: string, data: LabelsType): Promise<any>;
+  (username: string, data: LabelsType): Promise<any>;
 }
 interface GetLabels {
-  (userId: string): Promise<LabelsType | DocumentData>;
+  (username: string): Promise<LabelsType | DocumentData>;
 }
 
 const useLabels = () => {
-  const deleteAllLabels: DelAllLabels = (userId: string) => {
+  const deleteAllLabels: DelAllLabels = (username: string) => {
     return new Promise(async (resolve, reject) => {
-      await deleteDoc(doc(db, "labels", userId));
+      await deleteDoc(doc(db, "labels", username));
       resolve(true);
     });
   };
 
-  const setLabels: SetLabels = (userId, data) => {
-    return setDoc(doc(db, "labels", userId), data);
+  const setLabels: SetLabels = (username, data) => {
+    return setDoc(doc(db, "labels", username), data);
   };
 
-  const getLabels: GetLabels = (userId: string) => {
+  const getLabels: GetLabels = (username: string) => {
     return new Promise(async (resolve, reject) => {
-      const snapshot = await getDoc(doc(db, "labels", userId));
+      const snapshot = await getDoc(doc(db, "labels", username));
 
       if (snapshot.exists()) {
         const data = snapshot.data();

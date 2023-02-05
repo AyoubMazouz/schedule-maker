@@ -4,77 +4,68 @@ import { LabelsType, Level, Trainer, Room, Event } from "../helpers/types";
 interface AddLevel {
   (
     data: LabelsType,
-    setData: (a: LabelsType) => void,
     value: string,
     numOfGrps: string,
-    modules: string[]
-  ): boolean;
+    modules: string[],
+    desc: string
+  ): boolean | LabelsType;
 }
 interface AddTrainer {
-  (
-    data: LabelsType,
-    setData: (a: LabelsType) => void,
-    value: string,
-    preferredRooms: string[]
-  ): boolean;
+  (data: LabelsType, value: string, preferredRooms: string[], desc: string):
+    | boolean
+    | LabelsType;
 }
 interface AddRoom {
-  (data: LabelsType, setData: (a: LabelsType) => void, value: string): boolean;
+  (data: LabelsType, value: string, desc: string): boolean | LabelsType;
 }
 interface AddEvent {
-  (data: LabelsType, setData: (a: LabelsType) => void, value: string): boolean;
+  (data: LabelsType, value: string, desc: string): boolean | LabelsType;
 }
 interface Delete {
-  (data: LabelsType, setData: (a: LabelsType) => void, id: number): void;
+  (data: LabelsType, id: string): void;
 }
 interface UpdateLevel {
   (
     data: LabelsType,
-    setData: (a: LabelsType) => void,
     level: Level,
     value: string,
     numOfGrps: string,
-    modules: string[]
-  ): boolean;
+    modules: string[],
+    desc: string
+  ): boolean | LabelsType;
 }
 interface UpdateTrainer {
   (
     data: LabelsType,
-    setData: (a: LabelsType) => void,
     trainer: Trainer,
     value: string,
-    preferredRooms: string[]
-  ): boolean;
+    preferredRooms: string[],
+    desc: string
+  ): boolean | LabelsType;
 }
 interface UpdateRoom {
-  (
-    data: LabelsType,
-    setData: (a: LabelsType) => void,
-    room: Room,
-    value: string
-  ): boolean;
+  (data: LabelsType, room: Room, value: string, desc: string):
+    | boolean
+    | LabelsType;
 }
 interface UpdateEvent {
-  (
-    data: LabelsType,
-    setData: (a: LabelsType) => void,
-    event: Event,
-    value: string
-  ): boolean;
+  (data: LabelsType, event: Event, value: string, desc: string):
+    | boolean
+    | LabelsType;
 }
 
 const useSettings = () => {
   // Add.
-  const addLevel: AddLevel = (data, setData, value, numOfGrps, modules) => {
+  const addLevel: AddLevel = (data, value, numOfGrps, modules, desc) => {
     const alreadyExists = data.levels.filter(
       (l: Level) => l.value === value
     ).length;
     if (alreadyExists) return false;
     const newLevel = {
-      id: data.levels.length,
       value,
       numOfGrps,
       modules,
+      desc,
       createdAt: Timestamp.now(),
       modifiedAt: Timestamp.now(),
     };
@@ -87,17 +78,16 @@ const useSettings = () => {
       events: data.events,
       levels,
     };
-    setData(labelsDoc);
-    return true;
+    return labelsDoc;
   };
-  const addTrainer: AddTrainer = (data, setData, value, preferredRooms) => {
+  const addTrainer: AddTrainer = (data, value, preferredRooms, desc) => {
     const alreadyExists = data.trainers.filter(
       (t: Trainer) => t.value === value
     ).length;
     if (alreadyExists) return false;
     const newTrainer = {
-      id: data.trainers.length,
       value,
+      desc,
       preferredRooms,
       createdAt: Timestamp.now(),
       modifiedAt: Timestamp.now(),
@@ -111,15 +101,14 @@ const useSettings = () => {
       events: data.events,
       trainers,
     };
-    setData(labelsDoc);
-    return true;
+    return labelsDoc;
   };
-  const addRoom: AddRoom = (data, setData, value) => {
+  const addRoom: AddRoom = (data, value, desc) => {
     const alreadyExists = data.rooms.filter((r) => r.value === value).length;
     if (alreadyExists) return false;
     const newRoom = {
-      id: data.rooms.length,
       value,
+      desc,
       createdAt: Timestamp.now(),
       modifiedAt: Timestamp.now(),
     };
@@ -132,14 +121,13 @@ const useSettings = () => {
       events: data.events,
       rooms,
     };
-    setData(labelsDoc);
-    return true;
+    return labelsDoc;
   };
-  const addEvent: AddEvent = (data, setData, value) => {
+  const addEvent: AddEvent = (data, value, desc) => {
     const alreadyExists = data.events.filter((e) => e.value === value).length;
     if (alreadyExists) return false;
     const newEvent = {
-      id: data.events.length,
+      desc,
       value,
       createdAt: Timestamp.now(),
       modifiedAt: Timestamp.now(),
@@ -153,71 +141,70 @@ const useSettings = () => {
       rooms: data.rooms,
       events: events,
     };
-    setData(labelsDoc);
-    return true;
+    return labelsDoc;
   };
   // Delete
-  const deleteLevel: Delete = (data, setData, id) => {
-    const levels = data.levels.filter((level) => level.id !== id);
+  const deleteLevel: Delete = (data, value) => {
+    const levels = data.levels.filter((level) => level.value !== value);
     const labelsDoc = {
       trainers: data.trainers,
       rooms: data.rooms,
       events: data.events,
       levels,
     };
-    setData(labelsDoc);
+    return labelsDoc;
   };
-  const deleteTrainer: Delete = (data, setData, id) => {
-    const trainers = data.trainers.filter((trainer) => trainer.id !== id);
+  const deleteTrainer: Delete = (data, value) => {
+    const trainers = data.trainers.filter((trainer) => trainer.value !== value);
     const labelsDoc = {
       levels: data.levels,
       rooms: data.rooms,
       events: data.events,
       trainers,
     };
-    setData(labelsDoc);
+    return labelsDoc;
   };
-  const deleteRoom: Delete = (data, setData, id) => {
-    const rooms = data.rooms.filter((room) => room.id !== id);
+  const deleteRoom: Delete = (data, value) => {
+    const rooms = data.rooms.filter((room) => room.value !== value);
     const labelsDoc = {
       trainers: data.trainers,
       levels: data.levels,
       events: data.events,
       rooms,
     };
-    setData(labelsDoc);
+    return labelsDoc;
   };
-  const deleteEvent: Delete = (data, setData, id) => {
-    const events = data.events.filter((event) => event.id !== id);
+  const deleteEvent: Delete = (data, value) => {
+    const events = data.events.filter((event) => event.value !== value);
     const labelsDoc = {
       trainers: data.trainers,
       levels: data.levels,
       rooms: data.rooms,
       events,
     };
-    setData(labelsDoc);
+    return labelsDoc;
   };
   // Update
   const updateLevel: UpdateLevel = (
     data,
-    setData,
     level,
     value,
     numOfGrps,
-    modules
+    modules,
+    desc
   ) => {
     let alreadyExists = false;
     const levels = data.levels.filter((l) => {
-      if (l.value === value && l.id !== level.id) alreadyExists = true;
-      return l.id !== level.id;
+      if (l.value === value && l.value !== level.value) alreadyExists = true;
+      return l.value !== level.value;
     });
     if (alreadyExists) return false;
     const newLevel = {
-      id: level.id,
+      ...level,
       value,
       numOfGrps,
       modules,
-      createdAt: level.createdAt,
+      desc,
       modifiedAt: Timestamp.now(),
     };
     const labelsDoc = {
@@ -228,25 +215,24 @@ const useSettings = () => {
         a.value > b.value ? 1 : -1
       ),
     };
-    setData(labelsDoc);
-    return true;
+    return labelsDoc;
   };
   const updateTrainer: UpdateTrainer = (
     data,
-    setData,
     trainer,
     value,
-    preferredRooms
+    preferredRooms,
+    desc
   ) => {
     let alreadyExists = false;
     const trainers = data.trainers.filter((t) => {
-      if (t.value === value && t.id !== trainer.id) alreadyExists = true;
-      return t.id !== trainer.id;
+      if (t.value === value && t.value !== trainer.value) alreadyExists = true;
+      return t.value !== trainer.value;
     });
     if (alreadyExists) return false;
     const newTrainer = {
-      id: trainer.id,
-      value: value,
+      value,
+      desc,
       preferredRooms,
       createdAt: trainer.createdAt,
       modifiedAt: Timestamp.now(),
@@ -259,19 +245,18 @@ const useSettings = () => {
         a.value > b.value ? 1 : -1
       ),
     };
-    setData(labelsDoc);
-    return true;
+    return labelsDoc;
   };
-  const updateRoom: UpdateRoom = (data, setData, room, value) => {
+  const updateRoom: UpdateRoom = (data, room, value, desc) => {
     let alreadyExists = false;
     const rooms = data.rooms.filter((r) => {
-      if (r.value === value && r.id !== room.id) alreadyExists = true;
-      return r.id !== room.id;
+      if (r.value === value && r.value !== room.value) alreadyExists = true;
+      return r.value !== room.value;
     });
     if (alreadyExists) return false;
     const newRoom = {
-      id: room.id,
-      value: value,
+      value,
+      desc,
       createdAt: room.createdAt,
       modifiedAt: Timestamp.now(),
     };
@@ -281,20 +266,19 @@ const useSettings = () => {
       levels: data.levels,
       rooms: [...rooms, newRoom].sort((a, b) => (a.value > b.value ? 1 : -1)),
     };
-    setData(labelsDoc);
-    return true;
+    return labelsDoc;
   };
-  const updateEvent: UpdateEvent = (data, setData, event, value) => {
+  const updateEvent: UpdateEvent = (data, event, value, desc) => {
     let alreadyExists = false;
     const events = data.events.filter((e) => {
-      if (e.value === value && e.id !== event.id) alreadyExists = true;
-      return e.id !== event.id;
+      if (e.value === value && e.value !== event.value) alreadyExists = true;
+      return e.value !== event.value;
     });
     if (alreadyExists) return false;
     const newEvent = {
-      id: event.id,
-      value: value,
-      createdAt: event.createdAt,
+      ...event,
+      value,
+      desc,
       modifiedAt: Timestamp.now(),
     };
     const labelsDoc = {
@@ -305,8 +289,7 @@ const useSettings = () => {
         a.value > b.value ? 1 : -1
       ),
     };
-    setData(labelsDoc);
-    return true;
+    return labelsDoc;
   };
   const exportSettings = (data: LabelsType) => {
     const jsonData = JSON.stringify(data);

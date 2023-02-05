@@ -3,34 +3,34 @@ import { useGlobalContext } from "../../../Contexts/GlobalContext";
 import { DAYS_TEXT, SESSIONS_TEXT } from "../../../helpers/constants";
 import Cell from "./Cell";
 
-const Table = ({ schedualIndex }) => {
+const Table = ({ scheduleIndex }) => {
   const { data } = useGlobalContext();
 
-  if (!data[schedualIndex].group) return "please select a group first!";
+  if (!data[scheduleIndex].group) return "please select a group first!";
 
   return (
     <div className="mx-auto w-full max-w-[800px] overflow-hidden rounded-xl border-2 border-dark/50 shadow-lg">
-      <div id={`doc_${schedualIndex}`} className="w-full">
+      <div id={`doc_${scheduleIndex}`} className="w-full">
         <div className="w-full">
           <div className="grid w-full grid-cols-9">
-            <div className="grid place-items-center font-semibold">
-              <span className="grid h-8 w-8 place-items-center rounded-full bg-primary text-lg font-bold text-light">
-                {schedualIndex + 1}
+            <div className="grid font-semibold place-items-center">
+              <span className="grid w-8 h-8 text-lg font-bold rounded-full place-items-center bg-primary text-light">
+                {scheduleIndex + 1}
               </span>
-              <span className="text-center leading-4">
-                {data[schedualIndex].group}
+              <span className="leading-4 text-center">
+                {data[scheduleIndex].group}
               </span>
             </div>
-            <div className="col-span-2 grid place-items-center bg-primary py-6 font-semibold text-white">
+            <div className="grid col-span-2 py-6 font-semibold text-white place-items-center bg-primary">
               {SESSIONS_TEXT[0]}
             </div>
-            <div className="col-span-2 grid place-items-center bg-primary py-6 font-semibold text-white">
+            <div className="grid col-span-2 py-6 font-semibold text-white place-items-center bg-primary">
               {SESSIONS_TEXT[1]}
             </div>
-            <div className="col-span-2 grid place-items-center bg-primary py-6 font-semibold text-white">
+            <div className="grid col-span-2 py-6 font-semibold text-white place-items-center bg-primary">
               {SESSIONS_TEXT[2]}
             </div>
-            <div className="col-span-2 grid place-items-center bg-primary py-6 font-semibold text-white">
+            <div className="grid col-span-2 py-6 font-semibold text-white place-items-center bg-primary">
               {SESSIONS_TEXT[3]}
             </div>
           </div>
@@ -47,16 +47,15 @@ const Table = ({ schedualIndex }) => {
                 </div>
               ))}
             </div>
-            <div className="col-span-8 grid grid-cols-4">
-              {data[schedualIndex].schedual.map((day, dayIndex) => {
-                const group = data[schedualIndex].group;
-                const faculty = group.slice(0, group.length - 4);
+            <div className="grid grid-cols-4 col-span-8">
+              {data[scheduleIndex].schedual.map((day, dayIndex) => {
+                const group = data[scheduleIndex].group;
                 return day.map((session, sessionIndex) => (
                   <Cell
                     key={`${session.join("")}${sessionIndex}`}
                     {...{
                       session,
-                      schedualIndex,
+                      schedualIndex: scheduleIndex,
                       dayIndex,
                       sessionIndex,
                     }}

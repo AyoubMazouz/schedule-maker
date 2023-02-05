@@ -39,36 +39,27 @@ const OptionBar = ({
     setSaved(true);
   };
 
-  const addLevelHandler = () => {
+  const addLevelHandler = () =>
     setModel({
-      type: "addLevel",
-      labelsData,
-      setLabelsData,
+      type: "ADD_LEVEL",
       setSaved,
     });
-  };
-  const addTrainerHandler = () => {
+  const addTrainerHandler = () =>
     setModel({
-      type: "addTrainer",
-      labelsData,
-      setLabelsData,
+      type: "ADD_TRAINER",
       setSaved,
     });
-  };
-  const addRoomHandler = () => {
+  const addRoomHandler = () =>
     setModel({
-      type: "addRoom",
+      type: "ADD_ROOM",
       setSaved,
     });
-  };
-  const addEventHandler = () => {
+  const addEventHandler = () =>
     setModel({
-      type: "addEvent",
-      labelsData,
-      setLabelsData,
+      type: "ADD_EVENT",
       setSaved,
     });
-  };
+
   const SaveMenuItem = () => (
     <button
       disabled={saved}

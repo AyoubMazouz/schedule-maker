@@ -1,51 +1,114 @@
-import { Timestamp } from "firebase/firestore";
 import React from "react";
 import { useGlobalContext } from "../../../Contexts/GlobalContext";
 import useSettings from "../../../hooks/useSettings";
 import { Button } from "../../Button";
 import { IcCancel, IcLogin } from "../../../helpers/icons";
+import { Input } from "../../Input";
+import { isStrEmpty, treeCharsOrMore } from "../../../helpers/validation";
 
-const AddRoom = () => {
+const INITIAL_STATE = {
+  event: { value: "", error: "" },
+  desc: { value: "", error: "" },
+};
+
+const reducer = (state: any, action: any) => {
+  switch (action.type) {
+    case "EVENT":
+      return { ...state, event: { value: action.payload, error: "" } };
+    case "DESC":
+      var error =
+        isStrEmpty(action.payload) || treeCharsOrMore(action.payload)
+          ? ""
+          : "description must be at least tree characters long!";
+      return { ...state, desc: { value: action.payload, error } };
+    default:
+      return state;
+  }
+};
+
+const AddEvent = () => {
   const { model, setModel, setAlert, labelsData, setLabelsData } =
     useGlobalContext();
-  const { addEvent } = useSettings();
-
-  const [eventInput, setEventInput] = React.useState("");
+  const { addEvent, updateEvent } = useSettings();
+  const [state, dispatch] = React.useReducer(
+    reducer,
+    model.type === "ADD_EVENT"
+      ? INITIAL_STATE
+      : {
+          event: { value: model.event.value, error: "" },
+          desc: { value: model.event.desc, error: "" },
+        }
+  );
 
   const submitHandler = () => {
-    const res = addEvent(labelsData, setLabelsData, eventInput);
+    // Check if event not empty and contains 1 char or more.
+    if (isStrEmpty(state.event.value)) {
+      return setAlert({
+        type: "warn",
+        message: `Event is required, it must be a least one character or more.`,
+      });
+    }
+    // Check if other conditions are met.
+    else if (state.desc.error)
+      return setAlert({
+        type: "warn",
+        message: state.desc.error,
+      });
+    // Check for errors or success.
+    const res =
+      model.type === "ADD_ROOM"
+        ? addEvent(labelsData, state.event.value, state.desc.value)
+        : updateEvent(
+            labelsData,
+            model.event,
+            state.event.value,
+            state.desc.value
+          );
     if (res) {
+      setLabelsData(res);
       model.setSaved(false);
       setModel(null);
     } else {
       setAlert({
         type: "warn",
-        message: `event "${eventInput}" already exists!`,
+        message: `event "${state.event.value}" already exists!`,
       });
-      setEventInput("");
+      dispatch({ type: "EVENT", payload: "" });
     }
   };
 
   return (
     <>
       <div className="flex flex-col items-center gap-y-6">
-        <div className="text-center text-xl text-primary">Add New Event</div>
-        <div className="flex flex-col items-center gap-y-2">
-          <label className="input-label" htmlFor="event">
-            Event:
-          </label>
-          <input
-            className="input max-w-[26rem]"
+        <div className="text-xl text-center text-primary">
+          {model.type === "ADD_EVENT" ? "Add New Event" : "Update Event"}
+        </div>
+        <div className="flex flex-col items-center gap-y-3">
+          <Input
             type="text"
-            name="event"
-            value={eventInput}
-            onChange={(e) => setEventInput(e.target.value.toUpperCase())}
+            label="event"
+            placeholder="Event..."
+            required={true}
+            value={state.event.value}
+            onChange={(e) =>
+              dispatch({ type: "EVENT", payload: e.target.value.toUpperCase() })
+            }
+          />
+          <Input
+            type="textarea"
+            label="description"
+            error={state.desc.error}
+            placeholder="Description..."
+            value={state.desc.value}
+            onChange={(e) =>
+              dispatch({ type: "DESC", payload: e.target.value })
+            }
           />
         </div>
       </div>
       <div className="model-btn-container">
         <Button
-          text="add"
+          text={model.type === "ADD_EVENT" ? "Add" : "Update"}
           type="success"
           onClick={submitHandler}
           Icon={IcLogin}
@@ -56,4 +119,4 @@ const AddRoom = () => {
   );
 };
 
-export default AddRoom;
+export default AddEvent;

@@ -25,19 +25,22 @@ const Levels = ({
     ];
     setModel({ type: "showDetails", details });
   };
-  const deleteHandler = (value) => {
-    deleteLevel(labelsData, setLabelsData, value.id);
-    setSaved(false);
+  const deleteHandler = (level) => {
+    const res = deleteLevel(labelsData, level.value);
+    if (res) {
+      setLabelsData(res);
+      setSaved(false);
+    }
   };
   const editHandler = (level) => {
     setModel({
-      type: "updateLevel",
+      type: "UPDATE_LEVEL",
       setSaved,
       level,
     });
   };
   return (
-    <div className="rounded-lg border-2 border-dark/25 shadow-lg">
+    <div className="border-2 rounded-lg shadow-lg border-dark/25">
       {labelsData.levels.map((level, index) => (
         <div
           key={level.value}
@@ -49,11 +52,11 @@ const Levels = ({
             onClick={() => showDetailsHandler(level)}
             className="grid w-full grid-cols-12"
           >
-            <div className="col-span-full space-x-1 text-left group-hover:underline sm:col-span-9">
-              <IcLevel className="icon inline-block" />
+            <div className="space-x-1 text-left col-span-full group-hover:underline sm:col-span-9">
+              <IcLevel className="inline-block icon" />
               <span>{level.value}</span>
             </div>
-            <div className="col-span-3 hidden md:block">
+            <div className="hidden col-span-3 md:block">
               {level.createdAt.toDate().toDateString()}
             </div>
           </button>

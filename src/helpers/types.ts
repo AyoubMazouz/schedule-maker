@@ -1,5 +1,4 @@
 export interface BaseLabelsTypes {
-  id: number;
   value: string;
   createdAt: {};
   modifiedAt: {};
@@ -57,6 +56,7 @@ export interface User {
   email: string;
   createdAt: any;
   img: string;
+  banner: string;
   org: string;
   isAdmin?: boolean | undefined;
   isRoot?: boolean | undefined;

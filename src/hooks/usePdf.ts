@@ -2,7 +2,6 @@ import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 import {
   DAYS_TEXT,
-  DOMAIN_NAME,
   EVENT_COL,
   LIGHT_COL,
   PRIMARY_COL,
@@ -19,6 +18,8 @@ pdfMake.fonts = {
     italics: "Roboto-Italic.ttf",
   },
 };
+
+const DOMAIN_NAME = window.location.href;
 
 export const usePdf = () => {
   const getSessionObj = (text: string) => {

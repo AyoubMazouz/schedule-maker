@@ -9,7 +9,7 @@ import {
 } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { setDoc, doc, getDoc, Timestamp } from "firebase/firestore";
-import { DEFAULT_PROFILE_IMG } from "../helpers/constants";
+import { DEFAULT_BANNER, DEFAULT_PROFILE_IMG } from "../helpers/constants";
 import { User } from "../helpers/types";
 
 export const useUser = () => {
@@ -41,6 +41,7 @@ export const useUser = () => {
           phone: "",
           org: "",
           img: DEFAULT_PROFILE_IMG,
+          banner: DEFAULT_BANNER,
           uid: credentials.user.uid,
           createdAt: Timestamp.now(),
         };

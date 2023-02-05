@@ -53,7 +53,7 @@ export const Input = ({
           disabled={disabled}
         />
       )}
-      {error ? <div className="text-red-600">{error}</div> : null}
+      {error ? <div className="text-sm text-red-600">{error}</div> : null}
     </div>
   );
 };

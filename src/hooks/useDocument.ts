@@ -15,64 +15,64 @@ import { db } from "../firebase";
 import { Schedule } from "../helpers/types";
 
 interface DocExists {
-  (userId: string, id: string): Promise<boolean>;
+  (username: string, docId: string): Promise<boolean>;
 }
 interface AddNewDoc {
-  (userId: string, id: string, data: Schedule[]): Promise<boolean>;
+  (username: string, docId: string, data: Schedule[]): Promise<boolean>;
 }
 interface GetDoc {
-  (userId: string, id: string): Promise<boolean | DocumentData>;
+  (username: string, docId: string): Promise<boolean | DocumentData>;
 }
 interface GetAllDoc {
-  (userId: string, setDocs: React.Dispatch<React.SetStateAction<any>>): void;
+  (username: string, setDocs: React.Dispatch<React.SetStateAction<any>>): void;
 }
 interface DeleteDoc {
-  (userId: string, id: string): Promise<boolean>;
+  (username: string, docId: string): Promise<boolean>;
 }
 interface RenameDoc {
-  (userId: string, id: string, newId: string): Promise<boolean>;
+  (username: string, docId: string, newdocId: string): Promise<boolean>;
 }
 
 const useDocument = () => {
   const [loading, setLoading] = React.useState(false);
 
   // Document.
-  const documentExists: DocExists = (userId, id) => {
+  const documentExists: DocExists = (username, docId) => {
     return new Promise(async (resolve, reject) => {
-      const snapshot = await getDoc(doc(db, "documents", userId + id));
+      const snapshot = await getDoc(doc(db, "documents", username + docId));
       if (snapshot.exists()) resolve(true);
       resolve(false);
     });
   };
 
-  const addNewDocument: AddNewDoc = (userId, id, data) => {
+  const addNewDocument: AddNewDoc = (username, docId, data) => {
     return new Promise(async (resolve, reject) => {
       setLoading(true);
       const document = {
-        id,
-        userId,
+        docId,
+        username,
         createdAt: Timestamp.now(),
         modifiedAt: Timestamp.now(),
         data: JSON.stringify(data),
       };
 
-      await setDoc(doc(db, "documents", userId + id), document);
+      await setDoc(doc(db, "documents", username + docId), document);
       setLoading(false);
       resolve(true);
     });
   };
 
-  const getDocument: GetDoc = (userId, id) => {
+  const getDocument: GetDoc = (username, docId) => {
     return new Promise(async (resolve, reject) => {
-      const snapshot = await getDoc(doc(db, "documents", userId + id));
+      const snapshot = await getDoc(doc(db, "documents", username + docId));
       if (snapshot.exists()) resolve(snapshot.data());
       resolve(false);
     });
   };
 
-  const getAllDocuments: GetAllDoc = (userId, setDocs) => {
+  const getAllDocuments: GetAllDoc = (username, setDocs) => {
     onSnapshot(
-      query(collection(db, "documents"), where("userId", "in", [userId])),
+      query(collection(db, "documents"), where("username", "in", [username])),
       (snap) => {
         const docs: Document[] = [];
         snap.forEach((doc) => {
@@ -84,26 +84,26 @@ const useDocument = () => {
     );
   };
 
-  const deleteDocument: DeleteDoc = (userId, id) => {
+  const deleteDocument: DeleteDoc = (username, docId) => {
     return new Promise(async (resolve, reject) => {
       setLoading(true);
-      const snapshot = await deleteDoc(doc(db, "documents", userId + id));
+      const snapshot = await deleteDoc(doc(db, "documents", username + docId));
       setLoading(false);
       resolve(true);
     });
   };
 
-  const renameDocument: RenameDoc = (userId, id, newId) => {
+  const renameDocument: RenameDoc = (username, docId, newDocId) => {
     return new Promise(async (reject, resolve) => {
       setLoading(true);
 
-      const document: any = await getDocument(userId, id);
+      const document: any = await getDocument(username, docId);
 
       if (doc) {
         document.modifiedAt = Timestamp.now();
-        document.id = newId;
-        await deleteDocument(userId, id);
-        await setDoc(doc(db, "documents", userId + newId), document);
+        document.docId = newDocId;
+        await deleteDocument(username, docId);
+        await setDoc(doc(db, "documents", username + newDocId), document);
 
         setLoading(false);
         resolve(true);
