@@ -40,6 +40,8 @@ export const useUser = () => {
           username,
           phone: "",
           org: "",
+          desc: "",
+          address: "",
           img: DEFAULT_PROFILE_IMG,
           banner: DEFAULT_BANNER,
           uid: credentials.user.uid,

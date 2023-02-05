@@ -2,7 +2,14 @@ import React from "react";
 import { useGlobalContext } from "../../../Contexts/GlobalContext";
 import useSettings from "../../../hooks/useSettings";
 import { Button } from "../../Button";
-import { IcCancel, IcEx, IcLogin } from "../../../helpers/icons";
+import {
+  IcCancel,
+  IcDesc,
+  IcEx,
+  IcGrp,
+  IcLevel,
+  IcLogin,
+} from "../../../helpers/icons";
 import { isStrEmpty, treeCharsOrMore } from "../../../helpers/validation";
 import { Input } from "../../Input";
 
@@ -168,6 +175,7 @@ const AddLevel = () => {
             type="text"
             label="level"
             placeholder="Level..."
+            Icon={IcLevel}
             required={true}
             value={state.level.value}
             onChange={(e) =>
@@ -178,6 +186,7 @@ const AddLevel = () => {
             type="number"
             label="number of groups"
             placeholder="0"
+            Icon={IcGrp}
             required={true}
             value={state.numOfGrps.value}
             onChange={(e) =>
@@ -212,6 +221,7 @@ const AddLevel = () => {
             type="textarea"
             label="description"
             placeholder="description..."
+            Icon={IcDesc}
             value={state.desc.value}
             error={state.desc.error}
             onChange={(e) =>

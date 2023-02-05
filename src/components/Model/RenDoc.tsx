@@ -2,33 +2,31 @@ import React from "react";
 import { useGlobalContext } from "../../Contexts/GlobalContext";
 import useDocument from "../../hooks/useDocument";
 import { Button } from "../Button";
-import { IcCancel, IcEdit } from "../../helpers/icons";
+import { IcCancel, IcDoc, IcEdit } from "../../helpers/icons";
 import { useAuth } from "../../Contexts/AuthContext";
+import { Input } from "../Input";
 
 const RenDoc = () => {
   const { model, setModel } = useGlobalContext();
   const { renameDocument } = useDocument();
   const { currUser } = useAuth();
 
-  const [newDocName, setNewDocName] = React.useState(model.value);
+  const [newId, setNewId] = React.useState(model.value);
 
   const renameHandler = async () => {
     setModel(null);
-    await renameDocument(currUser.uid, model.value, newDocName);
+    await renameDocument(currUser.username, model.value, newId);
   };
   return (
     <>
-      <div className="flex flex-col gap-y-2">
-        <label htmlFor="name" className="input-label">
-          Rename Document:
-        </label>
-        <input
-          type="text"
-          className="input"
-          value={newDocName}
-          onChange={(e) => setNewDocName(e.target.value)}
-        />
-      </div>
+      <Input
+        type="text"
+        label="rename document"
+        Icon={IcDoc}
+        placeholder="Document name..."
+        value={newId}
+        onChange={(e) => setNewId(e.target.value)}
+      />
       <div className="model-btn-container">
         <Button
           text="Rename"

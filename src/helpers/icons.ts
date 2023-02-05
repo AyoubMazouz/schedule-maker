@@ -24,6 +24,7 @@ import {
   HiOutlineHome,
   HiOutlineBookOpen,
   HiOutlineClipboardDocument,
+  HiOutlineBuildingOffice2,
 } from "react-icons/hi2";
 import {
   HiOutlineX,
@@ -32,6 +33,11 @@ import {
   HiDotsVertical,
   HiOutlineSaveAs,
   HiOutlineMail,
+  HiOutlinePhone,
+  HiOutlineMap,
+  HiOutlineMenuAlt2,
+  HiOutlineUserGroup,
+  HiOutlineKey,
 } from "react-icons/hi";
 import { MdSelectAll } from "react-icons/md";
 
@@ -68,3 +74,9 @@ export const IcSelectionNone = MdSelectAll;
 export const IcCopy = HiOutlineClipboardDocument;
 export const IcCopied = HiOutlineClipboardDocumentCheck;
 export const IcNotAllowed = HiOutlineNoSymbol;
+export const IcPhone = HiOutlinePhone;
+export const IcOrg = HiOutlineBuildingOffice2;
+export const IcAddress = HiOutlineMap;
+export const IcDesc = HiOutlineMenuAlt2;
+export const IcGrp = HiOutlineUserGroup;
+export const IcPwd = HiOutlineKey;

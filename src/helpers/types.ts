@@ -58,6 +58,8 @@ export interface User {
   img: string;
   banner: string;
   org: string;
+  desc: string;
+  address: string;
   isAdmin?: boolean | undefined;
   isRoot?: boolean | undefined;
 }

@@ -2,7 +2,7 @@ import React from "react";
 import { useGlobalContext } from "../../../Contexts/GlobalContext";
 import useSettings from "../../../hooks/useSettings";
 import { Button } from "../../Button";
-import { IcCancel, IcLogin } from "../../../helpers/icons";
+import { IcCancel, IcDesc, IcLogin, IcRoom } from "../../../helpers/icons";
 import { isStrEmpty, treeCharsOrMore } from "../../../helpers/validation";
 import { Input } from "../../Input";
 
@@ -89,6 +89,7 @@ const AddRoom = () => {
             type="text"
             label="room"
             placeholder="room..."
+            Icon={IcRoom}
             required={true}
             value={state.room.value}
             onChange={(e) =>
@@ -98,6 +99,7 @@ const AddRoom = () => {
           <Input
             type="textarea"
             label="description"
+            Icon={IcDesc}
             error={state.desc.error}
             placeholder="Description..."
             value={state.desc.value}

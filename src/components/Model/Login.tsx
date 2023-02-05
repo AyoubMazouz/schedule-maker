@@ -5,8 +5,9 @@ import { useGlobalContext } from "../../Contexts/GlobalContext";
 import { useUser } from "../../hooks/useUser";
 // Components.
 import { Button } from "../Button";
-import { IcCancel, IcLogin } from "../../helpers/icons";
+import { IcCancel, IcLogin, IcMail, IcPwd } from "../../helpers/icons";
 import { useAuth } from "../../Contexts/AuthContext";
+import { Input } from "../Input";
 
 const Login = () => {
   const { setModel, setAlert } = useGlobalContext();
@@ -41,30 +42,22 @@ const Login = () => {
           <div className="text-xl text-primary">LogIn</div>
           <div>Only Authorized Admins are allowed here</div>
         </div>
-        <div className="flex flex-col items-center gap-2">
-          <label className="input-label" htmlFor="email">
-            Email:
-          </label>
-          <input
-            className="input max-w-[26rem]"
-            type="text"
-            name="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-        <div className="flex flex-col items-center gap-2">
-          <label className="input-label" htmlFor="password">
-            Password:
-          </label>
-          <input
-            className="input max-w-[26rem]"
-            type="password"
-            name="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
+        <Input
+          type="email"
+          label="email"
+          Icon={IcMail}
+          placeholder="Email address..."
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <Input
+          type="password"
+          label="password"
+          Icon={IcPwd}
+          placeholder="password..."
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
       </div>
       <div className="model-btn-container">
         <Button

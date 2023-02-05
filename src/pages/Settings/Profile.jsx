@@ -2,7 +2,15 @@ import React from "react";
 import { Button } from "../../components/Button";
 import { Input } from "../../components/Input";
 import { useAuth } from "../../Contexts/AuthContext";
-import { IcEdit, IcNotAllowed, IcSave } from "../../helpers/icons";
+import {
+  IcAddress,
+  IcCopied,
+  IcDesc,
+  IcEdit,
+  IcNotAllowed,
+  IcOrg,
+  IcSave,
+} from "../../helpers/icons";
 import { useUser } from "../../hooks/useUser";
 import { treeCharsOrMore } from "../../helpers/validation";
 import useSettings from "../../hooks/useSettings";
@@ -39,6 +47,28 @@ const reducer = (state, action) => {
             : "org must be tree characters or more.",
         },
       };
+    case "DESC":
+      return {
+        ...state,
+        saved: false,
+        desc: {
+          value: action.payload,
+          error: treeCharsOrMore(action.payload)
+            ? ""
+            : "description must be tree characters or more.",
+        },
+      };
+    case "ADDRESS":
+      return {
+        ...state,
+        saved: false,
+        address: {
+          value: action.payload,
+          error: treeCharsOrMore(action.payload)
+            ? ""
+            : "address must be tree characters or more.",
+        },
+      };
     case "SAVE":
       return { ...state, saved: true };
     case "DISCARD":
@@ -64,6 +94,8 @@ export const Profile = () => {
     org: { value: currUser.org, error: "" },
     img: currUser.img,
     banner: currUser.banner,
+    desc: currUser.desc,
+    address: currUser.address,
     saved: true,
   };
   const [state, dispatch] = React.useReducer(reducer, INITIAL_STATE);
@@ -84,6 +116,8 @@ export const Profile = () => {
       org: state.org.value,
       img: state.img,
       banner: state.banner,
+      desc: state.desc,
+      desc: state.address,
     };
     const res = await updateUserDoc(document);
     if (res === "success") dispatch({ type: "SAVE" });
@@ -143,6 +177,7 @@ export const Profile = () => {
         <Input
           type="tel"
           label="phone number"
+          Icon={IcCopied}
           placeholder="Phone Number..."
           value={state.phone.value}
           onChange={(e) => dispatch({ type: "PHONE", payload: e.target.value })}
@@ -151,9 +186,30 @@ export const Profile = () => {
           type="text"
           label="organization"
           placeholder="Your Organization..."
+          Icon={IcOrg}
           value={state.org.value}
           error={state.org.error}
           onChange={(e) => dispatch({ type: "ORG", payload: e.target.value })}
+        />
+        <Input
+          type="text"
+          label="address"
+          placeholder="Address..."
+          Icon={IcAddress}
+          value={state.address.value}
+          error={state.address.error}
+          onChange={(e) =>
+            dispatch({ type: "ADDRESS", payload: e.target.value })
+          }
+        />
+        <Input
+          type="textarea"
+          label="description"
+          placeholder="Description..."
+          Icon={IcDesc}
+          value={state.desc.value}
+          error={state.desc.error}
+          onChange={(e) => dispatch({ type: "DESC", payload: e.target.value })}
         />
       </div>
     </div>

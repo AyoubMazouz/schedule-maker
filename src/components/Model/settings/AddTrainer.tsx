@@ -2,7 +2,13 @@ import React from "react";
 import { useGlobalContext } from "../../../Contexts/GlobalContext";
 import useSettings from "../../../hooks/useSettings";
 import { Button } from "../../Button";
-import { IcCancel, IcEx, IcLogin } from "../../../helpers/icons";
+import {
+  IcCancel,
+  IcDesc,
+  IcEx,
+  IcLogin,
+  IcUser,
+} from "../../../helpers/icons";
 import { Room, Trainer } from "../../../helpers/types";
 import { isStrEmpty, treeCharsOrMore } from "../../../helpers/validation";
 import { Input } from "../../Input";
@@ -132,8 +138,9 @@ const AddTrainer = () => {
         <Input
           type="text"
           label="trainer"
-          error={state.trainer.error}
           placeholder="Trainer..."
+          Icon={IcUser}
+          error={state.trainer.error}
           required={true}
           value={state.trainer.value}
           onChange={(e) =>
@@ -168,6 +175,7 @@ const AddTrainer = () => {
         <Input
           type="textarea"
           label="description"
+          Icon={IcDesc}
           error={state.desc.error}
           placeholder="Description..."
           value={state.desc.value}

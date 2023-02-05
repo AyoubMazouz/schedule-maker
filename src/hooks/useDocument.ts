@@ -15,56 +15,56 @@ import { db } from "../firebase";
 import { Schedule } from "../helpers/types";
 
 interface DocExists {
-  (username: string, docId: string): Promise<boolean>;
+  (username: string, id: string): Promise<boolean>;
 }
 interface AddNewDoc {
-  (username: string, docId: string, data: Schedule[]): Promise<boolean>;
+  (username: string, id: string, data: Schedule[]): Promise<boolean>;
 }
 interface GetDoc {
-  (username: string, docId: string): Promise<boolean | DocumentData>;
+  (username: string, id: string): Promise<boolean | DocumentData>;
 }
 interface GetAllDoc {
   (username: string, setDocs: React.Dispatch<React.SetStateAction<any>>): void;
 }
 interface DeleteDoc {
-  (username: string, docId: string): Promise<boolean>;
+  (username: string, id: string): Promise<boolean>;
 }
 interface RenameDoc {
-  (username: string, docId: string, newdocId: string): Promise<boolean>;
+  (username: string, id: string, newId: string): Promise<boolean>;
 }
 
 const useDocument = () => {
   const [loading, setLoading] = React.useState(false);
 
   // Document.
-  const documentExists: DocExists = (username, docId) => {
+  const documentExists: DocExists = (username, id) => {
     return new Promise(async (resolve, reject) => {
-      const snapshot = await getDoc(doc(db, "documents", username + docId));
+      const snapshot = await getDoc(doc(db, "documents", username + id));
       if (snapshot.exists()) resolve(true);
       resolve(false);
     });
   };
 
-  const addNewDocument: AddNewDoc = (username, docId, data) => {
+  const addNewDocument: AddNewDoc = (username, id, data) => {
     return new Promise(async (resolve, reject) => {
       setLoading(true);
       const document = {
-        docId,
+        id,
         username,
         createdAt: Timestamp.now(),
         modifiedAt: Timestamp.now(),
         data: JSON.stringify(data),
       };
 
-      await setDoc(doc(db, "documents", username + docId), document);
+      await setDoc(doc(db, "documents", username + id), document);
       setLoading(false);
       resolve(true);
     });
   };
 
-  const getDocument: GetDoc = (username, docId) => {
+  const getDocument: GetDoc = (username, id) => {
     return new Promise(async (resolve, reject) => {
-      const snapshot = await getDoc(doc(db, "documents", username + docId));
+      const snapshot = await getDoc(doc(db, "documents", username + id));
       if (snapshot.exists()) resolve(snapshot.data());
       resolve(false);
     });
@@ -84,25 +84,25 @@ const useDocument = () => {
     );
   };
 
-  const deleteDocument: DeleteDoc = (username, docId) => {
+  const deleteDocument: DeleteDoc = (username, id) => {
     return new Promise(async (resolve, reject) => {
       setLoading(true);
-      const snapshot = await deleteDoc(doc(db, "documents", username + docId));
+      const snapshot = await deleteDoc(doc(db, "documents", username + id));
       setLoading(false);
       resolve(true);
     });
   };
 
-  const renameDocument: RenameDoc = (username, docId, newDocId) => {
+  const renameDocument: RenameDoc = (username, id, newDocId) => {
     return new Promise(async (reject, resolve) => {
       setLoading(true);
 
-      const document: any = await getDocument(username, docId);
+      const document: any = await getDocument(username, id);
 
       if (doc) {
         document.modifiedAt = Timestamp.now();
-        document.docId = newDocId;
-        await deleteDocument(username, docId);
+        document.id = newDocId;
+        await deleteDocument(username, id);
         await setDoc(doc(db, "documents", username + newDocId), document);
 
         setLoading(false);

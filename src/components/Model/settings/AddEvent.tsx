@@ -2,7 +2,7 @@ import React from "react";
 import { useGlobalContext } from "../../../Contexts/GlobalContext";
 import useSettings from "../../../hooks/useSettings";
 import { Button } from "../../Button";
-import { IcCancel, IcLogin } from "../../../helpers/icons";
+import { IcCancel, IcDesc, IcEvent, IcLogin } from "../../../helpers/icons";
 import { Input } from "../../Input";
 import { isStrEmpty, treeCharsOrMore } from "../../../helpers/validation";
 
@@ -88,6 +88,7 @@ const AddEvent = () => {
             type="text"
             label="event"
             placeholder="Event..."
+            Icon={IcEvent}
             required={true}
             value={state.event.value}
             onChange={(e) =>
@@ -97,6 +98,7 @@ const AddEvent = () => {
           <Input
             type="textarea"
             label="description"
+            Icon={IcDesc}
             error={state.desc.error}
             placeholder="Description..."
             value={state.desc.value}
