@@ -34,12 +34,12 @@ const Settings = () => {
   return (
     <div className="flex justify-center mx-2">
       <div className="grid w-full max-w-[1400px] grid-cols-12 gap-2">
-        <div className="overflow-hidden border-2 rounded-lg col-span-full border-dark/25 md:col-span-3">
+        <div className="overflow-hidden border-2 rounded-lg col-span-full border-dark/50 md:col-span-3">
           <div className="md:h-[calc(100vh-6.6rem)]">
             <SideBar {...{ tabsLs, setSaved, saved }} />
           </div>
         </div>
-        <div className="overflow-hidden border-2 rounded-lg col-span-full border-dark/25 md:col-span-9">
+        <div className="overflow-hidden border-2 rounded-lg col-span-full border-dark/50 md:col-span-9">
           <div className="h-[75vh] overflow-y-scroll md:h-[calc(100vh-6.6rem)] ">
             {tabs[settingsTab]}
           </div>

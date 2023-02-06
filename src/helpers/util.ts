@@ -18,7 +18,7 @@ export const getRelativeDate = (timestamp: Timestamp) => {
   if (mins < 1) return formatter.format(-secs, "seconds");
   if (hours < 1) return formatter.format(-mins, "minutes");
   if (days < 1) return formatter.format(-hours, "hours");
-  if (months < 1) return formatter.format(-days, "month");
+  if (months < 1) return formatter.format(-days, "day");
   if (years < 1) return formatter.format(-months, "month");
   return formatter.format(-years, "year");
 };

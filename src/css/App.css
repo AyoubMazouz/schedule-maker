@@ -928,6 +928,14 @@ body{
   margin-top: 6rem;
 }
 
+.mt-16{
+  margin-top: 4rem;
+}
+
+.mt-32{
+  margin-top: 8rem;
+}
+
 .box-border{
   box-sizing: border-box;
 }

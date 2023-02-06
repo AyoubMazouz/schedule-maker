@@ -98,6 +98,7 @@ const Publish = () => {
   const handleDetail = (v) => {
     const details = [
       ["title", v.id],
+      ["owner", v.username],
       ["description", v.desc],
       ["created at", getRelativeDate(v.createdAt)],
       ["URL", v.url],

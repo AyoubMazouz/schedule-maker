@@ -88,5 +88,16 @@ export const useUser = () => {
     }
   };
 
-  return { loading, signUp, signIn, signOut, updateUserDoc };
+  const getUserInfo = async (username: string) => {
+    try {
+      const snapshot = await getDoc(doc(db, "users", username));
+      if (snapshot.exists()) {
+        return snapshot.data() as User;
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  return { loading, signUp, signIn, signOut, updateUserDoc, getUserInfo };
 };

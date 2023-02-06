@@ -30,7 +30,7 @@ function App() {
           <Route path="/editor/:docId" element={<Editor />} />
           <Route path="/documents" element={<Documents />} />
         </Route>
-        <Route path="/publish/:userId" element={<Publish />} />
+        <Route path="/publish/:username" element={<Publish />} />
       </Routes>
       <Footer />
     </div>

@@ -15,7 +15,7 @@ const OptionBar = () => {
     });
   };
   return (
-    <div className="flex justify-between rounded-lg border p-2 shadow-md">
+    <div className="flex justify-between p-2 border rounded-lg shadow-md">
       <div className="flex gap-x-4">
         <Button
           type="success"
@@ -27,9 +27,9 @@ const OptionBar = () => {
           <input
             type="file"
             accept=".json"
-            className="absolute top-0 bottom-0 left-0 right-0 cursor-pointer opacity-0"
+            className="absolute top-0 bottom-0 left-0 right-0 opacity-0 cursor-pointer"
             onChange={(e) =>
-              importDocumentAsFile(currUser.uid, e.target.files[0])
+              importDocumentAsFile(currUser.username, e.target.files[0])
             }
           />
         </Button>
