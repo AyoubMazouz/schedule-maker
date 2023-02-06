@@ -17,9 +17,11 @@ import {
   IcImport,
   IcLogout,
   IcNewDoc,
+  IcRedo,
   IcSave,
   IcSelectionNone,
   IcSettings,
+  IcUndo,
 } from "../../helpers/icons";
 
 const OptionBar = () => {
@@ -32,6 +34,10 @@ const OptionBar = () => {
     fusionMode,
     selectedCell,
     setSelectedCell,
+    history,
+    hIndex,
+    setHistory,
+    setHIndex,
   } = useEditorContext();
   const {
     importDocument,
@@ -42,6 +48,9 @@ const OptionBar = () => {
     getTrainers,
     getRooms,
     getEvents,
+    record,
+    undo,
+    redo,
   } = useEditor();
   const { addNewDocument } = useDocument();
   const { exportAsPdf } = usePdf();
@@ -66,7 +75,7 @@ const OptionBar = () => {
   const [events, setEvents] = React.useState<string[]>([]);
 
   React.useEffect(() => {
-    loadLabelsData(currUser.uid);
+    loadLabelsData(currUser.username);
   }, []);
 
   React.useEffect(() => {
@@ -135,12 +144,12 @@ const OptionBar = () => {
   };
 
   const clearCellHandler = () => {
-    const [schedualIndex, dayIndex, sessionIndex] = selectedCell;
+    const [scheduleIndex, dayIndex, sessionIndex] = selectedCell;
     const res = clearCell(
       data,
       setData,
       fusionMode,
-      schedualIndex,
+      scheduleIndex,
       dayIndex,
       sessionIndex
     );
@@ -148,29 +157,45 @@ const OptionBar = () => {
   };
 
   const editFieldHandler = (row: number, value: string) => {
-    const [schedualIndex, dayIndex, sessionIndex] = selectedCell;
-    const res = editField(
-      data,
-      setData,
-      fusionMode,
-      schedualIndex,
-      dayIndex,
-      sessionIndex,
+    const [x, y, z] = selectedCell;
+
+    // Record for undo and redo.
+    record(
+      history,
+      hIndex,
+      setHistory,
+      setHIndex,
+      x,
+      y,
+      z,
       row,
-      value
+      value,
+      data[x].schedule[y][z][row]
     );
-    const sessionTextSplited = SESSIONS_TEXT[sessionIndex].split("-");
+
+    const res = editField(data, setData, fusionMode, x, y, z, row, value);
+    const sessionTextSplited = SESSIONS_TEXT[z].split("-");
     let message;
     if (res) {
       setSaved(false);
     } else {
       if (row === 0) {
-        message = `The professor "${value}" is not available on "${DAYS_TEXT[dayIndex]}", from "${sessionTextSplited[0]}" to "${sessionTextSplited[1]}" working with the group "${data[schedualIndex].group}" in classRoom number "${value}".`;
+        message = `The professor "${value}" is not available on "${DAYS_TEXT[y]}", from "${sessionTextSplited[0]}" to "${sessionTextSplited[1]}" working with the group "${data[x].group}" in classRoom number "${value}".`;
       } else if (row === 2) {
-        message = `The Room number "${value}" is not available on "${DAYS_TEXT[dayIndex]}", from "${sessionTextSplited[0]}" to "${sessionTextSplited[1]}" it is ocupied by the group "${value}".`;
+        message = `The Room number "${value}" is not available on "${DAYS_TEXT[y]}", from "${sessionTextSplited[0]}" to "${sessionTextSplited[1]}" it is ocupied by the group "${value}".`;
       }
       setAlert({ type: "warn", message });
     }
+  };
+
+  const handleUndo = () => {
+    undo(data, setData, history, hIndex, setHistory, setHIndex, fusionMode);
+    setSaved(false);
+  };
+
+  const handleRedo = () => {
+    redo(data, setData, history, hIndex, setHistory, setHIndex, fusionMode);
+    setSaved(false);
   };
 
   const SaveMenuItem = () => (
@@ -230,6 +255,18 @@ const OptionBar = () => {
           onClick={() => setFusionMode((x: boolean) => !x)}
           trigger={fusionMode}
         />
+        <Button
+          label={["Undo"]}
+          Icon={IcUndo}
+          onClick={handleUndo}
+          disabled={hIndex === 0}
+        />
+        <Button
+          label={["Redo"]}
+          Icon={IcRedo}
+          onClick={handleRedo}
+          disabled={hIndex === history.length}
+        />
       </div>
       {selectedCell ? (
         <div className="flex items-center gap-x-2">
@@ -244,7 +281,7 @@ const OptionBar = () => {
             notRecommended={unavailableTrainers}
             values={availableTrainers}
             value={
-              data[selectedCell[0]].schedual[selectedCell[1]][
+              data[selectedCell[0]].schedule[selectedCell[1]][
                 selectedCell[2]
               ][0]
             }
@@ -254,7 +291,7 @@ const OptionBar = () => {
             label="modules"
             values={modules}
             value={
-              data[selectedCell[0]].schedual[selectedCell[1]][
+              data[selectedCell[0]].schedule[selectedCell[1]][
                 selectedCell[2]
               ][1]
             }
@@ -266,7 +303,7 @@ const OptionBar = () => {
             recommended={preferredRooms}
             notRecommended={unavailableRooms}
             value={
-              data[selectedCell[0]].schedual[selectedCell[1]][
+              data[selectedCell[0]].schedule[selectedCell[1]][
                 selectedCell[2]
               ][2]
             }
@@ -276,7 +313,7 @@ const OptionBar = () => {
             label="events"
             values={events}
             value={
-              data[selectedCell[0]].schedual[selectedCell[1]][
+              data[selectedCell[0]].schedule[selectedCell[1]][
                 selectedCell[2]
               ][3]
             }

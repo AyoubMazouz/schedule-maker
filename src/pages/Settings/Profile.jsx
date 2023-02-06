@@ -129,51 +129,59 @@ export const Profile = () => {
         style={{ backgroundImage: `url(${state.banner})` }}
         className="relative -m-2 flex h-[10rem] justify-between bg-cover shadow-md"
       >
-        <div className="absolute bottom-[0%] left-[5%] translate-y-[15%] overflow-hidden rounded-full border-[6px] border-light shadow-lg">
-          <div className="group relative h-[6rem] w-[6rem] transition-all duration-700 hover:scale-110">
-            <img src={state.img} className="object-cover h-full" />
-            <div className="absolute top-[50%] right-[50%] translate-x-[50%] translate-y-[-50%] rounded-full bg-light p-1.5 opacity-0 shadow-md transition-all duration-300 group-hover:opacity-50">
-              <IcEdit className="text-2xl text-emerald-600" />
+        <div className="absolute bottom-[0%] left-[5%] flex translate-y-[75%] items-center gap-x-3 p-2">
+          <div className="overflow-hidden rounded-full border-[6px] border-light shadow-lg">
+            <div className="group relative h-[6rem] w-[6rem] transition-all duration-700 hover:scale-110">
+              <img src={state.img} className="object-cover h-full" />
+              <div className="absolute top-[50%] right-[50%] translate-x-[50%] translate-y-[-50%] rounded-full bg-light p-1.5 opacity-0 shadow-md transition-all duration-300 group-hover:opacity-50">
+                <IcEdit className="text-2xl text-emerald-600" />
+              </div>
+              <input
+                type="file"
+                accept="jpg,jpeg,png"
+                onChange={handleImg}
+                className="absolute inset-0 opacity-0 cursor-pointer"
+              />
             </div>
-            <input
-              type="file"
-              accept="jpg,jpeg,png"
-              onChange={handleImg}
-              className="absolute inset-0 opacity-0 cursor-pointer"
-            />
+          </div>
+          <div className="-space-y-1">
+            <div className="text-lg font-semibold text-primary">
+              @{currUser.username}
+            </div>
+            <div className="underline">{currUser.email}</div>
           </div>
         </div>
-        <div className="flex flex-col p-2 ml-auto gap-y-3">
-          <Button
-            text="save"
-            type="success"
-            Icon={IcSave}
-            onClick={handleSave}
-            disabled={loading || state.saved}
-            styles="justify-center"
+        <Button
+          text="edit"
+          Icon={IcEdit}
+          styles="text-light border-light justify-center ml-auto m-2"
+        >
+          <input
+            type="file"
+            accept="jpg,jpeg,png"
+            onChange={handleBanner}
+            className="absolute inset-0 opacity-0 cursor-pointer"
           />
-          <Button
-            type="warn"
-            text="discard"
-            Icon={IcNotAllowed}
-            disabled={loading || state.saved}
-            onClick={(e) => dispatch({ type: "DISCARD", payload: currUser })}
-          />
-          <Button
-            text="edit"
-            Icon={IcEdit}
-            styles="text-light border-light justify-center mt-auto"
-          >
-            <input
-              type="file"
-              accept="jpg,jpeg,png"
-              onChange={handleBanner}
-              className="absolute inset-0 opacity-0 cursor-pointer"
-            />
-          </Button>
-        </div>
+        </Button>
       </div>
-      <div className="mt-8">
+      <div className="flex flex-wrap justify-end gap-3 mt-4">
+        <Button
+          type="warn"
+          text="discard"
+          Icon={IcNotAllowed}
+          disabled={loading || state.saved}
+          onClick={(e) => dispatch({ type: "DISCARD", payload: currUser })}
+        />
+        <Button
+          text="save"
+          type="success"
+          Icon={IcSave}
+          onClick={handleSave}
+          disabled={loading || state.saved}
+          styles="justify-center"
+        />
+      </div>
+      <div className="mt-24">
         <Input
           type="tel"
           label="phone number"

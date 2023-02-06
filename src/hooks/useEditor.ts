@@ -1,3 +1,4 @@
+import React from "react";
 import { EMPTY_SCHEDULE } from "../helpers/constants";
 import { LabelsType, Level, Schedule } from "../helpers/types";
 import useDocument from "./useDocument";
@@ -126,9 +127,9 @@ const useEditor = () => {
     data,
     setData,
     fusionMode,
-    scheduleIndex,
-    dayIndex,
-    sessionIndex,
+    x,
+    y,
+    z,
     row,
     value
   ) => {
@@ -143,9 +144,9 @@ const useEditor = () => {
             // Check if Prof available.
             if (
               ses[0] === value &&
-              schIndex !== scheduleIndex &&
-              dIndex === dayIndex &&
-              sesIndex === sessionIndex &&
+              schIndex !== x &&
+              dIndex === y &&
+              sesIndex === z &&
               ses[2].toLowerCase() !== "teams"
             ) {
               error = true;
@@ -154,9 +155,9 @@ const useEditor = () => {
             // Check if Room available.
             else if (
               ses[2] === value &&
-              schIndex !== scheduleIndex &&
-              dIndex === dayIndex &&
-              sesIndex === sessionIndex &&
+              schIndex !== x &&
+              dIndex === y &&
+              sesIndex === z &&
               ses[2].toLowerCase() !== "teams"
             ) {
               error = true;
@@ -164,7 +165,7 @@ const useEditor = () => {
             }
 
             // Count Total Hours.
-            if (schIndex === scheduleIndex)
+            if (schIndex === x)
               if (ses[0] && ses[1] && ses[2]) hoursCount += 2.5;
             return ses;
           });
@@ -175,13 +176,12 @@ const useEditor = () => {
     if (error) return false;
 
     if (fusionMode) {
-      const offset = sessionIndex % 2 === 0 ? 1 : -1;
-      copiedData[scheduleIndex].schedule[dayIndex][sessionIndex + offset][row] =
-        value;
+      const offset = z % 2 === 0 ? 1 : -1;
+      copiedData[x].schedule[y][z + offset][row] = value;
     }
 
-    copiedData[scheduleIndex].totalHours = hoursCount.toString();
-    copiedData[scheduleIndex].schedule[dayIndex][sessionIndex][row] = value;
+    copiedData[x].totalHours = hoursCount.toString();
+    copiedData[x].schedule[y][z][row] = value;
     setData(copiedData);
     return true;
   };
@@ -220,14 +220,14 @@ const useEditor = () => {
     return true;
   };
 
-  const deleteschedule: DeleteSchedule = (data, setData, id) => {
+  const deleteSchedule: DeleteSchedule = (data, setData, id) => {
     const newData = data.filter((sch) => sch.group !== id);
     if (data.length === newData.length) return false;
     setData(newData);
     return true;
   };
 
-  const getGroups: GetGroups = (data, labelsData, currschedule) => {
+  const getGroups: GetGroups = (data, labelsData, currSchedule) => {
     const groups: string[] = [];
     // Generate groups base on level and numOfGrps.
     labelsData.levels.forEach((level) => {
@@ -238,7 +238,7 @@ const useEditor = () => {
     const unavailableGroups: string[] = [];
     for (let i = 0; i < data.length; i++) {
       const grp = data[i].group;
-      if (grp && grp !== data[currschedule].group) unavailableGroups.push(grp);
+      if (grp && grp !== data[currSchedule].group) unavailableGroups.push(grp);
     }
     // Get available groups without including unavailable groups.
     const availableGroups = groups.filter(
@@ -250,6 +250,7 @@ const useEditor = () => {
   const getModules: GetModules = (data, labelsData, selectedCell) => {
     const level = data[selectedCell[0]].group.split(" ")[0];
     const newLevels = labelsData.levels.filter((l: Level) => l.value === level);
+    if (!newLevels.length) return [];
     return newLevels[0].modules;
   };
 
@@ -311,6 +312,85 @@ const useEditor = () => {
   const getEvents: GetEvents = (labelsData) =>
     labelsData.events.map((e) => e.value);
 
+  const undo = (
+    data: any,
+    setData: any,
+    history: any,
+    hIndex: any,
+    setHistory: any,
+    setHIndex: any,
+    fusionMode: any
+  ) => {
+    if (hIndex === 0) return;
+    const h = history[hIndex - 1];
+    if (h.type === "INSERT") {
+      const newData = data.map((sch: any) => {
+        sch.schedule[h.y][h.z][h.row] = h.prev;
+        if (fusionMode) {
+          const offset = h.z % 2 === 0 ? 1 : -1;
+          sch.schedule[h.y][h.z + offset][h.row] = h.prev;
+        }
+        return sch;
+      });
+      setData(newData);
+      setHIndex((x: any) => --x);
+    }
+  };
+  const redo = (
+    data: any,
+    setData: any,
+    history: any,
+    hIndex: any,
+    setHistory: any,
+    setHIndex: any,
+    fusionMode: any
+  ) => {
+    if (hIndex === history.length) return;
+    const h = history[hIndex];
+    if (h.type === "INSERT") {
+      const newData = data.map((sch: any) => {
+        sch.schedule[h.y][h.z][h.row] = h.next;
+        if (fusionMode) {
+          const offset = h.z % 2 === 0 ? 1 : -1;
+          sch.schedule[h.y][h.z + offset][h.row] = h.next;
+        }
+        return sch;
+      });
+      setData(newData);
+      setHIndex((x: any) => ++x);
+    }
+  };
+
+  // Record Action for undo and redo.
+  const record = (
+    history: any,
+    hIndex: any,
+    setHistory: any,
+    setHIndex: any,
+    x: any,
+    y: any,
+    z: any,
+    row: any,
+    next: any,
+    prev: any
+  ) => {
+    // If new data is inserted and the pointer is in the middle.
+    // Remove all action that it index is greater than pointer index.
+    if (hIndex !== history.length) setHistory((x: any) => x.slice(0, hIndex));
+    const action = {
+      type: "INSERT",
+      fusionMode: true,
+      x,
+      y,
+      z,
+      row,
+      next,
+      prev,
+    };
+    setHistory((x: any) => [...x, action]);
+    setHIndex((x: any) => ++x);
+  };
+
   return {
     loading,
     exportDocument,
@@ -319,13 +399,16 @@ const useEditor = () => {
     editField,
     clearCell,
     editScheduleGrp,
-    deleteschedule,
+    deleteSchedule,
     addNewSchedule,
     getGroups,
     getTrainers,
     getRooms,
     getEvents,
     getModules,
+    undo,
+    redo,
+    record,
   };
 };
 

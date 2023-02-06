@@ -9,12 +9,15 @@ import {
   IcDownload,
   IcEdit,
   IcExport,
+  IcHelp,
 } from "../../helpers/icons";
 import OptionBar from "./OptionBar";
 import useDocument from "../../hooks/useDocument";
 import { usePdf } from "../../hooks/usePdf";
 import MoreMenu from "../../components/MoreMenu";
 import { useAuth } from "../../Contexts/AuthContext";
+import { Button } from "../../components/Button";
+import { getRelativeDate } from "../../helpers/util";
 
 const Documents = () => {
   const { setModel, data, setAlert } = useGlobalContext();
@@ -27,7 +30,7 @@ const Documents = () => {
 
   React.useEffect(() => {
     document.title = `SH-Maker - Documents`;
-    getAllDocuments(currUser.uid, setDocuments);
+    getAllDocuments(currUser.username, setDocuments);
   }, []);
 
   const menuRef = React.useRef(null);
@@ -89,29 +92,41 @@ const Documents = () => {
       <div className="mx-2 w-full max-w-[1400px] space-y-2">
         <OptionBar />
         <div className="border rounded-lg shadow-lg">
+          <div className="flex items-center pr-1 border-b-2 border-dark/5- bg-primary text-start text-light">
+            <div className="grid w-full grid-cols-12 p-2 font-semibold">
+              <div className="col-span-full sm:col-span-9 md:col-span-6">
+                Documents
+              </div>
+              <div className="hidden col-span-3 text-center sm:block">
+                Modified At
+              </div>
+              <div className="hidden col-span-3 text-center md:block">
+                Created At
+              </div>
+            </div>
+            <Button Icon={IcHelp} label={["document"]} />
+          </div>
           {documents.map((value, docIndex) => (
             <div
-              className={`menu-item group flex justify-between text-center ${
-                docIndex % 2 === 0 && "bg-dark/5"
+              className={`menu-item group flex ${
+                docIndex % 2 === 0 && "bg-dark/10"
               }`}
             >
               <Link
                 to={`/editor/${value.id}`}
                 className="grid w-full grid-cols-12"
               >
-                <div className="space-x-1 text-left col-span-full group-hover:underline sm:col-span-9 md:col-span-6">
-                  <IcDoc className="inline-block icon" />
-                  <span>
-                    {value.id.length > 30
-                      ? value.id.slice(0, 38) + "..."
-                      : value.id}
-                  </span>
+                <div className="flex col-span-full gap-x-1 group-hover:underline sm:col-span-9 md:col-span-6">
+                  <IcDoc className="icon" />
+                  <div className="overflow-hidden text-ellipsis whitespace-nowrap">
+                    {value.id}
+                  </div>
                 </div>
-                <div className="hidden col-span-3 sm:block">
-                  {value.createdAt.toDate().toDateString()}
+                <div className="hidden col-span-3 text-center sm:block">
+                  {getRelativeDate(value.modifiedAt)}
                 </div>
-                <div className="hidden col-span-3 md:block">
-                  {value.modifiedAt.toDate().toDateString()}
+                <div className="hidden col-span-3 text-center md:block">
+                  {getRelativeDate(value.createdAt)}
                 </div>
               </Link>
               <MoreMenu

@@ -7,6 +7,8 @@ import {
   IcCopy,
   IcCopied,
   IcPublish,
+  IcHelp,
+  IcDoc,
 } from "../../helpers/icons";
 import MoreMenu from "../../components/MoreMenu";
 import { useAuth } from "../../Contexts/AuthContext";
@@ -14,12 +16,13 @@ import { useGlobalContext } from "../../Contexts/GlobalContext";
 import { Link } from "react-router-dom";
 import { Input } from "../../components/Input";
 import usePublish from "../../hooks/usePublish";
+import { getRelativeDate } from "../../helpers/util";
 
 const INITIAL_STATE = {
   id: "",
   file: null,
   copied: false,
-  description: "",
+  desc: "",
 };
 
 const reducer = (state, action) => {
@@ -36,8 +39,8 @@ const reducer = (state, action) => {
       return { ...state, copied: !state.copied };
     case "ID":
       return { ...state, id: action.payload.value };
-    case "DESCRIPTION":
-      return { ...state, description: action.payload.value };
+    case "DESC":
+      return { ...state, desc: action.payload.value };
     default:
       return state;
   }
@@ -63,7 +66,7 @@ const Publish = () => {
         currUser.username,
         state.id,
         state.file,
-        state.description
+        state.desc
       );
       if (res === "success")
         setAlert({
@@ -95,8 +98,8 @@ const Publish = () => {
   const handleDetail = (v) => {
     const details = [
       ["title", v.id],
-      ["created at", v.createdAt.toDate().toDateString()],
-      ["description", v.description],
+      ["description", v.desc],
+      ["created at", getRelativeDate(v.createdAt)],
       ["URL", v.url],
     ];
     setModel({ type: "showDetails", details });
@@ -169,11 +172,11 @@ const Publish = () => {
           <Input
             type="textarea"
             label="description"
-            value={state.description}
+            value={state.desc}
             placeholder="file name..."
             onChange={(e) =>
               dispatch({
-                type: "DESCRIPTION",
+                type: "DESC",
                 payload: { value: e.target.value },
               })
             }
@@ -182,20 +185,34 @@ const Publish = () => {
       ) : null}
       {/* Documents. */}
       <div className="border rounded-lg shadow-md">
+        <div className="flex items-center pr-1 border-b-2 border-dark/50 bg-primary text-start text-light">
+          <div className="grid w-full grid-cols-12 p-2 font-semibold">
+            <div className="col-span-9">Events</div>
+            <div className="hidden col-span-3 text-center md:block">
+              Created At
+            </div>
+          </div>
+          <Button Icon={IcHelp} label={["Events"]} />
+        </div>
         {documents.map((value, docIndex) => (
           <div
             key={value.id}
-            className={`menu-item group flex justify-between gap-x-2 ${
-              docIndex % 2 === 0 && "bg-dark/5"
+            className={`menu-item group flex ${
+              docIndex % 2 === 0 && "bg-dark/10"
             }`}
           >
             <div
               onClick={(e) => handleDetail(value)}
-              className="grid grid-cols-12"
+              className="grid w-full grid-cols-12"
             >
-              <div className="col-span-8">{value.id}</div>
-              <div className="col-span-4">
-                {value.createdAt.toDate().toDateString()}
+              <div className="flex col-span-9 gap-x-1 group-hover:underline">
+                <IcDoc className="icon" />
+                <div className="overflow-hidden text-ellipsis whitespace-nowrap">
+                  {value.id}
+                </div>
+              </div>
+              <div className="hidden col-span-3 text-center sm:block">
+                {getRelativeDate(value.createdAt)}
               </div>
             </div>
             <MoreMenu

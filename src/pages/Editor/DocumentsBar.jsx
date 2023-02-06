@@ -9,11 +9,10 @@ import { Button } from "../../components/Button";
 const DocumentsBar = () => {
   const { setSaved } = useEditorContext();
   const { data, setData, setAlert, labelsData } = useGlobalContext();
-  const { addNewSchedual, editSchedualGrp, deleteSchedual, getGroups } =
+  const { addNewSchedule, editScheduleGrp, deleteSchedule, getGroups } =
     useEditor();
 
-  const [currSchedual, setCurrSchedual] = React.useState(0);
-
+  const [currSchedule, setCurrSchedule] = React.useState(0);
   const [availableGroups, setAvailableGroups] = React.useState([]);
   const [unavailableGroups, setUnavailableGroups] = React.useState([]);
 
@@ -21,16 +20,16 @@ const DocumentsBar = () => {
     const [availableGroups, unavailableGroups] = getGroups(
       data,
       labelsData,
-      currSchedual
+      currSchedule
     );
     setAvailableGroups(availableGroups);
     setUnavailableGroups(unavailableGroups);
-  }, [currSchedual, labelsData]);
+  }, [currSchedule, labelsData]);
 
-  const addNewSchedualHandler = () => {
-    const res = addNewSchedual(data, setData, setAlert);
+  const addNewScheduleHandler = () => {
+    const res = addNewSchedule(data, setData, setAlert);
     if (res) {
-      setCurrSchedual(data.length);
+      setCurrSchedule(data.length);
       setSaved(false);
     } else {
       setAlert({
@@ -59,28 +58,28 @@ const DocumentsBar = () => {
     }, 10);
   };
 
-  const editSchedualGrpHandler = (schedualIndex, value) => {
-    const res = editSchedualGrp(data, setData, schedualIndex, value);
+  const editScheduleGrpHandler = (scheduleIndex, value) => {
+    const res = editScheduleGrp(data, setData, scheduleIndex, value);
     if (res) {
       setSaved(false);
     } else {
       setAlert({
         type: "warn",
-        message: "You have already created a Schedual for this group",
+        message: "You have already created a Schedule for this group",
       });
     }
   };
 
-  const deleteSchedualHandler = (scheduleIndex) => {
-    const res = deleteSchedual(data, setData, data[scheduleIndex].group);
+  const deleteScheduleHandler = (scheduleIndex) => {
+    const res = deleteSchedule(data, setData, data[scheduleIndex].group);
     if (res) {
       const currSchedule = scheduleIndex === 0 ? 0 : scheduleIndex - 1;
-      setCurrSchedual(currSchedule);
+      setCurrSchedule(currSchedule);
       setSaved(false);
     }
   };
-  const selectSchedualHandler = (scheduleIndex) => {
-    setCurrSchedual(scheduleIndex);
+  const selectScheduleHandler = (scheduleIndex) => {
+    setCurrSchedule(scheduleIndex);
     const editorEle = document.getElementById(`doc_${scheduleIndex}`);
 
     editorEle.scrollIntoView({
@@ -93,7 +92,7 @@ const DocumentsBar = () => {
   return (
     <div className="flex flex-col p-2 gap-y-3">
       {data.map((schedule, scheduleIndex) =>
-        scheduleIndex === currSchedual ? (
+        scheduleIndex === currSchedule ? (
           <div className="flex flex-wrap items-center justify-between gap-2 p-2 border rounded-lg bg-primary">
             <div className="flex items-center justify-center w-6 h-6 font-bold rounded-full text bg-light text-primary">
               {scheduleIndex + 1}
@@ -105,20 +104,20 @@ const DocumentsBar = () => {
               notRecommended={unavailableGroups}
               label="groups"
               onChange={(e) =>
-                editSchedualGrpHandler(scheduleIndex, e.target.value)
+                editScheduleGrpHandler(scheduleIndex, e.target.value)
               }
             />
             <Button
               Icon={IcBin}
               label={["delete schedule"]}
               styles="text-light"
-              onClick={(e) => deleteSchedualHandler(scheduleIndex)}
+              onClick={(e) => deleteScheduleHandler(scheduleIndex)}
             />
           </div>
         ) : (
           <button
             className="flex items-center gap-2 p-2 text-sm font-semibold transition-all duration-300 border rounded-lg bg-light hover:bg-secondary"
-            onClick={(e) => selectSchedualHandler(scheduleIndex)}
+            onClick={(e) => selectScheduleHandler(scheduleIndex)}
           >
             <div className="flex items-center justify-center w-6 h-6 font-bold rounded-full bg-primary text-light">
               {scheduleIndex + 1}
@@ -135,7 +134,7 @@ const DocumentsBar = () => {
         type="success"
         Icon={IcPlus}
         text="add"
-        onClick={addNewSchedualHandler}
+        onClick={addNewScheduleHandler}
         styles="flex justify-center"
       />
     </div>

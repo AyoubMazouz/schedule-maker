@@ -18,16 +18,8 @@ import { useGlobalContext } from "../../../Contexts/GlobalContext";
 import useLabels from "../../../hooks/useLabels";
 import useSettings from "../../../hooks/useSettings";
 
-const OptionBar = ({
-  menuRef,
-  currMenu,
-  setCurrMenu,
-  saved,
-  setSaved,
-  labelsData,
-  setLabelsData,
-}) => {
-  const { setModel } = useGlobalContext();
+const OptionBar = ({ menuRef, currMenu, setCurrMenu, saved, setSaved }) => {
+  const { setModel, labelsData, setLabelsData } = useGlobalContext();
   const { currUser } = useAuth();
   const { getLabels, setLabels } = useLabels();
   const { importSettings, exportSettings } = useSettings();
@@ -68,7 +60,7 @@ const OptionBar = ({
         "after:absolute after:top-[38%] after:left-[0%] after:h-3 after:w-3 after:translate-x-[50%] after:translate-y-[-50%] after:animate-pulse after:rounded-full after:bg-emerald-500"
       }`}
       onClick={(e) => {
-        setLabels(currUser.uid, labelsData);
+        setLabels(currUser.username, labelsData);
         setSaved(true);
       }}
     >
@@ -113,8 +105,8 @@ const OptionBar = ({
         setCurrMenu={setCurrMenu}
         options={[
           ["New Level", addLevelHandler, IcLevel],
-          ["New Trainer", addTrainerHandler, IcUser],
           ["New Room", addRoomHandler, IcRoom],
+          ["New Trainer", addTrainerHandler, IcUser],
           ["New Event", addEventHandler, IcEvent],
         ]}
       />

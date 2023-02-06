@@ -85,7 +85,7 @@ const AddLevel = () => {
       ? INITIAL_STATE
       : {
           level: { value: model.level.value, error: "" },
-          numOfGrps: { value: model.level.numberOfGrps, error: "" },
+          numOfGrps: { value: model.level.numOfGrps, error: "" },
           modules: { value: model.level.modules },
           desc: { value: model.level.desc, error: "" },
           modInput: { value: "" },
@@ -96,7 +96,6 @@ const AddLevel = () => {
   const enterKeyPressHandler = (e: any) => {
     const value = state.modInput.value.trim();
     if (e.key !== "Enter" || !value) return;
-    const newModules = state.modules.value.filter((m: string) => m !== value);
     if (state.modules.value.includes(value)) {
       return setAlert({
         type: "warn",

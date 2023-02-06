@@ -64,7 +64,7 @@ export const Button: React.FC<ButtonType> = ({
 
 const Label = ({ label }: { label: string[] }) => {
   return (
-    <div className="absolute bottom-[20%] left-[50%] translate-x-[-50%] translate-y-[100%] rounded-md bg-light py-0.5 px-2 text-center text-xs capitalize text-dark opacity-0 shadow-md transition-all duration-500 group-hover:bottom-[-18%] group-hover:opacity-100">
+    <div className="absolute bottom-[20%] left-[50%] z-10 translate-x-[-50%] translate-y-[100%] rounded-md bg-light py-0.5 px-2 text-center text-xs capitalize text-dark opacity-0 shadow-md transition-all duration-500 group-hover:bottom-[-18%] group-hover:opacity-100">
       {label.map((t) => (
         <div className="whitespace-nowrap">{t}</div>
       ))}

@@ -56,7 +56,7 @@ const AddEvent = () => {
       });
     // Check for errors or success.
     const res =
-      model.type === "ADD_ROOM"
+      model.type === "ADD_EVENT"
         ? addEvent(labelsData, state.event.value, state.desc.value)
         : updateEvent(
             labelsData,

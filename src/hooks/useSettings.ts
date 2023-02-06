@@ -298,6 +298,7 @@ const useSettings = () => {
         a.value > b.value ? 1 : -1
       ),
     };
+    console.log(newEvent);
     return labelsDoc;
   };
   const exportSettings = (data: LabelsType) => {

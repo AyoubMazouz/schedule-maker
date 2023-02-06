@@ -48,14 +48,14 @@ const Table = ({ scheduleIndex }) => {
               ))}
             </div>
             <div className="grid grid-cols-4 col-span-8">
-              {data[scheduleIndex].schedual.map((day, dayIndex) => {
+              {data[scheduleIndex].schedule.map((day, dayIndex) => {
                 const group = data[scheduleIndex].group;
                 return day.map((session, sessionIndex) => (
                   <Cell
                     key={`${session.join("")}${sessionIndex}`}
                     {...{
                       session,
-                      schedualIndex: scheduleIndex,
+                      scheduleIndex,
                       dayIndex,
                       sessionIndex,
                     }}

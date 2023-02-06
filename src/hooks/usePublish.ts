@@ -11,24 +11,28 @@ import { PublishedDocument } from "../helpers/types";
 
 interface PublishedDoc {
   (
-    userId: string,
+    username: string,
     id: number,
     file: File,
     description: string
   ): Promise<string>;
 }
 interface GetPublishedDocs {
-  (userId: string, setData: (a: PublishedDocument[]) => void): void;
+  (username: string, setData: (a: PublishedDocument[]) => void): void;
 }
 interface DelPublishedDoc {
-  (userId: string, id: number, documents: PublishedDocument[]): Promise<string>;
+  (
+    username: string,
+    id: number,
+    documents: PublishedDocument[]
+  ): Promise<string>;
 }
 
 const usePublish = () => {
   const [loading, setLoading] = React.useState(false);
-  const publishDocument: PublishedDoc = (username, id, file, description) => {
-    setLoading(true);
+  const publishDocument: PublishedDoc = (username, id, file, desc) => {
     return new Promise(async (resolve, reject) => {
+      setLoading(true);
       const storageRef = ref(storage, `publish/${username}/${id}`);
 
       try {
@@ -47,7 +51,7 @@ const usePublish = () => {
           id,
           username,
           url,
-          description,
+          desc,
           createdAt: Timestamp.now(),
         };
 
@@ -65,7 +69,6 @@ const usePublish = () => {
 
   const getPublishedDocuments: GetPublishedDocs = (username, setData) => {
     onSnapshot(doc(db, "publish", username), (snap) => {
-      console.log(snap.data());
       if (snap.exists() && snap.data().hasOwnProperty("documents"))
         setData(snap.data().documents);
       else setData([]);

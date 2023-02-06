@@ -25,6 +25,8 @@ import {
   HiOutlineBookOpen,
   HiOutlineClipboardDocument,
   HiOutlineBuildingOffice2,
+  HiOutlineArrowUturnLeft,
+  HiOutlineArrowUturnRight,
 } from "react-icons/hi2";
 import {
   HiOutlineX,
@@ -40,6 +42,7 @@ import {
   HiOutlineKey,
 } from "react-icons/hi";
 import { MdSelectAll } from "react-icons/md";
+import { AiOutlineQuestion } from "react-icons/ai";
 
 export const IcEditor = HiOutlineBolt;
 export const IcSettings = HiOutlineCog8Tooth;
@@ -80,3 +83,6 @@ export const IcAddress = HiOutlineMap;
 export const IcDesc = HiOutlineMenuAlt2;
 export const IcGrp = HiOutlineUserGroup;
 export const IcPwd = HiOutlineKey;
+export const IcHelp = AiOutlineQuestion;
+export const IcUndo = HiOutlineArrowUturnLeft;
+export const IcRedo = HiOutlineArrowUturnRight;

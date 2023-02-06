@@ -20,7 +20,7 @@
 @layer components {
 
     .icon {
-        @apply text-2xl inline-block cursor-pointer
+        @apply text-2xl inline-block cursor-pointer  min-w-max
     }
 
     .menu {
