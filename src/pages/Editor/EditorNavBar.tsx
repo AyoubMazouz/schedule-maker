@@ -207,7 +207,7 @@ const OptionBar = () => {
       }`}
       onClick={async () => {
         setCurrMenu(null);
-        await addNewDocument(currUser.uid, docId as string, data);
+        await addNewDocument(currUser.username, docId as string, data);
         setSaved(true);
       }}
     >
