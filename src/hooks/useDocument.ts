@@ -13,12 +13,20 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase";
 import { Schedule } from "../helpers/types";
+import { TEMPLATES } from "../helpers/templates";
 
 interface DocExists {
   (username: string, id: string): Promise<boolean>;
 }
 interface AddNewDoc {
-  (username: string, id: string, data: Schedule[]): Promise<boolean>;
+  (
+    username: string,
+    id: string,
+    template: "SCHOOL" | "OFPPT"
+  ): Promise<boolean>;
+}
+interface UpdateDoc {
+  (data: any, docInfo: any): Promise<boolean>;
 }
 interface GetDoc {
   (username: string, id: string): Promise<boolean | DocumentData>;
@@ -45,12 +53,14 @@ const useDocument = () => {
     });
   };
 
-  const addNewDocument: AddNewDoc = (username, id, data) => {
+  const addNewDocument: AddNewDoc = (username, id, template) => {
+    const data = JSON.parse(JSON.stringify([TEMPLATES[template].data]));
     return new Promise(async (resolve, reject) => {
       setLoading(true);
       const document = {
         id,
         username,
+        template,
         createdAt: Timestamp.now(),
         modifiedAt: Timestamp.now(),
         data: JSON.stringify(data),
@@ -62,8 +72,23 @@ const useDocument = () => {
     });
   };
 
+  const updateDocument: UpdateDoc = (data, docInfo) => {
+    return new Promise(async (resolve) => {
+      setLoading(true);
+      const docObj = {
+        ...docInfo,
+        modifiedAt: Timestamp.now(),
+        data: JSON.stringify(data),
+      };
+
+      await setDoc(doc(db, "documents", docInfo.username + docInfo.id), docObj);
+      setLoading(false);
+      resolve(true);
+    });
+  };
+
   const getDocument: GetDoc = (username, id) => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async (resolve) => {
       const snapshot = await getDoc(doc(db, "documents", username + id));
       if (snapshot.exists()) resolve(snapshot.data());
       resolve(false);
@@ -122,6 +147,7 @@ const useDocument = () => {
     getDocument,
     deleteDocument,
     renameDocument,
+    updateDocument,
   };
 };
 

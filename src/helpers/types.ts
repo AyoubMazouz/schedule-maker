@@ -1,3 +1,5 @@
+import { type } from "os";
+
 export interface BaseLabelsTypes {
   value: string;
   createdAt: {};
@@ -63,3 +65,5 @@ export interface User {
   isAdmin?: boolean | undefined;
   isRoot?: boolean | undefined;
 }
+
+export type Template = "OFPPT" | "SCHOOL";

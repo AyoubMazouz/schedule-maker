@@ -1,0 +1,310 @@
+{
+  "levels": [
+    {
+      "modules": [
+        "M101",
+        "M102",
+        "M103",
+        "M104",
+        "M105",
+        "M106",
+        "M107",
+        "M108",
+        "ANGLAIS",
+        "FRANCAIS"
+      ],
+      "createdAt": { "seconds": 1674495812, "nanoseconds": 780000000 },
+      "value": "DD",
+      "numOfGrps": "4",
+      "modifiedAt": { "seconds": 1674495812, "nanoseconds": 780000000 }
+    },
+    {
+      "numOfGrps": "12",
+      "modules": [
+        "M201",
+        "M202",
+        "M203",
+        "M204",
+        "M205",
+        "M206",
+        "M207",
+        "M208",
+        "ANGLAIS",
+        "FRANCAIS"
+      ],
+      "modifiedAt": { "seconds": 1674495817, "nanoseconds": 272000000 },
+      "value": "DDOFS",
+      "createdAt": { "seconds": 1674495817, "nanoseconds": 272000000 }
+    },
+    {
+      "createdAt": { "seconds": 1674495828, "nanoseconds": 79000000 },
+      "value": "ID",
+      "modules": [
+        "M101",
+        "M102",
+        "M103",
+        "M104",
+        "M105",
+        "M106",
+        "M107",
+        "M108",
+        "ANGLAIS",
+        "FRANCAIS"
+      ],
+      "numOfGrps": "4",
+      "modifiedAt": { "seconds": 1674495828, "nanoseconds": 80000000 }
+    },
+    {
+      "createdAt": { "seconds": 1674495626, "nanoseconds": 822000000 },
+      "modifiedAt": { "seconds": 1674495626, "nanoseconds": 822000000 },
+      "modules": [
+        "M201",
+        "M202",
+        "M203",
+        "M204",
+        "M205",
+        "M206",
+        "M207",
+        "M208",
+        "ANGLAIS",
+        "FRANCAIS"
+      ],
+      "numOfGrps": "3",
+      "value": "IDSOR"
+    }
+  ],
+  "rooms": [
+    {
+      "modifiedAt": { "seconds": 1674495419, "nanoseconds": 97000000 },
+      "createdAt": { "seconds": 1674495419, "nanoseconds": 97000000 },
+      "desc": "",
+      "value": "11"
+    },
+    {
+      "createdAt": { "seconds": 1674495422, "nanoseconds": 403000000 },
+      "desc": "",
+      "modifiedAt": { "seconds": 1674495422, "nanoseconds": 403000000 },
+      "value": "12"
+    },
+    {
+      "value": "13",
+      "desc": "",
+      "createdAt": { "seconds": 1674495430, "nanoseconds": 132000000 },
+      "modifiedAt": { "seconds": 1674495430, "nanoseconds": 132000000 }
+    },
+    {
+      "value": "14",
+      "createdAt": { "seconds": 1674495436, "nanoseconds": 188000000 },
+      "desc": "",
+      "modifiedAt": { "seconds": 1674495436, "nanoseconds": 188000000 }
+    },
+    {
+      "value": "15",
+      "desc": "",
+      "modifiedAt": { "seconds": 1674495440, "nanoseconds": 293000000 },
+      "createdAt": { "seconds": 1674495440, "nanoseconds": 293000000 }
+    },
+    {
+      "value": "16",
+      "desc": "",
+      "createdAt": { "seconds": 1674495444, "nanoseconds": 75000000 },
+      "modifiedAt": { "seconds": 1674495444, "nanoseconds": 75000000 }
+    },
+    {
+      "createdAt": { "seconds": 1674495447, "nanoseconds": 615000000 },
+      "desc": "",
+      "modifiedAt": { "seconds": 1674495447, "nanoseconds": 615000000 },
+      "value": "17"
+    },
+    {
+      "createdAt": { "seconds": 1674495450, "nanoseconds": 900000000 },
+      "value": "18",
+      "desc": "",
+      "modifiedAt": { "seconds": 1674495450, "nanoseconds": 900000000 }
+    },
+    {
+      "modifiedAt": { "seconds": 1674495455, "nanoseconds": 36000000 },
+      "value": "21",
+      "desc": "",
+      "createdAt": { "seconds": 1674495455, "nanoseconds": 36000000 }
+    },
+    {
+      "modifiedAt": { "seconds": 1674495458, "nanoseconds": 809000000 },
+      "value": "22",
+      "desc": "",
+      "createdAt": { "seconds": 1674495458, "nanoseconds": 809000000 }
+    },
+    {
+      "value": "24",
+      "desc": "",
+      "modifiedAt": { "seconds": 1674495461, "nanoseconds": 982000000 },
+      "createdAt": { "seconds": 1674495461, "nanoseconds": 982000000 }
+    },
+    {
+      "desc": "",
+      "createdAt": { "seconds": 1674495465, "nanoseconds": 893000000 },
+      "value": "25",
+      "modifiedAt": { "seconds": 1674495465, "nanoseconds": 893000000 }
+    },
+    {
+      "desc": "",
+      "value": "27",
+      "createdAt": { "seconds": 1674495470, "nanoseconds": 397000000 },
+      "modifiedAt": { "seconds": 1674495470, "nanoseconds": 397000000 }
+    },
+    {
+      "desc": "",
+      "createdAt": { "seconds": 1674495479, "nanoseconds": 354000000 },
+      "modifiedAt": { "seconds": 1674495479, "nanoseconds": 354000000 },
+      "value": "28"
+    }
+  ],
+  "trainers": [
+    {
+      "preferredRooms": ["18", "21"],
+      "desc": "",
+      "createdAt": { "seconds": 1674496319, "nanoseconds": 574000000 },
+      "value": "Aalil",
+      "modifiedAt": { "seconds": 1674496319, "nanoseconds": 574000000 }
+    },
+    {
+      "createdAt": { "seconds": 1674496198, "nanoseconds": 685000000 },
+      "value": "Aouid",
+      "desc": "",
+      "modifiedAt": { "seconds": 1674496198, "nanoseconds": 685000000 },
+      "preferredRooms": ["12", "13", "14", "15"]
+    },
+    {
+      "createdAt": { "seconds": 1674496309, "nanoseconds": 467000000 },
+      "preferredRooms": ["15", "21", "24"],
+      "modifiedAt": { "seconds": 1674496309, "nanoseconds": 467000000 },
+      "desc": "",
+      "value": "Aziz Sbai"
+    },
+    {
+      "desc": "",
+      "value": "Belaoud",
+      "createdAt": { "seconds": 1674496358, "nanoseconds": 309000000 },
+      "preferredRooms": ["16", "22", "24", "21", "25"],
+      "modifiedAt": { "seconds": 1674496358, "nanoseconds": 309000000 }
+    },
+    {
+      "value": "Belhaous",
+      "preferredRooms": ["15", "18"],
+      "desc": "",
+      "createdAt": { "seconds": 1674496326, "nanoseconds": 995000000 },
+      "modifiedAt": { "seconds": 1674496326, "nanoseconds": 995000000 }
+    },
+    {
+      "desc": "",
+      "createdAt": { "seconds": 1674496251, "nanoseconds": 164000000 },
+      "value": "Berrada",
+      "modifiedAt": { "seconds": 1674496251, "nanoseconds": 164000000 },
+      "preferredRooms": ["24", "15"]
+    },
+    {
+      "createdAt": { "seconds": 1674496205, "nanoseconds": 24000000 },
+      "value": "Boudi",
+      "modifiedAt": { "seconds": 1674496205, "nanoseconds": 24000000 },
+      "desc": "",
+      "preferredRooms": ["13", "21"]
+    },
+    {
+      "modifiedAt": { "seconds": 1674496240, "nanoseconds": 632000000 },
+      "desc": "",
+      "value": "Boukal",
+      "preferredRooms": ["15", "26"],
+      "createdAt": { "seconds": 1674496240, "nanoseconds": 632000000 }
+    },
+    {
+      "desc": "",
+      "createdAt": { "seconds": 1674496210, "nanoseconds": 714000000 },
+      "preferredRooms": ["15", "26"],
+      "modifiedAt": { "seconds": 1674496210, "nanoseconds": 715000000 },
+      "value": "Diouri"
+    },
+    {
+      "createdAt": { "seconds": 1674496335, "nanoseconds": 612000000 },
+      "preferredRooms": ["18", "25"],
+      "modifiedAt": { "seconds": 1674496335, "nanoseconds": 612000000 },
+      "desc": "",
+      "value": "Fathallah"
+    },
+    {
+      "desc": "",
+      "value": "Harmouchi",
+      "preferredRooms": ["14", "15", "16", "21"],
+      "modifiedAt": { "seconds": 1674496291, "nanoseconds": 103000000 },
+      "createdAt": { "seconds": 1674496291, "nanoseconds": 103000000 }
+    },
+    {
+      "desc": "",
+      "createdAt": { "seconds": 1674496230, "nanoseconds": 649000000 },
+      "modifiedAt": { "seconds": 1674496230, "nanoseconds": 649000000 },
+      "preferredRooms": ["16", "22"],
+      "value": "Idrissi"
+    },
+    {
+      "modifiedAt": { "seconds": 1674495943, "nanoseconds": 950000000 },
+      "id": 1,
+      "preferredRooms": ["12"],
+      "value": "Lahlali",
+      "createdAt": { "seconds": 1674495943, "nanoseconds": 950000000 }
+    },
+    {
+      "modifiedAt": { "seconds": 1674496297, "nanoseconds": 603000000 },
+      "preferredRooms": ["15", "14", "17"],
+      "desc": "",
+      "createdAt": { "seconds": 1674496297, "nanoseconds": 603000000 },
+      "value": "Legdani"
+    },
+    {
+      "modifiedAt": { "seconds": 1674496266, "nanoseconds": 615000000 },
+      "desc": "",
+      "preferredRooms": ["18", "26", "28"],
+      "value": "Massif",
+      "createdAt": { "seconds": 1674496266, "nanoseconds": 615000000 }
+    },
+    {
+      "modifiedAt": { "seconds": 1674496215, "nanoseconds": 174000000 },
+      "createdAt": { "seconds": 1674496215, "nanoseconds": 174000000 },
+      "value": "Semmar",
+      "desc": "",
+      "preferredRooms": ["11", "21"]
+    },
+    {
+      "createdAt": { "seconds": 1674496345, "nanoseconds": 62000000 },
+      "preferredRooms": ["22", "27"],
+      "desc": "",
+      "value": "Zahraoui",
+      "modifiedAt": { "seconds": 1674496345, "nanoseconds": 62000000 }
+    },
+    {
+      "preferredRooms": ["14", "15"],
+      "desc": "",
+      "modifiedAt": { "seconds": 1674496219, "nanoseconds": 706000000 },
+      "value": "Zouita",
+      "createdAt": { "seconds": 1674496219, "nanoseconds": 706000000 }
+    }
+  ],
+  "events": [
+    {
+      "value": "CC",
+      "createdAt": { "seconds": 1674495854, "nanoseconds": 666000000 },
+      "modifiedAt": { "seconds": 1674495854, "nanoseconds": 666000000 },
+      "desc": ""
+    },
+    {
+      "value": "EFM",
+      "createdAt": { "seconds": 1674495840, "nanoseconds": 620000000 },
+      "desc": "",
+      "modifiedAt": { "seconds": 1674495840, "nanoseconds": 620000000 }
+    },
+    {
+      "value": "EFM REG",
+      "modifiedAt": { "seconds": 1674495851, "nanoseconds": 68000000 },
+      "createdAt": { "seconds": 1674495851, "nanoseconds": 68000000 },
+      "desc": ""
+    }
+  ]
+}

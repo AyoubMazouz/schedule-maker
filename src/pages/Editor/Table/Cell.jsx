@@ -55,7 +55,7 @@ const Cell = ({ session, scheduleIndex, dayIndex, sessionIndex }) => {
   return (
     <div
       onClick={(e) => setSelectedCell([scheduleIndex, dayIndex, sessionIndex])}
-      className={`${getBorder()} ${isComplete()} relative box-border h-[5.5rem] cursor-pointer overflow-hidden px-2 text-start`}
+      className={`${getBorder()} ${isComplete()} relative box-border h-[6rem] w-full min-w-[6rem] cursor-pointer overflow-hidden px-2 text-start`}
     >
       <div className="text-lg font-semibold">{session[0]}</div>
       <div className="">

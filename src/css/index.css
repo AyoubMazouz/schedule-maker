@@ -1,70 +1,67 @@
-@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-    * {
-        scrollbar-width: thin;
-        scrollbar-color: #3F72AF #E0DEDE;
-    }
-    html {
-        @apply text-dark scroll-smooth font-source;
-    }
-    body {
-        @apply bg-light
-    }
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(17 45 78 / 0.5) #e0dede;
+  }
+  html {
+    @apply scroll-smooth font-source text-dark;
+  }
+  body {
+    @apply bg-light;
+  }
 }
 
 @layer components {
+  .icon {
+    @apply inline-block min-w-max cursor-pointer  text-2xl;
+  }
 
-    .icon {
-        @apply text-2xl inline-block cursor-pointer  min-w-max
-    }
+  .menu {
+    @apply absolute z-20 flex w-[11rem] flex-col overflow-hidden rounded-lg border bg-light text-dark shadow-lg;
+  }
+  .menu-item {
+    @apply flex w-full cursor-pointer items-center gap-x-2 border-b-2 border-dark/50 p-2 text-start capitalize transition-all duration-100 ease-in-out hover:bg-primary hover:text-light disabled:cursor-not-allowed disabled:bg-secondary disabled:line-through;
+  }
 
-    .menu {
-        @apply absolute w-[12rem] bg-light border rounded-lg shadow-lg flex flex-col overflow-hidden z-20 text-dark
-    }
-    .menu-item {
-        @apply p-2 hover:bg-primary hover:text-light border-b-2 border-dark/50 w-full text-start disabled:bg-secondary disabled:hover:text-dark disabled:line-through flex gap-x-2 items-center transition-all ease-in-out duration-100 cursor-pointer disabled:cursor-not-allowed capitalize
-    }
-    
-    .model-btn-container {
-        @apply flex gap-x-3 justify-center
-    }
-    
-    /* Form */
+  .model-btn-container {
+    @apply flex justify-center gap-x-3;
+  }
 
-    .input {
-        @apply px-2 py-1 font-semibold bg-light ring-dark/50 ring-2 rounded focus:outline-none focus:ring-primary focus:text-primary max-h-[1.75rem]
-    }
+  /* Form */
 
-    .input-label {
-        @apply capitalize
-    }
+  .input {
+    @apply max-h-[1.75rem] rounded bg-light px-2 py-1 font-semibold ring-2 ring-dark/50 focus:text-primary focus:outline-none focus:ring-primary;
+  }
 
-    .textbox-icon {
-        @apply transition-all duration-300 hover:scale-125 hover:text-primary cursor-pointer
-    }
+  .input-label {
+    @apply capitalize;
+  }
 
-    .textbox div {
-        @apply flex items-center gap-x-2 rounded-full border-2 border-dark/50 bg-dark/5 py-0.5 pl-3 pr-2  font-semibold text-dark
-    }
+  .textbox-icon {
+    @apply cursor-pointer transition-all duration-300 hover:scale-125 hover:text-primary;
+  }
 
-    .textbox input {
-        @apply h-[1.9rem] max-w-[8rem] rounded-full bg-light px-2 capitalize ring-primary focus:outline-none focus:ring-2
-    }
+  .textbox div {
+    @apply flex items-center gap-x-2 rounded-full border-2 border-dark/50 bg-dark/5 py-0.5 pl-3 pr-2  font-semibold text-dark;
+  }
 
-    .textbox {
-        @apply flex flex-wrap gap-2 p-2 border rounded-lg min-h-[6rem];
-    }
+  .textbox input {
+    @apply h-[1.9rem] max-w-[8rem] rounded-full bg-light px-2 capitalize ring-primary focus:outline-none focus:ring-2;
+  }
+
+  .textbox {
+    @apply flex min-h-[6rem] flex-wrap gap-2 rounded-lg border p-2;
+  }
 }
 
-@layer utilities{
-
-    .border {
-        @apply border-2 border-dark/50
-    }
-
+@layer utilities {
+  .border {
+    @apply border-2 border-dark/50;
+  }
 }

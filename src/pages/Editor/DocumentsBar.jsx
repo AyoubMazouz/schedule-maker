@@ -7,12 +7,18 @@ import { Select } from "../../components/Select";
 import { Button } from "../../components/Button";
 
 const DocumentsBar = () => {
-  const { setSaved } = useEditorContext();
-  const { data, setData, setAlert, labelsData } = useGlobalContext();
+  const {
+    setSaved,
+    currSchedule,
+    setCurrSchedule,
+    menuRef,
+    currMenu,
+    setCurrMenu,
+  } = useEditorContext();
+  const { data, setData, setAlert, labelsData, docInfo } = useGlobalContext();
   const { addNewSchedule, editScheduleGrp, deleteSchedule, getGroups } =
     useEditor();
 
-  const [currSchedule, setCurrSchedule] = React.useState(0);
   const [availableGroups, setAvailableGroups] = React.useState([]);
   const [unavailableGroups, setUnavailableGroups] = React.useState([]);
 
@@ -27,9 +33,10 @@ const DocumentsBar = () => {
   }, [currSchedule, labelsData]);
 
   const addNewScheduleHandler = () => {
-    const res = addNewSchedule(data, setData, setAlert);
+    const res = addNewSchedule(data, docInfo.template);
     if (res) {
       setCurrSchedule(data.length);
+      setData(res);
       setSaved(false);
     } else {
       setAlert({
@@ -38,24 +45,6 @@ const DocumentsBar = () => {
           "You should finish the previous table or at least fill the 'group' field.",
       });
     }
-    // Scroll to the new schedule.
-    const newDoc = document.getElementById(`new_doc`);
-    const timeOut = setTimeout(() => {
-      const editorEle = document.getElementById(`doc_${data.length}`);
-      if (editorEle) {
-        editorEle.scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-          inline: "nearest",
-        });
-        newDoc.scrollIntoView({
-          behavior: "smooth",
-          block: "end",
-          inline: "nearest",
-        });
-      }
-      return () => clearTimeout(timeOut);
-    }, 10);
   };
 
   const editScheduleGrpHandler = (scheduleIndex, value) => {
@@ -78,27 +67,16 @@ const DocumentsBar = () => {
       setSaved(false);
     }
   };
-  const selectScheduleHandler = (scheduleIndex) => {
-    setCurrSchedule(scheduleIndex);
-    const editorEle = document.getElementById(`doc_${scheduleIndex}`);
-
-    editorEle.scrollIntoView({
-      behavior: "smooth",
-      block: "center",
-      inline: "nearest",
-    });
-  };
 
   return (
-    <div className="flex flex-col p-2 gap-y-3">
+    <div className="flex flex-col gap-y-3 p-2">
       {data.map((schedule, scheduleIndex) =>
         scheduleIndex === currSchedule ? (
-          <div className="flex flex-wrap items-center justify-between gap-2 p-2 border rounded-lg bg-primary">
-            <div className="flex items-center justify-center w-6 h-6 font-bold rounded-full text bg-light text-primary">
+          <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg border-2 border-dark/50 bg-primary p-2">
+            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-light font-semibold text-primary ">
               {scheduleIndex + 1}
             </div>
             <Select
-              styles="px-1 text-sm"
               values={availableGroups}
               value={schedule.group}
               notRecommended={unavailableGroups}
@@ -106,6 +84,10 @@ const DocumentsBar = () => {
               onChange={(e) =>
                 editScheduleGrpHandler(scheduleIndex, e.target.value)
               }
+              styles="text-light border-light/50"
+              menuRef={menuRef}
+              currMenu={currMenu}
+              setCurrMenu={setCurrMenu}
             />
             <Button
               Icon={IcBin}
@@ -116,14 +98,14 @@ const DocumentsBar = () => {
           </div>
         ) : (
           <button
-            className="flex items-center gap-2 p-2 text-sm font-semibold transition-all duration-300 border rounded-lg bg-light hover:bg-secondary"
-            onClick={(e) => selectScheduleHandler(scheduleIndex)}
+            className="flex items-center gap-2 rounded-lg border bg-light p-2 text-sm font-semibold transition-all duration-300 hover:bg-secondary"
+            onClick={(e) => setCurrSchedule(scheduleIndex)}
           >
-            <div className="flex items-center justify-center w-6 h-6 font-bold rounded-full bg-primary text-light">
+            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-primary font-bold text-light">
               {scheduleIndex + 1}
             </div>
             <div className="">{schedule.group}</div>
-            <div className="flex items-center ml-auto gap-x-1 text-primary">
+            <div className="ml-auto flex items-center gap-x-1 text-primary">
               <span>{schedule.totalHours}</span>
               <IcTime className="icon" />
             </div>
@@ -131,7 +113,6 @@ const DocumentsBar = () => {
         )
       )}
       <Button
-        type="success"
         Icon={IcPlus}
         text="add"
         onClick={addNewScheduleHandler}

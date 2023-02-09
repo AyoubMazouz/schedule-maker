@@ -2,7 +2,7 @@ export const DAYS_TEXT = [
   "Monday",
   "Tuesday",
   "Wednesday",
-  "Tursday",
+  "Thursday",
   "Friday",
   "Saturday",
 ];
@@ -12,46 +12,6 @@ export const SESSIONS_TEXT = [
   "11:00 - 13:00",
   "13:30 - 03:30",
   "04:00 - 06:00",
-];
-
-export const PROFS = [
-  "Semmar",
-  "Lahlali",
-  "Aouid",
-  "Diouri",
-  "Zouita",
-  "Boudi",
-  "Idrissi",
-  "Boukal",
-  "Berrada",
-  "Massif",
-  "Harmouchi",
-  "Legdani",
-  "Aziz Sbai",
-  "Aalil",
-  "Belhaous",
-  "Fathallah",
-  "Zahraoui",
-  "Belaoud",
-];
-
-export const ROOMS = [
-  "11",
-  "12",
-  "13",
-  "14",
-  "15",
-  "16",
-  "17",
-  "18",
-  "21",
-  "22",
-  "24",
-  "25",
-  "26",
-  "27",
-  "28",
-  "Teams",
 ];
 
 export const EMPTY_SCHEDULE = {

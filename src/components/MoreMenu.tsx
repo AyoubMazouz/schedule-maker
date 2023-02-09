@@ -43,14 +43,14 @@ const MoreMenu: React.FC<Type> = ({
       {currMenu === `${menuId}` && (
         <div
           ref={menuRef}
-          className="absolute top-[0%] left-[0%] z-20 flex w-[12rem] translate-x-[-100%] flex-col overflow-hidden rounded-lg border-2 border-dark/25 bg-light text-dark shadow-lg"
+          className="absolute top-[0%] left-[0%] z-20 flex w-[12rem] translate-x-[-100%] flex-col overflow-hidden rounded-lg border-2 border-dark/50 bg-light text-dark shadow-lg"
         >
           {options.map((option) => {
             const [text, callback, Icon] = option;
             return (
               <button
                 key={`${menuId}:${text}`}
-                className="flex items-center w-full p-2 transition-all duration-100 ease-in-out border-b-2 cursor-pointer gap-x-2 border-dark/25 text-start hover:bg-primary hover:text-light disabled:cursor-not-allowed disabled:bg-secondary disabled:line-through disabled:hover:text-dark"
+                className="flex items-center w-full p-2 transition-all duration-100 ease-in-out border-b-2 cursor-pointer gap-x-2 border-dark/50 text-start hover:bg-primary hover:text-light disabled:cursor-not-allowed disabled:bg-secondary disabled:line-through disabled:hover:text-dark"
                 onClick={(e) => {
                   callback(e);
                   setCurrMenu(null);

@@ -43,12 +43,12 @@ const NavBar = () => {
         <div className="flex items-center gap-x-6">
           <Link
             to="/documents"
-            className="flex items-center font-semibold transition-all duration-300 capitalized gap-x-1 hover:text-secondary"
+            className="capitalized flex items-center gap-x-1 font-semibold transition-all duration-300 hover:text-secondary"
           >
             <IcEditor className="icon" />
             <span>Editor</span>
           </Link>
-          <div className="relative font-semibold transition-all duration-300 capitalized hover:text-secondary">
+          <div className="capitalized relative transition-all duration-300 hover:text-secondary">
             {currUser ? (
               <>
                 <div
@@ -66,11 +66,11 @@ const NavBar = () => {
                         src={currUser.img}
                         className="aspect-1 w-[3rem] rounded-md shadow"
                       />
-                      <div className="-space-y-1">
-                        <span className="text-primary group-hover:text-light">
-                          @{currUser.username}
-                        </span>
-                        <div className="text-sm underline">Manage profile</div>
+                      <div className="-space-y-1 font-semibold">
+                        <span>@{currUser.username}</span>
+                        <div className="text-sm text-primary underline group-hover:text-light">
+                          Manage profile
+                        </div>
                       </div>
                     </Link>
                     <Link to="/settings" className="menu-item">
@@ -78,7 +78,7 @@ const NavBar = () => {
                       <span>Settings</span>
                     </Link>
                     <button
-                      className="text-red-600 menu-item hover:bg-red-600 hover:text-white"
+                      className="menu-item text-red-600 hover:bg-red-600 hover:text-white"
                       onClick={logoutHandler}
                     >
                       <IcLogout className="icon" />

@@ -13,13 +13,13 @@ interface ButtonType {
 }
 
 const base =
-  "border-2 rounded shadow py-0.5 font-semibold capitalize cursor-pointer disabled:opacity-50 flex gap-x-1 items-center disabled:cursor-not-allowed transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md overflow-hidden group relative cursor-pointer max-h-[2.1rem]";
+  "rounded-md shadow-md py-1 capitalize cursor-pointer px-4 disabled:opacity-50 flex gap-x-1 items-center disabled:cursor-not-allowed transition-all duration-400 overflow-hidden group relative max-h-[2.1rem] border-2 hover:text-white disabled:line-through";
 const btn = {
-  primary: `${base} bg-primary text-white border-dark btn-base hover:shadow-primary`,
-  secondary: `${base} text-primary border-primary btn-base hover:shadow-primary`,
-  success: `${base} bg-emerald-500 text-white border-emerald-800 btn-base hover:shadow-emerald-800`,
-  warn: `${base} bg-amber-500 text-white border-orange-800 btn-base hover:shadow-amber-800`,
-  danger: `${base} bg-red-500 text-white border-rose-800 btn-base hover:shadow-red-800`,
+  primary: `${base} text-primary border-primary hover:bg-primary text-white`,
+  secondary: `${base} text-dark border-dark hover:border-primary hover:text-primary`,
+  success: `${base} border-emerald-600 text-emerald-600 hover:bg-emerald-600`,
+  warn: `${base} border-orange-600 text-orange-600 hover:bg-orange-600`,
+  danger: `${base} border-red-600 text-red-600 hover:bg-red-600`,
 };
 
 export const Button: React.FC<ButtonType> = ({
@@ -42,22 +42,22 @@ export const Button: React.FC<ButtonType> = ({
         onClick={(e) => onClick(e)}
         disabled={disabled}
       >
-        {label ? <Label label={label} /> : null}
         <Icon
           className={`icon ${disabled && "cursor-not-allowed"}`}
           disabled={disabled}
         />
+        {label ? <Label label={label} /> : null}
       </button>
     );
   return (
     <button
       disabled={disabled}
-      className={`${btn[type]} ${styles} ${Icon ? "pl-4 pr-2" : "px-4"}`}
+      className={`${btn[type]} ${styles}`}
       onClick={(e) => onClick(e)}
     >
       {children}
-      <span>{text}</span>
       <Icon className={`icon ${disabled && "cursor-not-allowed"}`} />
+      <span>{text}</span>
     </button>
   );
 };

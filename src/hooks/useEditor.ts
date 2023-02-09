@@ -1,6 +1,7 @@
 import React from "react";
 import { EMPTY_SCHEDULE } from "../helpers/constants";
-import { LabelsType, Level, Schedule } from "../helpers/types";
+import { TEMPLATES } from "../helpers/templates";
+import { LabelsType, Level, Schedule, Template } from "../helpers/types";
 import useDocument from "./useDocument";
 
 interface ImportDoc {
@@ -37,7 +38,7 @@ interface EditScheduleGrp {
   ): boolean;
 }
 interface AddNewSchedule {
-  (data: Schedule[], setData: (a: Schedule[]) => void): boolean;
+  (data: Schedule[], template: Template): any;
 }
 interface DeleteSchedule {
   (data: Schedule[], setData: (a: Schedule[]) => void, id: string): boolean;
@@ -89,7 +90,7 @@ const useEditor = () => {
     };
   };
   const importDocumentAsFile = async (userId: string, file: any) => {
-    importDocument(file, (doc) => addNewDocument(userId, file.name, doc));
+    // importDocument(file, (doc) => addNewDocument(userId, file.name, doc));
   };
 
   const clearCell: ClearCell = (
@@ -207,17 +208,13 @@ const useEditor = () => {
     return true;
   };
 
-  const addNewSchedule: AddNewSchedule = (data, setData) => {
-    const newSchedule = JSON.parse(JSON.stringify(EMPTY_SCHEDULE));
-    if (data.length === 0) {
-      setData([newSchedule]);
-      return true;
-    }
+  const addNewSchedule: AddNewSchedule = (data, template) => {
+    const newSchedule = JSON.parse(JSON.stringify(TEMPLATES[template].data));
+    if (data.length === 0) return [newSchedule];
 
     if (!data[data.length - 1].group) return false;
 
-    setData([...data, newSchedule]);
-    return true;
+    return [...data, newSchedule];
   };
 
   const deleteSchedule: DeleteSchedule = (data, setData, id) => {

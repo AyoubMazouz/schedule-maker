@@ -50,7 +50,7 @@ const Model = () => {
   const { model } = useGlobalContext();
   if (!model) return null;
   return (
-    <div className="fixed inset-0 z-40 flex justify-center px-4 py-24 bg-dark/25">
+    <div className="fixed inset-0 z-40 flex justify-center px-4 py-24 bg-dark/50">
       <div className="w-full max-w-[400px]">
         <div className="px-2 py-4 space-y-6 overflow-hidden text-center border rounded-lg shadow-lg bg-light">
           <CurrModel type={model.type} />

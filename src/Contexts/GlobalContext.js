@@ -11,6 +11,7 @@ export const useGlobalContext = () => {
 export const GlobalContextProvider = ({ children }) => {
   const [alert, setAlert] = React.useState(null);
   const [model, setModel] = React.useState(null);
+  const [docInfo, setDocInfo] = React.useState("");
   const [data, setData] = React.useState([]);
   const [labelsData, setLabelsData] = React.useState({
     trainers: [],
@@ -18,7 +19,6 @@ export const GlobalContextProvider = ({ children }) => {
     levels: [],
     events: [],
   });
-  const [docId, setDocId] = React.useState("");
 
   const { getDocument } = useDocument();
   const { getLabels } = useLabels();
@@ -41,7 +41,8 @@ export const GlobalContextProvider = ({ children }) => {
     const doc = await getDocument(username, docId);
     if (doc) {
       setData(JSON.parse(doc.data));
-      setDocId(docId);
+      delete doc.data;
+      setDocInfo(doc);
     }
   };
 
@@ -57,14 +58,14 @@ export const GlobalContextProvider = ({ children }) => {
         setAlert,
         model,
         setModel,
-        data,
-        setData,
         labelsData,
         setLabelsData,
-        docId,
-        setDocId,
         loadData,
         loadLabelsData,
+        docInfo,
+        setDocInfo,
+        data,
+        setData,
       }}
     >
       {children}

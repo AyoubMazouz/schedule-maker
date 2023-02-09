@@ -1,6 +1,5 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { EMPTY_SCHEDULE } from "../../helpers/constants";
 import { useAuth } from "../../Contexts/AuthContext";
 import { useGlobalContext } from "../../Contexts/GlobalContext";
 import useDocument from "../../hooks/useDocument";
@@ -9,22 +8,26 @@ import { IcSave, IcCancel, IcDoc } from "../../helpers/icons";
 import { Input } from "../Input";
 
 const NewDoc = () => {
-  const navigate = useNavigate();
-
-  const { setModel, setDocId } = useGlobalContext();
+  const { setModel } = useGlobalContext();
   const { currUser } = useAuth();
   const { addNewDocument } = useDocument();
+  const navigate = useNavigate();
   const [newId, setNewId] = React.useState("");
 
   const createHandler = async () => {
     setModel(null);
-    await addNewDocument(currUser.username, newId, [EMPTY_SCHEDULE]);
-    setDocId(newId);
+    await addNewDocument(currUser.username, newId, "OFPPT");
     navigate("/editor/" + newId);
   };
 
   return (
     <>
+      <Button
+        text="OFFPt"
+        type="success"
+        onClick={createHandler}
+        Icon={IcSave}
+      />
       <Input
         type="text"
         label="new document"

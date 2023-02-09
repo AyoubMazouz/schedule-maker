@@ -16,18 +16,10 @@ export const DropdownMenu: React.FC<Type> = ({
   text,
   options,
 }) => {
-  React.useEffect(() => {
-    function handleClickOutside(e: any) {
-      if (menuRef.current && !menuRef.current.contains(e.target))
-        setCurrMenu(null);
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [menuRef]);
   return (
     <div>
       <button
-        className="group relative flex cursor-pointer items-center gap-x-1 overflow-hidden rounded border-2 border-primary py-0.5 pl-4 pr-2 font-semibold capitalize text-primary shadow transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md hover:shadow-primary disabled:cursor-not-allowed disabled:opacity-50"
+        className="duration-400 group relative flex max-h-[2.1rem] cursor-pointer items-center gap-x-1 overflow-hidden rounded-md border-2 border-primary py-1 px-4 capitalize shadow-md transition-all hover:bg-primary hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
         onClick={() => setCurrMenu(text)}
       >
         <span>{text}</span>

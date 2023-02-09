@@ -25,8 +25,15 @@ import {
 } from "../../helpers/icons";
 
 const OptionBar = () => {
-  const { data, setData, setModel, setAlert, labelsData, loadLabelsData } =
-    useGlobalContext();
+  const {
+    data,
+    setData,
+    setModel,
+    setAlert,
+    labelsData,
+    loadLabelsData,
+    docInfo,
+  } = useGlobalContext();
   const {
     saved,
     setSaved,
@@ -38,6 +45,9 @@ const OptionBar = () => {
     hIndex,
     setHistory,
     setHIndex,
+    menuRef,
+    currMenu,
+    setCurrMenu,
   } = useEditorContext();
   const {
     importDocument,
@@ -52,15 +62,12 @@ const OptionBar = () => {
     undo,
     redo,
   } = useEditor();
-  const { addNewDocument } = useDocument();
+  const { updateDocument } = useDocument();
   const { exportAsPdf } = usePdf();
   const { currUser } = useAuth();
 
   const { docId } = useParams();
   const navigate = useNavigate();
-
-  const menuRef = React.useRef<HTMLDivElement>(null);
-  const [currMenu, setCurrMenu] = React.useState<string | null>(null);
 
   const [availableTrainers, setAvailableTrainers] = React.useState<string[]>(
     []
@@ -77,15 +84,6 @@ const OptionBar = () => {
   React.useEffect(() => {
     loadLabelsData(currUser.username);
   }, []);
-
-  React.useEffect(() => {
-    function handleClickOutside(e: any) {
-      if (menuRef.current && !menuRef.current.contains(e.target))
-        setCurrMenu(null);
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [menuRef]);
 
   React.useEffect(() => {
     if (selectedCell) {
@@ -207,7 +205,7 @@ const OptionBar = () => {
       }`}
       onClick={async () => {
         setCurrMenu(null);
-        await addNewDocument(currUser.username, docId as string, data);
+        await updateDocument(data, docInfo);
         setSaved(true);
       }}
     >
@@ -216,11 +214,11 @@ const OptionBar = () => {
     </button>
   );
   const ImportMenuItem = () => (
-    <div className="relative overflow-hidden menu-item">
+    <div className="menu-item relative overflow-hidden">
       <input
         type="file"
         accept=".json,.xls,.xlsm"
-        className="absolute top-0 bottom-0 left-0 right-0 opacity-0 cursor-pointer"
+        className="absolute top-0 bottom-0 left-0 right-0 cursor-pointer opacity-0"
         onChange={(e: any) => {
           importDocument(e.target.files[0], setData);
           setSaved(false);
@@ -232,7 +230,7 @@ const OptionBar = () => {
   );
 
   return (
-    <div className="sticky top-0 z-30 flex items-center justify-between w-full p-2 gap-x-2">
+    <div className="sticky top-0 z-30 col-span-full flex w-full items-center justify-between gap-x-2 rounded-lg border p-2">
       <DropdownMenu
         text="file"
         menuRef={menuRef}
@@ -285,7 +283,10 @@ const OptionBar = () => {
                 selectedCell[2]
               ][0]
             }
-            onChange={(e: any) => editFieldHandler(0, e.target.value)}
+            onChange={(v: string) => editFieldHandler(0, v)}
+            menuRef={menuRef}
+            currMenu={currMenu}
+            setCurrMenu={setCurrMenu}
           />
           <Select
             label="modules"
@@ -295,7 +296,10 @@ const OptionBar = () => {
                 selectedCell[2]
               ][1]
             }
-            onChange={(e: any) => editFieldHandler(1, e.target.value)}
+            onChange={(v: string) => editFieldHandler(1, v)}
+            menuRef={menuRef}
+            currMenu={currMenu}
+            setCurrMenu={setCurrMenu}
           />
           <Select
             label="rooms"
@@ -307,7 +311,10 @@ const OptionBar = () => {
                 selectedCell[2]
               ][2]
             }
-            onChange={(e: any) => editFieldHandler(2, e.target.value)}
+            onChange={(v: string) => editFieldHandler(2, v)}
+            menuRef={menuRef}
+            currMenu={currMenu}
+            setCurrMenu={setCurrMenu}
           />
           <Select
             label="events"
@@ -317,7 +324,10 @@ const OptionBar = () => {
                 selectedCell[2]
               ][3]
             }
-            onChange={(e: any) => editFieldHandler(3, e.target.value)}
+            onChange={(v: string) => editFieldHandler(3, v)}
+            menuRef={menuRef}
+            currMenu={currMenu}
+            setCurrMenu={setCurrMenu}
           />
           <div className="text-xs leading-3">
             <div>

@@ -108,6 +108,7 @@ const Documents = () => {
           </div>
           {documents.map((value, docIndex) => (
             <div
+              key={value.id}
               className={`menu-item group flex ${
                 docIndex % 2 === 0 && "bg-dark/10"
               }`}
