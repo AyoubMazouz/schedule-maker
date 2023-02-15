@@ -6,7 +6,7 @@ import { getRelativeDate } from "../../helpers/util";
 import usePublish from "../../hooks/usePublish";
 import { useUser } from "../../hooks/useUser";
 
-const Publish = () => {
+const PublicUserPage = () => {
   const { getPublishedDocuments } = usePublish();
   const { getUserInfo } = useUser();
   const [documents, setDocuments] = React.useState<PublishedDocument[]>([]);
@@ -75,4 +75,4 @@ const Publish = () => {
     </div>
   );
 };
-export default Publish;
+export default PublicUserPage;

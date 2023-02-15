@@ -13,7 +13,7 @@ interface ButtonType {
 }
 
 const base =
-  "rounded-md shadow-md py-1 capitalize cursor-pointer px-4 disabled:opacity-50 flex gap-x-1 items-center disabled:cursor-not-allowed transition-all duration-400 overflow-hidden group relative max-h-[2.1rem] border-2 hover:text-white disabled:line-through";
+  "rounded-md shadow-md py-1 capitalize cursor-pointer pr-4 pl-3 disabled:opacity-50 flex gap-x-1 items-center disabled:cursor-not-allowed transition-all duration-400 overflow-hidden group relative max-h-[2.1rem] border-[1px] hover:text-white disabled:line-through focus:outline-none";
 const btn = {
   primary: `${base} text-primary border-primary hover:bg-primary text-white`,
   secondary: `${base} text-dark border-dark hover:border-primary hover:text-primary`,
@@ -36,9 +36,9 @@ export const Button: React.FC<ButtonType> = ({
   if (!text)
     return (
       <button
-        className={`${
-          trigger ? "bg-primary/25" : ""
-        } ${styles} group relative flex h-8 w-8 cursor-pointer items-center justify-center rounded transition-all duration-300 hover:bg-dark/25 disabled:cursor-not-allowed disabled:opacity-50`}
+        className={`group relative flex h-8 w-8 cursor-pointer items-center justify-center rounded transition-all duration-300 hover:bg-dark/10 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 ${styles} ${
+          disabled ? "hover:text-dark" : "hover:text-primary"
+        } ${trigger ? "bg-dark/10" : ""}`}
         onClick={(e) => onClick(e)}
         disabled={disabled}
       >

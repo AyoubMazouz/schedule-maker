@@ -24,7 +24,7 @@ import {
   IcUndo,
 } from "../../helpers/icons";
 
-const OptionBar = () => {
+const EditorOptionBar = () => {
   const {
     data,
     setData,
@@ -214,11 +214,11 @@ const OptionBar = () => {
     </button>
   );
   const ImportMenuItem = () => (
-    <div className="menu-item relative overflow-hidden">
+    <div className="relative overflow-hidden menu-item">
       <input
         type="file"
         accept=".json,.xls,.xlsm"
-        className="absolute top-0 bottom-0 left-0 right-0 cursor-pointer opacity-0"
+        className="absolute top-0 bottom-0 left-0 right-0 opacity-0 cursor-pointer"
         onChange={(e: any) => {
           importDocument(e.target.files[0], setData);
           setSaved(false);
@@ -230,12 +230,13 @@ const OptionBar = () => {
   );
 
   return (
-    <div className="sticky top-0 z-30 col-span-full flex w-full items-center justify-between gap-x-2 rounded-lg border p-2">
+    <div className="sticky top-0 z-30 flex justify-between h-12 px-2 border-b-2 shadow-lg col-span-full gap-x-2 border-dark/50 md:px-6 lg:px-12">
       <DropdownMenu
         text="file"
         menuRef={menuRef}
         currMenu={currMenu}
         setCurrMenu={setCurrMenu}
+        styles="h-full"
         options={[
           <SaveMenuItem />,
           ["new", newDocHandler, IcNewDoc, false],
@@ -246,115 +247,114 @@ const OptionBar = () => {
           ["exit", exitHandler, IcLogout, false],
         ]}
       />
-      <div className="flex gap-x-2">
+      <div className="flex items-center h-full">
         <Button
           label={["Fusion Mode", "Let's you fill two fields at once."]}
           Icon={IcFusion}
           onClick={() => setFusionMode((x: boolean) => !x)}
           trigger={fusionMode}
+          styles="w-12 h-full rounded-none"
         />
         <Button
           label={["Undo"]}
           Icon={IcUndo}
           onClick={handleUndo}
           disabled={hIndex === 0}
+          styles="w-12 h-full rounded-none"
         />
         <Button
           label={["Redo"]}
           Icon={IcRedo}
           onClick={handleRedo}
           disabled={hIndex === history.length}
+          styles="w-12 h-full rounded-none"
         />
+        <Button
+          label={["Select None"]}
+          Icon={IcSelectionNone}
+          onClick={() => setSelectedCell(null)}
+          disabled={!selectedCell}
+          styles="w-12 h-full rounded-none"
+        />
+        <Button
+          Icon={IcBin}
+          label={["clear"]}
+          onClick={clearCellHandler}
+          styles="w-12 h-full rounded-none"
+          disabled={!selectedCell}
+        />
+
+        {selectedCell ? (
+          <>
+            <Select
+              label="trainers"
+              notRecommended={unavailableTrainers}
+              values={availableTrainers}
+              value={
+                data[selectedCell[0]].schedule[selectedCell[1]][
+                  selectedCell[2]
+                ][0]
+              }
+              onChange={(v: string) => editFieldHandler(0, v)}
+              menuRef={menuRef}
+              currMenu={currMenu}
+              setCurrMenu={setCurrMenu}
+              styles="h-full border-none shadow-none rounded-none"
+            />
+            <Select
+              label="modules"
+              values={modules}
+              value={
+                data[selectedCell[0]].schedule[selectedCell[1]][
+                  selectedCell[2]
+                ][1]
+              }
+              onChange={(v: string) => editFieldHandler(1, v)}
+              menuRef={menuRef}
+              currMenu={currMenu}
+              setCurrMenu={setCurrMenu}
+              styles="h-full border-none shadow-none rounded-none"
+            />
+            <Select
+              label="rooms"
+              values={availableRooms}
+              recommended={preferredRooms}
+              notRecommended={unavailableRooms}
+              value={
+                data[selectedCell[0]].schedule[selectedCell[1]][
+                  selectedCell[2]
+                ][2]
+              }
+              onChange={(v: string) => editFieldHandler(2, v)}
+              menuRef={menuRef}
+              currMenu={currMenu}
+              setCurrMenu={setCurrMenu}
+              styles="h-full border-none shadow-none rounded-none"
+            />
+            <Select
+              label="events"
+              values={events}
+              value={
+                data[selectedCell[0]].schedule[selectedCell[1]][
+                  selectedCell[2]
+                ][3]
+              }
+              onChange={(v: string) => editFieldHandler(3, v)}
+              menuRef={menuRef}
+              currMenu={currMenu}
+              setCurrMenu={setCurrMenu}
+              styles="h-full border-none shadow-none rounded-none"
+            />
+            <div className="mx-2 text-xs font-semibold leading-3">
+              <div>{`x: ${selectedCell[0]}`}</div>
+              <div>{`y: ${selectedCell[1]}`}</div>
+              <div>{`z: ${selectedCell[2]}`}</div>
+            </div>
+          </>
+        ) : null}
       </div>
-      {selectedCell ? (
-        <div className="flex items-center gap-x-2">
-          <Button
-            label={["Select None"]}
-            Icon={IcSelectionNone}
-            onClick={() => setSelectedCell(null)}
-          />
-          <Button Icon={IcBin} label={["clear"]} onClick={clearCellHandler} />
-          <Select
-            label="trainers"
-            notRecommended={unavailableTrainers}
-            values={availableTrainers}
-            value={
-              data[selectedCell[0]].schedule[selectedCell[1]][
-                selectedCell[2]
-              ][0]
-            }
-            onChange={(v: string) => editFieldHandler(0, v)}
-            menuRef={menuRef}
-            currMenu={currMenu}
-            setCurrMenu={setCurrMenu}
-          />
-          <Select
-            label="modules"
-            values={modules}
-            value={
-              data[selectedCell[0]].schedule[selectedCell[1]][
-                selectedCell[2]
-              ][1]
-            }
-            onChange={(v: string) => editFieldHandler(1, v)}
-            menuRef={menuRef}
-            currMenu={currMenu}
-            setCurrMenu={setCurrMenu}
-          />
-          <Select
-            label="rooms"
-            values={availableRooms}
-            recommended={preferredRooms}
-            notRecommended={unavailableRooms}
-            value={
-              data[selectedCell[0]].schedule[selectedCell[1]][
-                selectedCell[2]
-              ][2]
-            }
-            onChange={(v: string) => editFieldHandler(2, v)}
-            menuRef={menuRef}
-            currMenu={currMenu}
-            setCurrMenu={setCurrMenu}
-          />
-          <Select
-            label="events"
-            values={events}
-            value={
-              data[selectedCell[0]].schedule[selectedCell[1]][
-                selectedCell[2]
-              ][3]
-            }
-            onChange={(v: string) => editFieldHandler(3, v)}
-            menuRef={menuRef}
-            currMenu={currMenu}
-            setCurrMenu={setCurrMenu}
-          />
-          <div className="text-xs leading-3">
-            <div>
-              <span>x:</span>
-              <span className="font-semibold text-primary">
-                {selectedCell[0]}
-              </span>
-            </div>
-            <div>
-              <span>y:</span>
-              <span className="font-semibold text-primary">
-                {selectedCell[1]}
-              </span>
-            </div>
-            <div>
-              <span>z:</span>
-              <span className="font-semibold text-primary">
-                {selectedCell[2]}
-              </span>
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div></div>
-      )}
     </div>
   );
 };
 
-export default OptionBar;
+export default EditorOptionBar;

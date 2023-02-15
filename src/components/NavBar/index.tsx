@@ -7,13 +7,13 @@ import { useGlobalContext } from "../../Contexts/GlobalContext";
 import { useUser } from "../../hooks/useUser";
 // Components.
 import { Button } from "../Button";
-import { IcEditor, IcLogin, IcLogout, IcSettings } from "../../helpers/icons";
+import { IcLogin } from "../../helpers/icons";
 import { Logo } from "./Logo";
+import { Profile } from "./Profile";
 
 const NavBar = () => {
-  const { setModel, setAlert } = useGlobalContext();
+  const { setModel } = useGlobalContext();
   const { currUser } = useAuth();
-  const { signOut } = useUser();
 
   const location = useLocation();
 
@@ -29,74 +29,28 @@ const NavBar = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [menuRef]);
 
-  const logoutHandler = () => {
-    signOut();
-    setAlert({ type: "success", message: `Goodbye "${currUser.email}"` });
-  };
-
   if (location.pathname.includes("editor")) return null;
 
   return (
-    <nav className="flex justify-center">
-      <div className="m-2 flex h-[3.3rem] w-full max-w-[1400px] items-center justify-between rounded-lg border p-2 shadow-md">
-        <Logo />
-        <div className="flex items-center gap-x-6">
-          <Link
-            to="/documents"
-            className="capitalized flex items-center gap-x-1 font-semibold transition-all duration-300 hover:text-secondary"
-          >
-            <IcEditor className="icon" />
-            <span>Editor</span>
-          </Link>
-          <div className="capitalized relative transition-all duration-300 hover:text-secondary">
-            {currUser ? (
-              <>
-                <div
-                  className={`${
-                    currMenu === "prfMenu" && "border"
-                  } h-[2.25rem] w-[2.25rem] cursor-pointer overflow-hidden rounded-full opacity-90 shadow-md transition-all duration-300 hover:opacity-100`}
-                  onClick={(e) => setCurrMenu("prfMenu")}
-                >
-                  <img className="aspect-1" src={currUser.img} />
-                </div>
-                {currMenu === "prfMenu" && (
-                  <div ref={menuRef} className="menu top-[110%] right-[0%]">
-                    <Link to={"/settings/profile"} className="menu-item group">
-                      <img
-                        src={currUser.img}
-                        className="aspect-1 w-[3rem] rounded-md shadow"
-                      />
-                      <div className="-space-y-1 font-semibold">
-                        <span>@{currUser.username}</span>
-                        <div className="text-sm text-primary underline group-hover:text-light">
-                          Manage profile
-                        </div>
-                      </div>
-                    </Link>
-                    <Link to="/settings" className="menu-item">
-                      <IcSettings className="icon" />
-                      <span>Settings</span>
-                    </Link>
-                    <button
-                      className="menu-item text-red-600 hover:bg-red-600 hover:text-white"
-                      onClick={logoutHandler}
-                    >
-                      <IcLogout className="icon" />
-                      <span>Sign out</span>
-                    </button>
-                  </div>
-                )}
-              </>
-            ) : (
-              <Button
-                type="success"
-                text="Login"
-                onClick={() => setModel({ type: "login" })}
-                Icon={IcLogin}
-              />
-            )}
-          </div>
-        </div>
+    <nav className="flex items-center justify-between px-2 h-14 md:px-6 lg:px-12">
+      <Logo />
+      <div className="flex items-center h-full gap-x-6">
+        <Link
+          to="/documents"
+          className="relative text-lg font-semibold after:absolute after:bottom-[-8%] after:left-[50%] after:h-0 after:w-full after:translate-x-[-50%] after:rounded-lg after:bg-primary after:opacity-0 after:transition-all after:duration-300 after:content-[''] after:hover:h-[.25rem] hover:after:opacity-100"
+        >
+          Editor
+        </Link>
+        {currUser ? (
+          <Profile {...{ menuRef, currMenu, setCurrMenu }} />
+        ) : (
+          <Button
+            type="success"
+            text="Login"
+            onClick={() => setModel({ type: "login" })}
+            Icon={IcLogin}
+          />
+        )}
       </div>
     </nav>
   );

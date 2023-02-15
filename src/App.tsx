@@ -10,9 +10,13 @@ import NavBar from "./components/NavBar";
 import Contact from "./pages/Contact";
 import Editor from "./pages/Editor";
 import Documents from "./pages/Documents";
-import Settings from "./pages/Settings";
 import Home from "./pages/Home";
+import PublicUserPage from "./pages/PublicUserPage";
+import { Profile } from "./pages/Profile";
+import About from "./pages/About";
+import Users from "./pages/Users";
 import Publish from "./pages/Publish";
+import Labels from "./pages/Labels";
 
 function App() {
   return (
@@ -25,12 +29,15 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         {/* PrivateRoutes */}
         <Route element={<PrivateRoute />}>
-          <Route path="/settings" element={<Settings />} />
-          <Route path="/settings/:settingsTab" element={<Settings />} />
+          <Route path="/settings/profile" element={<Profile />} />
+          <Route path="/settings/users" element={<Users />} />
+          <Route path="/settings/labels" element={<Labels />} />
+          <Route path="/settings/publish" element={<Publish />} />
+          <Route path="/settings/about" element={<About />} />
           <Route path="/editor/:docId" element={<Editor />} />
           <Route path="/documents" element={<Documents />} />
         </Route>
-        <Route path="/publish/:username" element={<Publish />} />
+        <Route path="/publish/:username" element={<PublicUserPage />} />
       </Routes>
       <Footer />
     </div>

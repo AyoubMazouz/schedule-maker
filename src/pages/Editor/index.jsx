@@ -6,7 +6,7 @@ import { EditorContextProvider } from "../../Contexts/EditorContext";
 import { useAuth } from "../../Contexts/AuthContext";
 // Components.
 import DocumentsBar from "./DocumentsBar";
-import OptionsBar from "./EditorNavBar";
+import EditorOptionBar from "./EditorOptionBar";
 import Table from "./Table/Index";
 
 const Editor = () => {
@@ -37,19 +37,13 @@ const Editor = () => {
 
   return (
     <EditorContextProvider>
-      <div className="flex justify-center py-2">
-        <div className="mx-2 w-full max-w-[1400px] gap-x-2 space-y-2 md:grid md:grid-cols-12">
-          <OptionsBar />
-          <div className="col-span-full overflow-hidden rounded-lg border md:col-span-3">
-            <div className="h-[calc(35vh-6rem)] overflow-x-hidden overflow-y-scroll md:h-[calc(100vh-5.5rem)]">
-              <DocumentsBar />
-            </div>
-          </div>
-          <div className="col-span-9 overflow-hidden rounded-lg border">
-            <div className="relative h-[65vh] overflow-scroll md:h-[calc(100vh-5.5rem)]">
-              <Table />
-            </div>
-          </div>
+      <div className="md:grid md:grid-cols-12">
+        <EditorOptionBar />
+        <div className="col-span-full h-[calc(35vh-6rem)] overflow-x-hidden overflow-y-scroll border-r-2 border-dark/50 md:col-span-3 md:h-[calc(100vh-3rem)]">
+          <DocumentsBar />
+        </div>
+        <div className="relative col-span-9 h-[65vh] overflow-scroll md:h-[calc(100vh-3rem)]">
+          <Table />
         </div>
       </div>
     </EditorContextProvider>
