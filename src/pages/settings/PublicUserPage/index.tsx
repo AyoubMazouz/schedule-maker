@@ -1,10 +1,10 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { IcDoc } from "../../helpers/icons";
-import { PublishedDocument, User } from "../../helpers/types";
-import { getRelativeDate } from "../../helpers/util";
-import usePublish from "../../hooks/usePublish";
-import { useUser } from "../../hooks/useUser";
+import { IcDoc } from "../../../helpers/icons";
+import { PublishedDocument, User } from "../../../helpers/types";
+import { getRelativeDate } from "../../../helpers/util";
+import usePublish from "../../../hooks/usePublish";
+import { useUser } from "../../../hooks/useUser";
 
 const PublicUserPage = () => {
   const { getPublishedDocuments } = usePublish();

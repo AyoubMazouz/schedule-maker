@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "../../components/Button";
+import { Button } from "../../../components/Button";
 import {
   IcBin,
   IcDownload,
@@ -9,15 +9,15 @@ import {
   IcPublish,
   IcHelp,
   IcDoc,
-} from "../../helpers/icons";
-import MoreMenu from "../../components/MoreMenu";
-import { useAuth } from "../../Contexts/AuthContext";
-import { useGlobalContext } from "../../Contexts/GlobalContext";
+} from "../../../helpers/icons";
+import MoreMenu from "../../../components/MoreMenu";
+import { useAuth } from "../../../Contexts/AuthContext";
+import { useGlobalContext } from "../../../Contexts/GlobalContext";
 import { Link } from "react-router-dom";
-import { Input } from "../../components/Input";
-import usePublish from "../../hooks/usePublish";
-import { getRelativeDate } from "../../helpers/util";
-import SettingsSideBar from "../../components/SettingsSideBar";
+import { Input } from "../../../components/Input";
+import usePublish from "../../../hooks/usePublish";
+import { getRelativeDate } from "../../../helpers/util";
+import SettingsSideBar from "../../../components/SettingsSideBar";
 
 const INITIAL_STATE = {
   id: "",
@@ -114,9 +114,9 @@ const Publish = () => {
 
   return (
     <SettingsSideBar>
-      <div className="p-2 space-y-6">
+      <div className="space-y-6 p-2">
         {/* Url. */}
-        <div className="flex items-center justify-between px-3 py-2 font-semibold underline border rounded-lg shadow-md text-dark/50">
+        <div className="flex items-center justify-between rounded-lg border px-3 py-2 font-semibold text-dark/50 underline shadow-md">
           <Link to={"/publish/" + currUser.username}>{publishPageUrl}</Link>
           <Button
             Icon={state.copied ? IcCopied : IcCopy}
@@ -137,7 +137,7 @@ const Publish = () => {
             >
               <input
                 type="file"
-                className="absolute top-0 bottom-0 left-0 right-0 opacity-0 cursor-pointer"
+                className="absolute top-0 bottom-0 left-0 right-0 cursor-pointer opacity-0"
                 onChange={(e) =>
                   dispatch({
                     type: "FILE",
@@ -187,11 +187,11 @@ const Publish = () => {
           </div>
         ) : null}
         {/* Documents. */}
-        <div className="border rounded-lg shadow-md">
-          <div className="flex items-center pr-1 border-b-2 border-dark/50 bg-primary text-start text-light">
+        <div className="rounded-lg border shadow-md">
+          <div className="flex items-center border-b-2 border-dark/50 bg-primary pr-1 text-start text-light">
             <div className="grid w-full grid-cols-12 p-2 font-semibold">
               <div className="col-span-9">Events</div>
-              <div className="hidden col-span-3 text-center md:block">
+              <div className="col-span-3 hidden text-center md:block">
                 Created At
               </div>
             </div>
@@ -208,13 +208,13 @@ const Publish = () => {
                 onClick={(e) => handleDetail(value)}
                 className="grid w-full grid-cols-12"
               >
-                <div className="flex col-span-9 gap-x-1 group-hover:underline">
+                <div className="col-span-9 flex gap-x-1 group-hover:underline">
                   <IcDoc className="icon" />
                   <div className="overflow-hidden text-ellipsis whitespace-nowrap">
                     {value.id}
                   </div>
                 </div>
-                <div className="hidden col-span-3 text-center sm:block">
+                <div className="col-span-3 hidden text-center sm:block">
                   {getRelativeDate(value.createdAt)}
                 </div>
               </div>

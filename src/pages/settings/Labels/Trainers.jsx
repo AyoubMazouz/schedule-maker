@@ -1,10 +1,10 @@
 import React from "react";
-import { IcBin, IcEdit, IcHelp, IcUser } from "../../helpers/icons";
-import MoreMenu from "../../components/MoreMenu";
-import { useGlobalContext } from "../../Contexts/GlobalContext";
-import useSettings from "../../hooks/useSettings";
-import { getRelativeDate } from "../../helpers/util";
-import { Button } from "../../components/Button";
+import { IcBin, IcEdit, IcHelp, IcUser } from "../../../helpers/icons";
+import MoreMenu from "../../../components/MoreMenu";
+import { useGlobalContext } from "../../../Contexts/GlobalContext";
+import useSettings from "../../../hooks/useSettings";
+import { getRelativeDate } from "../../../helpers/util";
+import { Button } from "../../../components/Button";
 
 const Trainers = ({ currMenu, setCurrMenu, menuRef, setSaved }) => {
   const { setModel, labelsData, setLabelsData } = useGlobalContext();
@@ -30,16 +30,16 @@ const Trainers = ({ currMenu, setCurrMenu, menuRef, setSaved }) => {
     setSaved(false);
   };
   return (
-    <div className="rounded-lg border shadow-lg">
-      <div className="flex items-center border-2 border-dark/50 bg-primary pr-1 text-start text-light">
+    <div className="border rounded-lg shadow-lg">
+      <div className="flex items-center pr-1 border-2 border-dark/50 bg-primary text-start text-light">
         <div className="grid w-full grid-cols-12 p-2 font-semibold">
           <div className="col-span-full sm:col-span-9 md:col-span-6">
             Trainers
           </div>
-          <div className="col-span-3 hidden text-center sm:block">
+          <div className="hidden col-span-3 text-center sm:block">
             Modified At
           </div>
-          <div className="col-span-3 hidden text-center md:block">
+          <div className="hidden col-span-3 text-center md:block">
             Created At
           </div>
         </div>
@@ -56,16 +56,16 @@ const Trainers = ({ currMenu, setCurrMenu, menuRef, setSaved }) => {
             onClick={(e) => showDetails(trainer)}
             className="grid w-full grid-cols-12"
           >
-            <div className="col-span-full flex gap-x-1 text-left group-hover:underline sm:col-span-6">
+            <div className="flex text-left col-span-full gap-x-1 group-hover:underline sm:col-span-6">
               <IcUser className="icon" />
               <div className="overflow-hidden text-ellipsis whitespace-nowrap">
                 {trainer.value}
               </div>
             </div>
-            <div className="col-span-3 hidden text-center md:block">
+            <div className="hidden col-span-3 text-center md:block">
               {getRelativeDate(trainer.modifiedAt)}
             </div>
-            <div className="col-span-3 hidden text-center sm:block">
+            <div className="hidden col-span-3 text-center sm:block">
               {getRelativeDate(trainer.createdAt)}
             </div>
           </button>

@@ -1,5 +1,3 @@
-
-
 export interface BaseLabelsTypes {
   value: string;
   createdAt: {};

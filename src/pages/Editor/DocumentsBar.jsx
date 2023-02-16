@@ -39,11 +39,10 @@ const DocumentsBar = () => {
       setData(res);
       setSaved(false);
     } else {
-      setAlert({
-        type: "warn",
-        message:
-          "You should finish the previous table or at least fill the 'group' field.",
-      });
+      setAlert(
+        "warn",
+        "You should finish the previous table or at least fill the 'group' field."
+      );
     }
   };
 
@@ -69,11 +68,11 @@ const DocumentsBar = () => {
   };
 
   return (
-    <div className="flex flex-col p-2 gap-y-3">
+    <div className="flex flex-col gap-y-3 p-2">
       {data.map((schedule, scheduleIndex) =>
         scheduleIndex === currSchedule ? (
           <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg border-[1px] border-dark/50 bg-primary p-2">
-            <div className="flex items-center justify-center w-6 h-6 font-semibold rounded-full bg-light text-primary ">
+            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-light font-semibold text-primary ">
               {scheduleIndex + 1}
             </div>
             <Select
@@ -81,9 +80,7 @@ const DocumentsBar = () => {
               value={schedule.group}
               notRecommended={unavailableGroups}
               label="groups"
-              onChange={(e) =>
-                editScheduleGrpHandler(scheduleIndex, e.target.value)
-              }
+              onChange={(v) => editScheduleGrpHandler(scheduleIndex, v)}
               styles="text-light border-light/50"
               menuRef={menuRef}
               currMenu={currMenu}
@@ -101,11 +98,11 @@ const DocumentsBar = () => {
             className="flex items-center gap-2 rounded-lg border-[1px] border-dark/50 bg-light p-2 text-sm font-semibold transition-all duration-300 hover:bg-secondary"
             onClick={(e) => setCurrSchedule(scheduleIndex)}
           >
-            <div className="flex items-center justify-center w-6 h-6 font-bold rounded-full bg-primary text-light">
+            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-primary font-bold text-light">
               {scheduleIndex + 1}
             </div>
             <div className="">{schedule.group}</div>
-            <div className="flex items-center ml-auto gap-x-1 text-primary">
+            <div className="ml-auto flex items-center gap-x-1 text-primary">
               <span>{schedule.totalHours}</span>
               <IcTime className="icon" />
             </div>

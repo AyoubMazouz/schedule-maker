@@ -11,12 +11,12 @@ import Contact from "./pages/Contact";
 import Editor from "./pages/Editor";
 import Documents from "./pages/Documents";
 import Home from "./pages/Home";
-import PublicUserPage from "./pages/PublicUserPage";
-import { Profile } from "./pages/Profile";
+import PublicUserPage from "./pages/settings/PublicUserPage";
+import Profile from "./pages/settings/Profile";
 import About from "./pages/About";
-import Users from "./pages/Users";
-import Publish from "./pages/Publish";
-import Labels from "./pages/Labels";
+import Users from "./pages/settings/Users";
+import Publish from "./pages/settings/Publish";
+import Labels from "./pages/settings/Labels";
 
 function App() {
   return (

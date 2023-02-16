@@ -1,10 +1,10 @@
 import React from "react";
-import { Button } from "../../components/Button";
-import { Input } from "../../components/Input";
-import SettingsSideBar from "../../components/SettingsSideBar";
-import { useGlobalContext } from "../../Contexts/GlobalContext";
-import { IcLogin } from "../../helpers/icons";
-import { useUser } from "../../hooks/useUser";
+import { Button } from "../../../components/Button";
+import { Input } from "../../../components/Input";
+import SettingsSideBar from "../../../components/SettingsSideBar";
+import { useGlobalContext } from "../../../Contexts/GlobalContext";
+import { IcLogin } from "../../../helpers/icons";
+import { useUser } from "../../../hooks/useUser";
 
 const Users = () => {
   const { setAlert } = useGlobalContext();
@@ -38,7 +38,7 @@ const Users = () => {
 
   return (
     <SettingsSideBar>
-      <div className="p-2 space-y-2">
+      <div className="space-y-2 p-2">
         <div className="space-y-3">
           <Input
             type="text"

@@ -129,7 +129,7 @@ const EditorOptionBar = () => {
 
   const downloadHandler = () => {
     exportAsPdf(data, docId as string);
-    setAlert({ type: "success", message: "Download has started..." });
+    setAlert("success", "Download has started...");
     setCurrMenu(null);
   };
 
@@ -182,7 +182,7 @@ const EditorOptionBar = () => {
       } else if (row === 2) {
         message = `The Room number "${value}" is not available on "${DAYS_TEXT[y]}", from "${sessionTextSplited[0]}" to "${sessionTextSplited[1]}" it is ocupied by the group "${value}".`;
       }
-      setAlert({ type: "warn", message });
+      setAlert("warn", message);
     }
   };
 
@@ -214,11 +214,11 @@ const EditorOptionBar = () => {
     </button>
   );
   const ImportMenuItem = () => (
-    <div className="relative overflow-hidden menu-item">
+    <div className="menu-item relative overflow-hidden">
       <input
         type="file"
         accept=".json,.xls,.xlsm"
-        className="absolute top-0 bottom-0 left-0 right-0 opacity-0 cursor-pointer"
+        className="absolute top-0 bottom-0 left-0 right-0 cursor-pointer opacity-0"
         onChange={(e: any) => {
           importDocument(e.target.files[0], setData);
           setSaved(false);
@@ -230,7 +230,7 @@ const EditorOptionBar = () => {
   );
 
   return (
-    <div className="sticky top-0 z-30 flex justify-between h-12 px-2 border-b-2 shadow-lg col-span-full gap-x-2 border-dark/50 md:px-6 lg:px-12">
+    <div className="sticky top-0 z-30 col-span-full flex h-12 justify-between gap-x-2 border-b-2 border-dark/50 px-2 shadow-lg md:px-6 lg:px-12">
       <DropdownMenu
         text="file"
         menuRef={menuRef}
@@ -247,7 +247,7 @@ const EditorOptionBar = () => {
           ["exit", exitHandler, IcLogout, false],
         ]}
       />
-      <div className="flex items-center h-full">
+      <div className="flex h-full items-center">
         <Button
           label={["Fusion Mode", "Let's you fill two fields at once."]}
           Icon={IcFusion}

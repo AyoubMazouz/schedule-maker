@@ -9,7 +9,7 @@ export const useGlobalContext = () => {
 };
 
 export const GlobalContextProvider = ({ children }) => {
-  const [alert, setAlert] = React.useState(null);
+  const [alerts, setAlerts] = React.useState([]);
   const [model, setModel] = React.useState(null);
   const [docInfo, setDocInfo] = React.useState("");
   const [data, setData] = React.useState([]);
@@ -22,20 +22,6 @@ export const GlobalContextProvider = ({ children }) => {
 
   const { getDocument } = useDocument();
   const { getLabels } = useLabels();
-
-  React.useEffect(() => {
-    const unsubscribe = setTimeout(() => {
-      setAlert(null);
-    }, 100000);
-    return () => clearTimeout(unsubscribe);
-  }, [alert]);
-
-  React.useEffect(() => {
-    const unsubscribe = setTimeout(() => {
-      setAlert(null);
-    }, 100000);
-    return () => clearTimeout(unsubscribe);
-  }, [alert]);
 
   const loadData = async (username, docId) => {
     const doc = await getDocument(username, docId);
@@ -51,10 +37,17 @@ export const GlobalContextProvider = ({ children }) => {
     if (doc) setLabelsData(doc);
   };
 
+  const setAlert = (type, message) => {
+    if (alerts.length === 6)
+      setAlerts((x) => [...x.slice(1, x.length), { type, message }]);
+    else setAlerts((x) => [...x, { type, message }]);
+  };
+
   return (
     <GlobalContext.Provider
       value={{
-        alert,
+        alerts,
+        setAlerts,
         setAlert,
         model,
         setModel,

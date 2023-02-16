@@ -1,7 +1,7 @@
 import React from "react";
-import SettingsSideBar from "../../components/SettingsSideBar";
-import { useAuth } from "../../Contexts/AuthContext";
-import { useGlobalContext } from "../../Contexts/GlobalContext";
+import SettingsSideBar from "../../../components/SettingsSideBar";
+import { useAuth } from "../../../Contexts/AuthContext";
+import { useGlobalContext } from "../../../Contexts/GlobalContext";
 import Events from "./Events";
 import Levels from "./Levels";
 import OptionBar from "./OptionBar";

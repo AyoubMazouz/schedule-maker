@@ -1,8 +1,8 @@
 import React from "react";
-import { useAuth } from "../../Contexts/AuthContext";
-import SettingsSideBar from "../../components/SettingsSideBar";
-import { Button } from "../../components/Button";
-import { Input } from "../../components/Input";
+import { useAuth } from "../../../Contexts/AuthContext";
+import SettingsSideBar from "../../../components/SettingsSideBar";
+import { Button } from "../../../components/Button";
+import { Input } from "../../../components/Input";
 import {
   IcAddress,
   IcCopied,
@@ -11,11 +11,11 @@ import {
   IcNotAllowed,
   IcOrg,
   IcSave,
-} from "../../helpers/icons";
-import { useUser } from "../../hooks/useUser";
-import { treeCharsOrMore } from "../../helpers/validation";
-import useSettings from "../../hooks/useSettings";
-import { BANNER_SIZE, PROFILE_IMG_SIZE } from "../../helpers/constants";
+} from "../../../helpers/icons";
+import { useUser } from "../../../hooks/useUser";
+import { treeCharsOrMore } from "../../../helpers/validation";
+import useSettings from "../../../hooks/useSettings";
+import { BANNER_SIZE, PROFILE_IMG_SIZE } from "../../../helpers/constants";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -86,7 +86,7 @@ const reducer = (state, action) => {
   }
 };
 
-export const Profile = () => {
+const Profile = () => {
   const { currUser, loading } = useAuth();
   const { updateUserDoc } = useUser();
   const { resizeImg } = useSettings();
@@ -140,7 +140,7 @@ export const Profile = () => {
           <div className="absolute bottom-[0%] left-[5%] flex translate-y-[75%] items-center gap-x-3 p-2">
             <div className="overflow-hidden rounded-full border-[6px] border-light shadow-lg">
               <div className="group relative h-[6rem] w-[6rem] transition-all duration-700 hover:scale-110">
-                <img src={state.img} className="object-cover h-full" />
+                <img src={state.img} className="h-full object-cover" />
                 <div className="absolute top-[50%] right-[50%] translate-x-[50%] translate-y-[-50%] rounded-full bg-light p-1.5 opacity-0 shadow-md transition-all duration-300 group-hover:opacity-50">
                   <IcEdit className="text-2xl text-emerald-600" />
                 </div>
@@ -148,7 +148,7 @@ export const Profile = () => {
                   type="file"
                   accept="jpg,jpeg,png"
                   onChange={handleImg}
-                  className="absolute inset-0 opacity-0 cursor-pointer"
+                  className="absolute inset-0 cursor-pointer opacity-0"
                 />
               </div>
             </div>
@@ -169,11 +169,11 @@ export const Profile = () => {
               type="file"
               accept="jpg,jpeg,png"
               onChange={handleBanner}
-              className="absolute inset-0 opacity-0 cursor-pointer"
+              className="absolute inset-0 cursor-pointer opacity-0"
             />
           </Button>
         </div>
-        <div className="flex flex-wrap justify-end gap-3 mt-4">
+        <div className="mt-4 flex flex-wrap justify-end gap-3">
           <Button
             type="warn"
             text="discard"
@@ -237,3 +237,4 @@ export const Profile = () => {
     </SettingsSideBar>
   );
 };
+export default Profile;
