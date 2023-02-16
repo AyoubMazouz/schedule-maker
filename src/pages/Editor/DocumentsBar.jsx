@@ -5,19 +5,26 @@ import { IcBin, IcPlus, IcTime } from "../../helpers/icons";
 import { useEditorContext } from "../../Contexts/EditorContext";
 import { Select } from "../../components/Select";
 import { Button } from "../../components/Button";
+import useUndoRedo from "../../hooks/useUndoRedo";
 
 const DocumentsBar = () => {
   const {
+    history,
+    hIndex,
+    setHistory,
+    setHIndex,
     setSaved,
     currSchedule,
     setCurrSchedule,
     menuRef,
     currMenu,
     setCurrMenu,
+    setSelectedCell,
   } = useEditorContext();
   const { data, setData, setAlert, labelsData, docInfo } = useGlobalContext();
   const { addNewSchedule, editScheduleGrp, deleteSchedule, getGroups } =
     useEditor();
+  const { record } = useUndoRedo();
 
   const [availableGroups, setAvailableGroups] = React.useState([]);
   const [unavailableGroups, setUnavailableGroups] = React.useState([]);
@@ -33,9 +40,16 @@ const DocumentsBar = () => {
   }, [currSchedule, labelsData]);
 
   const addNewScheduleHandler = () => {
+    record(history, setHistory, hIndex, setHIndex, {
+      type: "ADD_SCHEDULE",
+      template: docInfo.template,
+      setCurrSchedule,
+      setSelectedCell,
+    });
     const res = addNewSchedule(data, docInfo.template);
     if (res) {
       setCurrSchedule(data.length);
+      setSelectedCell((x) => (x ? [data.length, x[1], x[2]] : null));
       setData(res);
       setSaved(false);
     } else {
@@ -47,18 +61,30 @@ const DocumentsBar = () => {
   };
 
   const editScheduleGrpHandler = (scheduleIndex, value) => {
+    // Record for undo and redo.
+    record(history, setHistory, hIndex, setHIndex, {
+      type: "INFO_INSERT",
+      prev: data[scheduleIndex].group,
+      next: value,
+      x: scheduleIndex,
+    });
     const res = editScheduleGrp(data, setData, scheduleIndex, value);
     if (res) {
       setSaved(false);
     } else {
-      setAlert({
-        type: "warn",
-        message: "You have already created a Schedule for this group",
-      });
+      setAlert("warn", "You have already created a Schedule for this group");
     }
   };
 
   const deleteScheduleHandler = (scheduleIndex) => {
+    // Record for undo and redo.
+    record(history, setHistory, hIndex, setHIndex, {
+      type: "DEL_SCHEDULE",
+      prev: data[scheduleIndex],
+      x: scheduleIndex,
+      setCurrSchedule,
+      setSelectedCell,
+    });
     const res = deleteSchedule(data, setData, data[scheduleIndex].group);
     if (res) {
       const currSchedule = scheduleIndex === 0 ? 0 : scheduleIndex - 1;
@@ -71,7 +97,10 @@ const DocumentsBar = () => {
     <div className="flex flex-col gap-y-3 p-2">
       {data.map((schedule, scheduleIndex) =>
         scheduleIndex === currSchedule ? (
-          <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg border-[1px] border-dark/50 bg-primary p-2">
+          <div
+            key={schedule.group}
+            className="flex flex-wrap items-center justify-between gap-2 rounded-lg border-[1px] border-dark/50 bg-primary p-2"
+          >
             <div className="flex h-6 w-6 items-center justify-center rounded-full bg-light font-semibold text-primary ">
               {scheduleIndex + 1}
             </div>
@@ -95,6 +124,7 @@ const DocumentsBar = () => {
           </div>
         ) : (
           <button
+            key={schedule.group}
             className="flex items-center gap-2 rounded-lg border-[1px] border-dark/50 bg-light p-2 text-sm font-semibold transition-all duration-300 hover:bg-secondary"
             onClick={(e) => setCurrSchedule(scheduleIndex)}
           >

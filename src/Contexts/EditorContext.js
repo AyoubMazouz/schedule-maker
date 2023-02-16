@@ -15,7 +15,7 @@ export const EditorContextProvider = ({ children }) => {
   const [fusionMode, setFusionMode] = React.useState(true);
   // History for undo and redo.
   const [history, setHistory] = React.useState([]);
-  const [hIndex, setHIndex] = React.useState(0);
+  const [hIndex, setHIndex] = React.useState(-1);
 
   // Close menu when clicking outside of it.
   const menuRef = React.useRef(null);

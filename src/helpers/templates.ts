@@ -1,4 +1,4 @@
-export const TEMPLATES = {
+export const TEMPLATES: any = {
   OFPPT: {
     labels: {
       sessions: [

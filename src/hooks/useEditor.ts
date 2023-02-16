@@ -69,7 +69,7 @@ interface GetEvents {
 }
 
 const useEditor = () => {
-  const { addNewDocument, loading } = useDocument();
+  const { loading } = useDocument();
 
   const exportDocument = (data: Schedule[], fileName: string) => {
     const jsonData = JSON.stringify(data);
@@ -309,85 +309,6 @@ const useEditor = () => {
   const getEvents: GetEvents = (labelsData) =>
     labelsData.events.map((e) => e.value);
 
-  const undo = (
-    data: any,
-    setData: any,
-    history: any,
-    hIndex: any,
-    setHistory: any,
-    setHIndex: any,
-    fusionMode: any
-  ) => {
-    if (hIndex === 0) return;
-    const h = history[hIndex - 1];
-    if (h.type === "INSERT") {
-      const newData = data.map((sch: any) => {
-        sch.schedule[h.y][h.z][h.row] = h.prev;
-        if (fusionMode) {
-          const offset = h.z % 2 === 0 ? 1 : -1;
-          sch.schedule[h.y][h.z + offset][h.row] = h.prev;
-        }
-        return sch;
-      });
-      setData(newData);
-      setHIndex((x: any) => --x);
-    }
-  };
-  const redo = (
-    data: any,
-    setData: any,
-    history: any,
-    hIndex: any,
-    setHistory: any,
-    setHIndex: any,
-    fusionMode: any
-  ) => {
-    if (hIndex === history.length) return;
-    const h = history[hIndex];
-    if (h.type === "INSERT") {
-      const newData = data.map((sch: any) => {
-        sch.schedule[h.y][h.z][h.row] = h.next;
-        if (fusionMode) {
-          const offset = h.z % 2 === 0 ? 1 : -1;
-          sch.schedule[h.y][h.z + offset][h.row] = h.next;
-        }
-        return sch;
-      });
-      setData(newData);
-      setHIndex((x: any) => ++x);
-    }
-  };
-
-  // Record Action for undo and redo.
-  const record = (
-    history: any,
-    hIndex: any,
-    setHistory: any,
-    setHIndex: any,
-    x: any,
-    y: any,
-    z: any,
-    row: any,
-    next: any,
-    prev: any
-  ) => {
-    // If new data is inserted and the pointer is in the middle.
-    // Remove all action that it index is greater than pointer index.
-    if (hIndex !== history.length) setHistory((x: any) => x.slice(0, hIndex));
-    const action = {
-      type: "INSERT",
-      fusionMode: true,
-      x,
-      y,
-      z,
-      row,
-      next,
-      prev,
-    };
-    setHistory((x: any) => [...x, action]);
-    setHIndex((x: any) => ++x);
-  };
-
   return {
     loading,
     exportDocument,
@@ -403,9 +324,6 @@ const useEditor = () => {
     getRooms,
     getEvents,
     getModules,
-    undo,
-    redo,
-    record,
   };
 };
 

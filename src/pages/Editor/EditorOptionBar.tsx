@@ -23,6 +23,7 @@ import {
   IcSettings,
   IcUndo,
 } from "../../helpers/icons";
+import useUndoRedo from "../../hooks/useUndoRedo";
 
 const EditorOptionBar = () => {
   const {
@@ -58,10 +59,8 @@ const EditorOptionBar = () => {
     getTrainers,
     getRooms,
     getEvents,
-    record,
-    undo,
-    redo,
   } = useEditor();
+  const { record, undo, redo } = useUndoRedo();
   const { updateDocument } = useDocument();
   const { exportAsPdf } = usePdf();
   const { currUser } = useAuth();
@@ -143,6 +142,15 @@ const EditorOptionBar = () => {
 
   const clearCellHandler = () => {
     const [scheduleIndex, dayIndex, sessionIndex] = selectedCell;
+    // Record for undo and redo.
+    record(history, setHistory, hIndex, setHIndex, {
+      type: "CLEAR_CELL",
+      prev: data[scheduleIndex].schedule[dayIndex][sessionIndex],
+      x: scheduleIndex,
+      y: dayIndex,
+      z: sessionIndex,
+      fusionMode,
+    });
     const res = clearCell(
       data,
       setData,
@@ -158,18 +166,16 @@ const EditorOptionBar = () => {
     const [x, y, z] = selectedCell;
 
     // Record for undo and redo.
-    record(
-      history,
-      hIndex,
-      setHistory,
-      setHIndex,
+    record(history, setHistory, hIndex, setHIndex, {
+      type: "TABLE_INSERT",
+      prev: data[x].schedule[y][z][row],
+      next: value,
       x,
       y,
       z,
       row,
-      value,
-      data[x].schedule[y][z][row]
-    );
+      fusionMode,
+    });
 
     const res = editField(data, setData, fusionMode, x, y, z, row, value);
     const sessionTextSplited = SESSIONS_TEXT[z].split("-");
@@ -187,12 +193,12 @@ const EditorOptionBar = () => {
   };
 
   const handleUndo = () => {
-    undo(data, setData, history, hIndex, setHistory, setHIndex, fusionMode);
+    undo(data, setData, history, hIndex, setHIndex);
     setSaved(false);
   };
 
   const handleRedo = () => {
-    redo(data, setData, history, hIndex, setHistory, setHIndex, fusionMode);
+    redo(data, setData, history, hIndex, setHIndex);
     setSaved(false);
   };
 
@@ -229,6 +235,8 @@ const EditorOptionBar = () => {
     </div>
   );
 
+  console.log(hIndex, history.length);
+
   return (
     <div className="sticky top-0 z-30 col-span-full flex h-12 justify-between gap-x-2 border-b-2 border-dark/50 px-2 shadow-lg md:px-6 lg:px-12">
       <DropdownMenu
@@ -259,14 +267,14 @@ const EditorOptionBar = () => {
           label={["Undo"]}
           Icon={IcUndo}
           onClick={handleUndo}
-          disabled={hIndex === 0}
+          disabled={hIndex === -1}
           styles="w-12 h-full rounded-none"
         />
         <Button
           label={["Redo"]}
           Icon={IcRedo}
           onClick={handleRedo}
-          disabled={hIndex === history.length}
+          disabled={hIndex === history.length - 1}
           styles="w-12 h-full rounded-none"
         />
         <Button
