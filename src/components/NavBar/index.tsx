@@ -32,7 +32,7 @@ const NavBar = () => {
   if (location.pathname.includes("editor")) return null;
 
   return (
-    <nav className="flex items-center justify-between px-2 h-14 md:px-6 lg:px-12">
+    <nav className="flex h-14 items-center justify-between border-b-[1px] border-dark/50 px-2 md:px-6 lg:px-12">
       <Logo />
       <div className="flex items-center h-full gap-x-6">
         <Link

@@ -19,11 +19,7 @@ interface DocExists {
   (username: string, id: string): Promise<boolean>;
 }
 interface AddNewDoc {
-  (
-    username: string,
-    id: string,
-    template: "SCHOOL" | "OFPPT"
-  ): Promise<boolean>;
+  (username: string, id: string, template: string): Promise<boolean>;
 }
 interface UpdateDoc {
   (data: any, docInfo: any): Promise<boolean>;

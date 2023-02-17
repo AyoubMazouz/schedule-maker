@@ -11,7 +11,7 @@ import {
   IcExport,
   IcHelp,
 } from "../../helpers/icons";
-import OptionBar from "./OptionBar";
+import DocumentsSideBar from "./DocumentsSideBar";
 import useDocument from "../../hooks/useDocument";
 import { usePdf } from "../../hooks/usePdf";
 import MoreMenu from "../../components/MoreMenu";
@@ -88,64 +88,62 @@ const Documents = () => {
   };
 
   return (
-    <div className="flex justify-center">
-      <div className="mx-2 w-full max-w-[1400px] space-y-2">
-        <OptionBar />
-        <div className="border rounded-lg shadow-lg">
-          <div className="flex items-center pr-1 border-b-2 border-dark/5- bg-primary text-start text-light">
-            <div className="grid w-full grid-cols-12 p-2 font-semibold">
-              <div className="col-span-full sm:col-span-9 md:col-span-6">
-                Documents
+    <div className="flex w-full h-full">
+      <DocumentsSideBar />
+      <div className="w-full rounded-lg shadow-lg">
+        <div className="flex items-center pr-1 border-b-2 border-dark/50 bg-primary text-start text-light">
+          <div className="grid w-full grid-cols-12 p-2 font-semibold">
+            <div className="col-span-full sm:col-span-9 md:col-span-6">
+              Documents
+            </div>
+            <div className="hidden col-span-3 text-center sm:block">
+              Modified At
+            </div>
+            <div className="hidden col-span-3 text-center md:block">
+              Created At
+            </div>
+          </div>
+          <Button Icon={IcHelp} label={["document"]} />
+        </div>
+        {documents.map((value, docIndex) => (
+          <div
+            key={value.id}
+            className={`menu-item group flex ${
+              docIndex % 2 === 0 && "bg-dark/10"
+            }`}
+          >
+            <Link
+              to={`/editor/${value.id}`}
+              className="grid w-full grid-cols-12"
+            >
+              <div className="flex col-span-full gap-x-1 group-hover:underline sm:col-span-9 md:col-span-6">
+                <IcDoc className="icon" />
+                <div className="overflow-hidden text-ellipsis whitespace-nowrap">
+                  {value.id}
+                </div>
               </div>
               <div className="hidden col-span-3 text-center sm:block">
-                Modified At
+                {getRelativeDate(value.modifiedAt)}
               </div>
               <div className="hidden col-span-3 text-center md:block">
-                Created At
+                {getRelativeDate(value.createdAt)}
               </div>
-            </div>
-            <Button Icon={IcHelp} label={["document"]} />
+            </Link>
+            <MoreMenu
+              menuId={`documents:${value.id}`}
+              menuRef={menuRef}
+              currMenu={currMenu}
+              setCurrMenu={setCurrMenu}
+              options={[
+                ["rename", () => renameHandler(value.id), IcEdit],
+                ["export", exportHandler, IcExport],
+                ["download", () => downloadHandler(value), IcDownload],
+                ["delete", () => deleteHandler(value.id), IcBin],
+                ["details", () => showDetails(value), IcAbout],
+              ]}
+            />
           </div>
-          {documents.map((value, docIndex) => (
-            <div
-              key={value.id}
-              className={`menu-item group flex ${
-                docIndex % 2 === 0 && "bg-dark/10"
-              }`}
-            >
-              <Link
-                to={`/editor/${value.id}`}
-                className="grid w-full grid-cols-12"
-              >
-                <div className="flex col-span-full gap-x-1 group-hover:underline sm:col-span-9 md:col-span-6">
-                  <IcDoc className="icon" />
-                  <div className="overflow-hidden text-ellipsis whitespace-nowrap">
-                    {value.id}
-                  </div>
-                </div>
-                <div className="hidden col-span-3 text-center sm:block">
-                  {getRelativeDate(value.modifiedAt)}
-                </div>
-                <div className="hidden col-span-3 text-center md:block">
-                  {getRelativeDate(value.createdAt)}
-                </div>
-              </Link>
-              <MoreMenu
-                menuId={`documents:${value.id}`}
-                menuRef={menuRef}
-                currMenu={currMenu}
-                setCurrMenu={setCurrMenu}
-                options={[
-                  ["rename", () => renameHandler(value.id), IcEdit],
-                  ["export", exportHandler, IcExport],
-                  ["download", () => downloadHandler(value), IcDownload],
-                  ["delete", () => deleteHandler(value.id), IcBin],
-                  ["details", () => showDetails(value), IcAbout],
-                ]}
-              />
-            </div>
-          ))}
-        </div>
+        ))}
       </div>
     </div>
   );

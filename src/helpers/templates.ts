@@ -1,6 +1,7 @@
 export const TEMPLATES: any = {
   OFPPT: {
     labels: {
+      sessionDuration: "2.5",
       sessions: [
         "08:30 - 10:30",
         "11:00 - 13:00",
@@ -61,6 +62,7 @@ export const TEMPLATES: any = {
   },
   SCHOOL: {
     labels: {
+      sessionDuration: "1",
       sessions: [
         "08:00 - 9:00",
         "09:00 - 10:00",

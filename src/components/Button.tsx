@@ -1,14 +1,14 @@
 import React from "react";
 
 interface ButtonType {
-  Icon: any;
   onClick: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  Icon?: any;
   text?: string;
   trigger?: boolean;
   type?: "primary" | "secondary" | "success" | "warn" | "danger";
   children?: React.ReactNode;
   disabled?: boolean;
-  label?: string[];
+  label?: any[];
   styles?: string;
 }
 
@@ -23,7 +23,7 @@ const btn = {
 };
 
 export const Button: React.FC<ButtonType> = ({
-  Icon,
+  Icon = null,
   onClick = (e) => e,
   text = "",
   trigger = false,
@@ -42,10 +42,12 @@ export const Button: React.FC<ButtonType> = ({
         onClick={(e) => onClick(e)}
         disabled={disabled}
       >
-        <Icon
-          className={`icon ${disabled && "cursor-not-allowed"}`}
-          disabled={disabled}
-        />
+        {Icon ? (
+          <Icon
+            className={`icon ${disabled && "cursor-not-allowed"}`}
+            disabled={disabled}
+          />
+        ) : null}
         {label ? <Label label={label} /> : null}
       </button>
     );
@@ -56,13 +58,15 @@ export const Button: React.FC<ButtonType> = ({
       onClick={(e) => onClick(e)}
     >
       {children}
-      <Icon className={`icon ${disabled && "cursor-not-allowed"}`} />
+      {Icon ? (
+        <Icon className={`icon ${disabled && "cursor-not-allowed"}`} />
+      ) : null}
       <span>{text}</span>
     </button>
   );
 };
 
-const Label = ({ label }: { label: string[] }) => {
+const Label = ({ label }: { label: any[] }) => {
   return (
     <div className="absolute bottom-[20%] left-[50%] z-10 translate-x-[-50%] translate-y-[100%] rounded-md bg-light py-0.5 px-2 text-center text-xs capitalize text-dark opacity-0 shadow-md transition-all duration-500 group-hover:bottom-[-18%] group-hover:opacity-100">
       {label.map((t) => (
