@@ -6,8 +6,8 @@ import { EditorContextProvider } from "../../Contexts/EditorContext";
 import { useAuth } from "../../Contexts/AuthContext";
 // Components.
 import DocumentsBar from "./DocumentsBar";
-import EditorOptionBar from "./EditorOptionBar";
 import Table from "./Table/Index";
+import EditorNavBar from "./EditorNavBar";
 
 const Editor = () => {
   const { loadData, setAlert, loadLabelsData } = useGlobalContext();
@@ -27,10 +27,7 @@ const Editor = () => {
       window.onbeforeunload = () => {
         const message =
           "You can't leave this page with unsaved changes, if you leave changes will be lost.";
-        setAlert({
-          type: "warn",
-          message,
-        });
+        setAlert("warn", message);
         return message;
       };
   }, [EditorContextProvider.saved]);
@@ -38,7 +35,7 @@ const Editor = () => {
   return (
     <EditorContextProvider>
       <div className="md:grid md:grid-cols-12">
-        <EditorOptionBar />
+        <EditorNavBar />
         <div className="col-span-full h-[calc(35vh-6rem)] overflow-x-hidden overflow-y-scroll border-r-2 border-dark/50 md:col-span-3 md:h-[calc(100vh-3rem)]">
           <DocumentsBar />
         </div>

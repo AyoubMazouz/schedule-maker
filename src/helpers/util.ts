@@ -22,3 +22,16 @@ export const getRelativeDate = (timestamp: Timestamp) => {
   if (years < 1) return formatter.format(-months, "month");
   return formatter.format(-years, "year");
 };
+
+export const deepClone = (data: any) => {
+  if (data === null || typeof data !== "object") {
+    return data;
+  }
+
+  const initialOutput = Array.isArray(data) ? [] : {};
+
+  return Object.keys(data).reduce((acc: any, key) => {
+    acc[key] = deepClone(data[key]);
+    return acc;
+  }, initialOutput);
+};

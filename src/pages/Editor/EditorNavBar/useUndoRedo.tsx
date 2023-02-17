@@ -1,5 +1,5 @@
 import React from "react";
-import { TEMPLATES } from "../helpers/templates";
+import { TEMPLATES } from "../../../helpers/templates";
 
 const useUndoRedo = () => {
   const undo = (

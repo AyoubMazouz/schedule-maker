@@ -17,6 +17,9 @@ export const EditorContextProvider = ({ children }) => {
   const [history, setHistory] = React.useState([]);
   const [hIndex, setHIndex] = React.useState(-1);
 
+  // ClipBoard | copy, paste.
+  const [clipboard, setClipboard] = React.useState(null);
+
   // Close menu when clicking outside of it.
   const menuRef = React.useRef(null);
   const [currMenu, setCurrMenu] = React.useState(null);
@@ -48,6 +51,8 @@ export const EditorContextProvider = ({ children }) => {
         menuRef,
         currMenu,
         setCurrMenu,
+        clipboard,
+        setClipboard,
       }}
     >
       {children}

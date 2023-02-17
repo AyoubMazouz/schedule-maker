@@ -5,7 +5,7 @@ import { Button } from "../../../components/Button";
 import { Input } from "../../../components/Input";
 import {
   IcAddress,
-  IcCopied,
+  IcPaste,
   IcDesc,
   IcEdit,
   IcNotAllowed,
@@ -140,7 +140,7 @@ const Profile = () => {
           <div className="absolute bottom-[0%] left-[5%] flex translate-y-[75%] items-center gap-x-3 p-2">
             <div className="overflow-hidden rounded-full border-[6px] border-light shadow-lg">
               <div className="group relative h-[6rem] w-[6rem] transition-all duration-700 hover:scale-110">
-                <img src={state.img} className="h-full object-cover" />
+                <img src={state.img} className="object-cover h-full" />
                 <div className="absolute top-[50%] right-[50%] translate-x-[50%] translate-y-[-50%] rounded-full bg-light p-1.5 opacity-0 shadow-md transition-all duration-300 group-hover:opacity-50">
                   <IcEdit className="text-2xl text-emerald-600" />
                 </div>
@@ -148,7 +148,7 @@ const Profile = () => {
                   type="file"
                   accept="jpg,jpeg,png"
                   onChange={handleImg}
-                  className="absolute inset-0 cursor-pointer opacity-0"
+                  className="absolute inset-0 opacity-0 cursor-pointer"
                 />
               </div>
             </div>
@@ -169,11 +169,11 @@ const Profile = () => {
               type="file"
               accept="jpg,jpeg,png"
               onChange={handleBanner}
-              className="absolute inset-0 cursor-pointer opacity-0"
+              className="absolute inset-0 opacity-0 cursor-pointer"
             />
           </Button>
         </div>
-        <div className="mt-4 flex flex-wrap justify-end gap-3">
+        <div className="flex flex-wrap justify-end gap-3 mt-4">
           <Button
             type="warn"
             text="discard"
@@ -194,7 +194,7 @@ const Profile = () => {
           <Input
             type="tel"
             label="phone number"
-            Icon={IcCopied}
+            Icon={IcPaste}
             placeholder="Phone Number..."
             value={state.phone.value}
             onChange={(e) =>

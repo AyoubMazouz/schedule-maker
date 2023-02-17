@@ -75,7 +75,7 @@ export const BANNER_SIZE = 1200;
 export const VERSION = "1.7.1";
 export const ABOUT_APP = (
   <p>
-    <b>Schedual Maker</b> is a Web App made with react.<br></br>This App helps
+    <b>Schedule Maker</b> is a Web App made with react.<br></br>This App helps
     with creating scheduals for The <b>OFPPT</b>.
   </p>
 );
