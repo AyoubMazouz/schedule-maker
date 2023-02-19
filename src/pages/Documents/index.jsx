@@ -18,8 +18,11 @@ import MoreMenu from "../../components/MoreMenu";
 import { useAuth } from "../../Contexts/AuthContext";
 import { Button } from "../../components/Button";
 import { getRelativeDate } from "../../helpers/util";
+import usePageTitle from "../../hooks/usePageTitle";
 
 const Documents = () => {
+usePageTitle("Documents")
+
   const { setModel, data, setAlert } = useGlobalContext();
   const { currUser } = useAuth();
   const { exportDocument } = useEditor();

@@ -8,14 +8,16 @@ import { useAuth } from "../../Contexts/AuthContext";
 import EditorSideBar from "./EditorSideBar";
 import Table from "./Table/Index";
 import EditorNavBar from "./EditorNavBar";
+import usePageTitle from "../../hooks/usePageTitle";
 
 const Editor = () => {
+  const { docId } = useParams();
+  usePageTitle(docId);
+
   const { loadData, loadLabelsData } = useGlobalContext();
   const { currUser } = useAuth();
-  const { docId } = useParams();
 
   React.useEffect(() => {
-    document.title = `SH-Maker - Editor-${docId}`;
     loadData(currUser.username, docId);
     loadLabelsData(currUser.username);
   }, [docId]);

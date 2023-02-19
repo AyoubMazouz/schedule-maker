@@ -2,8 +2,10 @@ import React from "react";
 import { IcMail } from "../../helpers/icons";
 import { ABOUT_APP, MY_EMAIL, VERSION } from "../../helpers/constants";
 import SettingsLayout from "../Editor/SettingsLayout";
+import usePageTitle from "../../hooks/usePageTitle";
 
 const About = () => {
+  usePageTitle("About")
   return (
     <SettingsLayout>
       <div className="p-2 space-y-3">

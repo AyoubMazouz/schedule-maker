@@ -18,6 +18,7 @@ import {
   IcHelp,
   IcDoc,
 } from "../../../helpers/icons";
+import usePageTitle from "../../../hooks/usePageTitle";
 
 const INITIAL_STATE = {
   id: "",
@@ -48,6 +49,8 @@ const reducer = (state, action) => {
 };
 
 const Publish = () => {
+usePageTitle("Publish")
+
   const { setModel, setAlert } = useGlobalContext();
   const { currUser } = useAuth();
   const { publishDocument, getPublishedDocuments, loading } = usePublish();

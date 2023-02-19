@@ -5,8 +5,11 @@ import SettingsLayout from "../../Editor/SettingsLayout";
 import { useGlobalContext } from "../../../Contexts/GlobalContext";
 import { IcLogin } from "../../../helpers/icons";
 import { useUser } from "../../../hooks/useUser";
+import usePageTitle from "../../../hooks/usePageTitle";
 
 const Users = () => {
+  usePageTitle("Users")
+
   const { setAlert } = useGlobalContext();
   const { signUp } = useUser();
 

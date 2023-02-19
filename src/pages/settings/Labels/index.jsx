@@ -7,8 +7,11 @@ import Levels from "./Levels";
 import OptionBar from "./OptionBar";
 import Rooms from "./Rooms";
 import Trainers from "./Trainers";
+import usePageTitle from "../../../hooks/usePageTitle";
 
 const Labels = () => {
+usePageTitle("Labels")
+
   const { setAlert, labelsData, loadLabelsData } = useGlobalContext();
   const { currUser } = useAuth();
   const menuRef = React.useRef(null);

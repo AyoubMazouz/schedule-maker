@@ -1,5 +1,9 @@
+import usePageTitle from "../../hooks/usePageTitle";
+
 const Contact = () => {
-    return <div>Contact</div>;
+  usePageTitle();
+
+  return <div>Contact</div>;
 };
 
 export default Contact;

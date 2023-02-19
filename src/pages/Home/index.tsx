@@ -1,9 +1,8 @@
 import React from "react";
+import usePageTitle from "../../hooks/usePageTitle";
 
 const Home = () => {
-  React.useEffect(() => {
-    document.title = `SH-Maker - Home`;
-  }, []);
+  usePageTitle();
   return <div>Home</div>;
 };
 

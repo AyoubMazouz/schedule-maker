@@ -16,6 +16,7 @@ import { useUser } from "../../../hooks/useUser";
 import { treeCharsOrMore } from "../../../helpers/validation";
 import useSettings from "../../../hooks/useSettings";
 import { BANNER_SIZE, PROFILE_IMG_SIZE } from "../../../helpers/constants";
+import usePageTitle from "../../../hooks/usePageTitle";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -87,6 +88,9 @@ const reducer = (state, action) => {
 };
 
 const Profile = () => {
+
+  usePageTitle("Profile");
+
   const { currUser, loading } = useAuth();
   const { updateUserDoc } = useUser();
   const { resizeImg } = useSettings();
@@ -100,11 +104,6 @@ const Profile = () => {
     address: currUser.address,
   };
   const [state, dispatch] = React.useReducer(reducer, INITIAL_STATE);
-
-  React.useEffect(() => {
-    document.title = `Settings - Profile`;
-  }, []);
-
   const [saved, setSaved] = React.useState(true);
 
   const handleImg = async (e) =>
