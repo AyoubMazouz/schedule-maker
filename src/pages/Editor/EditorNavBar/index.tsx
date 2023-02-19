@@ -1,15 +1,13 @@
 import React from "react";
-import { useNavigate, useParams } from "react-router-dom";
+// Contexts.
 import { useGlobalContext } from "../../../Contexts/GlobalContext";
-import { DAYS_TEXT, SESSIONS_TEXT } from "../../../helpers/constants";
-import useEditor from "../../../hooks/useEditor";
 import { useEditorContext } from "../../../Contexts/EditorContext";
-import useDocument from "../../../hooks/useDocument";
+// Hooks.
+import useEditorNavBar from "./useEditorNavBar";
+// Components.
 import { Select } from "../../../components/Select";
 import { DropdownMenu } from "../../../components/DropdownMenu";
 import { Button } from "../../../components/Button";
-import { usePdf } from "../../../hooks/usePdf";
-import { useAuth } from "../../../Contexts/AuthContext";
 import {
   IcBin,
   IcCopy,
@@ -25,8 +23,6 @@ import {
   IcSettings,
   IcUndo,
 } from "../../../helpers/icons";
-import useUndoRedo from "./useUndoRedo";
-import useEditorNavBar from "./useEditorNavBar";
 
 const EditorNavBar = () => {
   const {
@@ -93,24 +89,24 @@ const EditorNavBar = () => {
   );
 
   return (
-    <div className="sticky top-0 z-30 col-span-full flex h-12 justify-between gap-x-2 border-b-2 border-dark/50 px-2 shadow-lg md:px-6 lg:px-12">
-      <DropdownMenu
-        text="file"
-        menuRef={menuRef}
-        currMenu={currMenu}
-        setCurrMenu={setCurrMenu}
-        styles="h-full"
-        options={[
-          <SaveMenuItem />,
-          ["new", handleNewDoc, IcNewDoc, false],
-          <ImportMenuItem />,
-          ["Export as Json", handleExport, IcExport, false],
-          ["Export as pdf", handleDownload, IcExport, false],
-          ["Settings", handleGoToSettings, IcSettings, false],
-          ["exit", handleExit, IcLogout, false],
-        ]}
-      />
+    <div className="sticky top-0 z-30 col-span-full flex h-12 justify-between gap-x-2 border-b-[1px] border-dark/50 shadow-lg">
       <div className="flex h-full items-center">
+        <DropdownMenu
+          text="file"
+          menuRef={menuRef}
+          currMenu={currMenu}
+          setCurrMenu={setCurrMenu}
+          styles="h-full"
+          options={[
+            <SaveMenuItem />,
+            ["new", handleNewDoc, IcNewDoc, false],
+            <ImportMenuItem />,
+            ["Export as Json", handleExport, IcExport, false],
+            ["Export as pdf", handleDownload, IcExport, false],
+            ["Settings", handleGoToSettings, IcSettings, false],
+            ["exit", handleExit, IcLogout, false],
+          ]}
+        />
         <Button
           label={["Fusion Mode", "Let's you fill two fields at once."]}
           Icon={IcFusion}
@@ -160,7 +156,9 @@ const EditorNavBar = () => {
           styles="w-12 h-full rounded-none"
           disabled={!selectedCell}
         />
+      </div>
 
+      <div className="flex h-full items-center">
         {selectedCell ? (
           <>
             <Select

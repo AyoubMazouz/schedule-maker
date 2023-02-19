@@ -52,9 +52,9 @@ const Model = () => {
 
   if (model.type === "NEW_DOC")
     return (
-      <div className="fixed inset-0 z-40 flex justify-center px-4 py-24 bg-dark/50">
+      <div className="fixed inset-0 z-40 flex justify-center bg-dark/50 px-4 py-24">
         <div className="w-full max-w-[800px]">
-          <div className="px-2 py-4 space-y-6 text-center border rounded-lg shadow-lg bg-light">
+          <div className="space-y-6 rounded-lg border bg-light px-2 py-4 text-center shadow-lg">
             <NewDoc />
           </div>
         </div>
@@ -62,9 +62,9 @@ const Model = () => {
     );
 
   return (
-    <div className="fixed inset-0 z-40 flex justify-center px-4 py-24 bg-dark/50">
+    <div className="fixed inset-0 z-40 flex justify-center bg-dark/50 px-4 py-24">
       <div className="w-full max-w-[400px]">
-        <div className="px-2 py-4 space-y-6 text-center border rounded-lg shadow-lg bg-light">
+        <div className="space-y-6 rounded-lg border bg-light px-2 py-4 text-center shadow-lg">
           <CurrModel type={model.type} />
         </div>
       </div>

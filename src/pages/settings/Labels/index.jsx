@@ -1,5 +1,5 @@
 import React from "react";
-import SettingsSideBar from "../../../components/SettingsSideBar";
+import SettingsLayout from "../../Editor/SettingsLayout";
 import { useAuth } from "../../../Contexts/AuthContext";
 import { useGlobalContext } from "../../../Contexts/GlobalContext";
 import Events from "./Events";
@@ -44,7 +44,7 @@ const Labels = () => {
   }, [saved]);
 
   return (
-    <SettingsSideBar {...{ saved }}>
+    <SettingsLayout {...{ saved }}>
       <div className="p-2 space-y-2">
         <OptionBar
           {...{
@@ -93,7 +93,7 @@ const Labels = () => {
           }}
         />
       </div>
-    </SettingsSideBar>
+    </SettingsLayout>
   );
 };
 

@@ -1,9 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { IcLabels, IcPublish, IcAbout, IcUser } from "../helpers/icons";
-import { useGlobalContext } from "../Contexts/GlobalContext";
+// Contexts.
+import { useGlobalContext } from "../../Contexts/GlobalContext";
+// Helpers.
+import { IcLabels, IcPublish, IcAbout, IcUser } from "../../helpers/icons";
 
-const SettingsSideBar = ({ saved = true, children = null }) => {
+const SettingsLayout = ({ saved = true, children = null }) => {
   const { setAlert } = useGlobalContext();
 
   const links = [
@@ -60,4 +62,4 @@ const SettingsSideBar = ({ saved = true, children = null }) => {
   );
 };
 
-export default SettingsSideBar;
+export default SettingsLayout;

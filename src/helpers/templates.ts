@@ -1,5 +1,6 @@
 export const TEMPLATES: any = {
   OFPPT: {
+    id: "OFPPT",
     labels: {
       sessionDuration: "2.5",
       sessions: [
@@ -61,6 +62,7 @@ export const TEMPLATES: any = {
     },
   },
   SCHOOL: {
+    id: "SCHOOL",
     labels: {
       sessionDuration: "1",
       sessions: [

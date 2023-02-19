@@ -38,23 +38,25 @@ const NewDoc = () => {
         <div
           key={temp.labels.sessions[0] + index}
           onClick={() => setSelected(index)}
-          className={`${
+          className={`flex cursor-pointer justify-between rounded-md p-2 text-left transition-all duration-100 hover:ring-primary ${
             selected === index
               ? "ring-2 ring-primary"
               : "ring-[1px] ring-dark/50"
-          } flex cursor-pointer justify-between rounded-md p-2 text-left transition-all duration-100 hover:ring-primary`}
+          }`}
         >
           <div>
-            <div>Days:{temp.labels.days.length}</div>
-            <div>Sessions:{temp.labels.sessions.length}</div>
-            <div>Session Duration:{temp.labels.sessionDuration}</div>
+            <div>Template: {temp.id}</div>
+            <div>Days: {temp.labels.days.length}</div>
+            <div>Sessions: {temp.labels.sessions.length}</div>
+            <div>Session Duration: {temp.labels.sessionDuration}</div>
           </div>
-          <div className="relative group ">
-            <IcHelp className="icon" />
-            <div className="absolute top-[20%] left-[50%] w-[6rem] translate-x-[-50%]  translate-y-[-110%] rounded-md opacity-0 shadow-md transition-all duration-500 group-hover:top-[5%] group-hover:opacity-100">
-              <img src="/assets/default-profile.png" />
-            </div>
-          </div>
+          <Button
+            Icon={IcHelp}
+            label={[
+              `Days: ${temp.labels.days.join(", ")}`,
+              `Sessions: ${temp.labels.sessions.join(", ")}`,
+            ]}
+          />
         </div>
       ))}
       <Input

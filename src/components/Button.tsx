@@ -1,7 +1,7 @@
 import React from "react";
 
 interface ButtonType {
-  onClick: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   Icon?: any;
   text?: string;
   trigger?: boolean;
@@ -68,9 +68,9 @@ export const Button: React.FC<ButtonType> = ({
 
 const Label = ({ label }: { label: any[] }) => {
   return (
-    <div className="absolute bottom-[20%] left-[50%] z-10 translate-x-[-50%] translate-y-[100%] rounded-md bg-light py-0.5 px-2 text-center text-xs capitalize text-dark opacity-0 shadow-md transition-all duration-500 group-hover:bottom-[-18%] group-hover:opacity-100">
+    <div className="absolute bottom-[20%] left-[50%] z-10 h-0 max-w-[300px] translate-x-[-50%] translate-y-[100%] overflow-hidden rounded-md bg-light py-0.5 px-2 text-center text-xs capitalize text-dark opacity-0 shadow-md transition-all duration-500 group-hover:bottom-[-18%] group-hover:h-auto group-hover:opacity-100">
       {label.map((t) => (
-        <div className="whitespace-nowrap">{t}</div>
+        <div>{t}</div>
       ))}
     </div>
   );

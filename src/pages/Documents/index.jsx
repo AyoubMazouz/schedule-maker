@@ -90,16 +90,16 @@ const Documents = () => {
   return (
     <div className="flex w-full h-full">
       <DocumentsSideBar />
-      <div className="w-full rounded-lg shadow-lg">
-        <div className="flex items-center pr-1 border-b-2 border-dark/50 bg-primary text-start text-light">
+      <div className="w-full p-2">
+        <div className="flex items-center pr-1">
           <div className="grid w-full grid-cols-12 p-2 font-semibold">
             <div className="col-span-full sm:col-span-9 md:col-span-6">
               Documents
             </div>
-            <div className="hidden col-span-3 text-center sm:block">
+            <div className="hidden col-span-3 sm:block">
               Modified At
             </div>
-            <div className="hidden col-span-3 text-center md:block">
+            <div className="hidden col-span-3 md:block">
               Created At
             </div>
           </div>
@@ -116,16 +116,16 @@ const Documents = () => {
               to={`/editor/${value.id}`}
               className="grid w-full grid-cols-12"
             >
-              <div className="flex col-span-full gap-x-1 group-hover:underline sm:col-span-9 md:col-span-6">
+              <div className="flex col-span-full gap-x-1 items-center group-hover:underline sm:col-span-9 md:col-span-6">
                 <IcDoc className="icon" />
                 <div className="overflow-hidden text-ellipsis whitespace-nowrap">
                   {value.id}
                 </div>
               </div>
-              <div className="hidden col-span-3 text-center sm:block">
+              <div className="hidden col-span-3 sm:block">
                 {getRelativeDate(value.modifiedAt)}
               </div>
-              <div className="hidden col-span-3 text-center md:block">
+              <div className="hidden col-span-3 md:block">
                 {getRelativeDate(value.createdAt)}
               </div>
             </Link>

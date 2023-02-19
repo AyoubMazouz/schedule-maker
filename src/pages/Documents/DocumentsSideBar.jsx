@@ -2,7 +2,6 @@ import React from "react";
 import { useGlobalContext } from "../../Contexts/GlobalContext";
 import useEditor from "../../hooks/useEditor";
 import { IcNewDoc, IcImport } from "../../helpers/icons";
-import { Button } from "../../components/Button";
 import { useAuth } from "../../Contexts/AuthContext";
 
 const DocumentsSideBar = () => {
@@ -15,28 +14,23 @@ const DocumentsSideBar = () => {
     });
   };
   return (
-    <div className="min-w-[220px] max-w-[300px] border-r-[1px] border-dark/50">
-      <Button
-        type="primary"
-        Icon={IcNewDoc}
-        text="new"
-        onClick={newDocHandler}
-        styles="rounded-none w-full border-0 border-b-[1px] border-dark/50 shadow-none justify-center py-6"
-      />
-      <Button
-        Icon={IcImport}
-        text="import"
-        styles="rounded-none w-full border-0 border-b-[1px] border-dark/50 shadow-none justify-center py-6"
-      >
+    <div className="h-[calc(100vh-3rem)] min-w-[220px] max-w-[300px] border-r-[1px] border-dark/50">
+      <button className="menu-item py-2" onClick={newDocHandler}>
+        <IcNewDoc className="icon" />
+        New
+      </button>
+      <button className="menu-item py-2">
+        <IcImport className="icon" />
+        import
         <input
           type="file"
           accept=".json"
-          className="absolute top-0 bottom-0 left-0 right-0 opacity-0 cursor-pointer"
+          className="absolute top-0 bottom-0 left-0 right-0 cursor-pointer opacity-0"
           onChange={(e) =>
             importDocumentAsFile(currUser.username, e.target.files[0])
           }
         />
-      </Button>
+      </button>
     </div>
   );
 };

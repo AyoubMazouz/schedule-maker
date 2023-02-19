@@ -1,7 +1,22 @@
 import React from "react";
+// Contexts.
 import { useEditorContext } from "../../../Contexts/EditorContext";
 
-const Cell = ({ session, scheduleIndex, dayIndex, sessionIndex }) => {
+interface Type {
+  ({
+    session,
+    scheduleIndex,
+    dayIndex,
+    sessionIndex,
+  }: {
+    session: string[];
+    scheduleIndex: number;
+    dayIndex: number;
+    sessionIndex: number;
+  }): JSX.Element;
+}
+
+const Cell: Type = ({ session, scheduleIndex, dayIndex, sessionIndex }) => {
   const { setSelectedCell, selectedCell, fusionMode } = useEditorContext();
 
   const isComplete = () => {
@@ -63,7 +78,7 @@ const Cell = ({ session, scheduleIndex, dayIndex, sessionIndex }) => {
         <span className="font-semibold text-primary">{session[3]}</span>
       </div>
       {session[2] && (
-        <div className="text-lg font-semibold text-right">{session[2]}</div>
+        <div className="text-right text-lg font-semibold">{session[2]}</div>
       )}
     </div>
   );

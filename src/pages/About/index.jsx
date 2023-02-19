@@ -1,11 +1,11 @@
 import React from "react";
 import { IcMail } from "../../helpers/icons";
 import { ABOUT_APP, MY_EMAIL, VERSION } from "../../helpers/constants";
-import SettingsSideBar from "../../components/SettingsSideBar";
+import SettingsLayout from "../Editor/SettingsLayout";
 
 const About = () => {
   return (
-    <SettingsSideBar>
+    <SettingsLayout>
       <div className="p-2 space-y-3">
         <div className="relative text-lg font-semibold text-primary">
           Schedule Maker
@@ -23,7 +23,7 @@ const About = () => {
           <span className="w-1/2 h-full bg-slate-200">{VERSION}</span>
         </div>
       </div>
-    </SettingsSideBar>
+    </SettingsLayout>
   );
 };
 

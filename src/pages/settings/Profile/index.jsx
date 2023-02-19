@@ -1,6 +1,6 @@
 import React from "react";
 import { useAuth } from "../../../Contexts/AuthContext";
-import SettingsSideBar from "../../../components/SettingsSideBar";
+import SettingsLayout from "../../Editor/SettingsLayout";
 import { Button } from "../../../components/Button";
 import { Input } from "../../../components/Input";
 import {
@@ -131,7 +131,7 @@ const Profile = () => {
   };
 
   return (
-    <SettingsSideBar {...{ saved }}>
+    <SettingsLayout {...{ saved }}>
       <div className="p-2">
         <div
           style={{ backgroundImage: `url(${state.banner})` }}
@@ -234,7 +234,7 @@ const Profile = () => {
           />
         </div>
       </div>
-    </SettingsSideBar>
+    </SettingsLayout>
   );
 };
 export default Profile;

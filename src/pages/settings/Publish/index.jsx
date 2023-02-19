@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { Input } from "../../../components/Input";
 import usePublish from "../../../hooks/usePublish";
 import { getRelativeDate } from "../../../helpers/util";
-import SettingsSideBar from "../../../components/SettingsSideBar";
+import SettingsLayout from "../../Editor/SettingsLayout";
 import {
   IcBin,
   IcDownload,
@@ -113,7 +113,7 @@ const Publish = () => {
   );
 
   return (
-    <SettingsSideBar>
+    <SettingsLayout>
       <div className="p-2 space-y-6">
         {/* Url. */}
         <div className="flex items-center justify-between px-3 py-2 font-semibold underline border rounded-lg shadow-md text-dark/50">
@@ -237,7 +237,7 @@ const Publish = () => {
           ))}
         </div>
       </div>
-    </SettingsSideBar>
+    </SettingsLayout>
   );
 };
 

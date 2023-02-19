@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../../../Contexts/AuthContext";
 import { useEditorContext } from "../../../Contexts/EditorContext";
 import { useGlobalContext } from "../../../Contexts/GlobalContext";
-import { DAYS_TEXT, SESSIONS_TEXT } from "../../../helpers/constants";
+import { TEMPLATES } from "../../../helpers/templates";
 import { deepClone } from "../../../helpers/util";
 import useDataExchange from "../../../hooks/useDataExchange";
 import useDocument from "../../../hooks/useDocument";
@@ -56,10 +56,19 @@ const useEditorNavBar = () => {
   const [availableRooms, setAvailableRooms] = React.useState<string[]>([]);
   const [modules, setModules] = React.useState<string[]>([]);
   const [events, setEvents] = React.useState<string[]>([]);
+  const [days, setDays] = React.useState<string[]>([]);
+  const [sessions, setSessions] = React.useState<string[]>([]);
 
   React.useEffect(() => {
     loadLabelsData(currUser.username);
   }, []);
+
+  React.useEffect(() => {
+    if (docInfo) {
+      setDays(TEMPLATES[docInfo.template].labels.days);
+      setSessions(TEMPLATES[docInfo.template].labels.sessions);
+    }
+  }, [docInfo]);
 
   React.useEffect(() => {
     if (selectedCell) {
@@ -104,7 +113,7 @@ const useEditorNavBar = () => {
   };
 
   const handleDownload = () => {
-    exportAsPdf(data, docId as string);
+    exportAsPdf(data, docInfo.id, docInfo.template);
     setAlert("success", "Download has started...");
     setCurrMenu(null);
   };
@@ -213,17 +222,17 @@ const useEditorNavBar = () => {
     copiedData[x].totalHours = hoursCount.toString();
     copiedData[x].schedule[y][z][row] = value;
 
-    const sessionTextSplited = SESSIONS_TEXT[z].split("-");
+    const [sessStart, sessEnd] = sessions[z].split("-");
     if (error) {
       if (row === 0) {
         setAlert(
           "warn",
-          `The professor "${value}" is not available on "${DAYS_TEXT[y]}", from "${sessionTextSplited[0]}" to "${sessionTextSplited[1]}" working with the group "${data[x].group}" in classRoom number "${value}".`
+          `The professor "${value}" is not available on "${days[y]}", from "${sessStart}" to "${sessEnd}" working with the group "${data[x].group}" in classRoom number "${value}".`
         );
       } else if (row === 2) {
         setAlert(
           "warn",
-          `The Room number "${value}" is not available on "${DAYS_TEXT[y]}", from "${sessionTextSplited[0]}" to "${sessionTextSplited[1]}" it is ocupied by the group "${value}".`
+          `The Room number "${value}" is not available on "${days[y]}", from "${sessStart}" to "${sessEnd}" it is ocupied by the group "${value}".`
         );
       }
     } else {
@@ -257,7 +266,7 @@ const useEditorNavBar = () => {
   const handlePaste = () => {
     const [x, y, z] = selectedCell;
     let hoursCount = 0;
-    const sessionTextSplited = SESSIONS_TEXT[z].split("-");
+    const [sessStart, sessEnd] = sessions[z].split("-");
     const copiedData = deepClone(data);
 
     for (let i = 0; i < copiedData.length; i++) {
@@ -273,7 +282,7 @@ const useEditorNavBar = () => {
             session[2].toLowerCase() !== "teams"
           ) {
             errors.push(
-              `The professor "${clipboard[0]}" is not available on "${DAYS_TEXT[y]}", from "${sessionTextSplited[0]}" to "${sessionTextSplited[1]}" working with the group "${data[x].group}" in classRoom number "${clipboard[0]}".`
+              `The professor "${clipboard[0]}" is not available on "${days[y]}", from "${sessStart}" to "${sessEnd}" working with the group "${data[x].group}" in classRoom number "${clipboard[0]}".`
             );
           }
 
@@ -286,7 +295,7 @@ const useEditorNavBar = () => {
             session[2].toLowerCase() !== "teams"
           ) {
             errors.push(
-              `The Room number "${clipboard[2]}" is not available on "${DAYS_TEXT[y]}", from "${sessionTextSplited[0]}" to "${sessionTextSplited[1]}" it is ocupied by the group "${clipboard[2]}".`
+              `The Room number "${clipboard[2]}" is not available on "${days[y]}", from "${sessStart}" to "${sessEnd}" it is ocupied by the group "${clipboard[2]}".`
             );
           }
 

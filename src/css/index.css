@@ -19,14 +19,14 @@
 
 @layer components {
   .icon {
-    @apply inline-block text-2xl cursor-pointer min-w-max;
+    @apply inline-block text-xl cursor-pointer min-w-max;
   }
 
   .menu {
-    @apply absolute z-20 flex w-[11rem] flex-col overflow-hidden rounded-lg bg-light text-dark shadow-lg border-[1px] border-dark/50;
+    @apply absolute z-30 flex w-[11rem] flex-col rounded-sm bg-light text-dark shadow-lg border-[1px] border-dark/50;
   }
   .menu-item {
-    @apply flex items-center w-full px-2 py-1 capitalize transition-all duration-100 ease-in-out cursor-pointer gap-x-2 text-start hover:bg-primary hover:text-light disabled:cursor-not-allowed disabled:text-dark/50 disabled:line-through;
+    @apply flex items-center w-full px-2 py-1 capitalize transition-all duration-100 ease-in-out cursor-pointer gap-x-2 text-start hover:bg-primary hover:text-light disabled:cursor-not-allowed disabled:text-dark/50 disabled:line-through relative;
   }
 
   .model-btn-container {

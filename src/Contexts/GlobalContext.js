@@ -11,7 +11,7 @@ export const useGlobalContext = () => {
 export const GlobalContextProvider = ({ children }) => {
   const [alerts, setAlerts] = React.useState([]);
   const [model, setModel] = React.useState(null);
-  const [docInfo, setDocInfo] = React.useState("");
+  const [docInfo, setDocInfo] = React.useState(null);
   const [data, setData] = React.useState([]);
   const [labelsData, setLabelsData] = React.useState({
     trainers: [],

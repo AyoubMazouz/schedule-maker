@@ -35,6 +35,7 @@ export interface Schedule {
 }
 export interface Document {
   id: number;
+  template: string;
   userId: string;
   data: string;
   createdAt: any;

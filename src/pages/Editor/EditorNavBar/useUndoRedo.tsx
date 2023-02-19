@@ -1,4 +1,5 @@
 import React from "react";
+// Helpers.
 import { TEMPLATES } from "../../../helpers/templates";
 
 const useUndoRedo = () => {

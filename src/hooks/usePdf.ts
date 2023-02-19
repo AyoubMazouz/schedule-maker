@@ -1,13 +1,12 @@
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 import {
-  DAYS_TEXT,
   EVENT_COL,
   LIGHT_COL,
   PRIMARY_COL,
   SECONDARY_COL,
-  SESSIONS_TEXT,
 } from "../helpers/constants";
+import { TEMPLATES } from "../helpers/templates";
 import { Schedule } from "../helpers/types";
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
@@ -22,14 +21,6 @@ pdfMake.fonts = {
 const DOMAIN_NAME = window.location.href;
 
 export const usePdf = () => {
-  const getSessionObj = (text: string) => {
-    return {
-      text: "\n" + text,
-      fontSize: 26,
-      lineHeight: 0.4,
-      color: "white",
-    };
-  };
   const getLabel = (session: string[], i: number) => {
     if (i === 1)
       return {
@@ -47,15 +38,15 @@ export const usePdf = () => {
       fontSize: 20,
     };
   };
-  const tableData = (data: string[][][]) => {
+  const tableData = (data: string[][][], DAYS: string[]) => {
     const copiedData = JSON.parse(JSON.stringify(data));
     return copiedData.map((day: any, index: number) => {
       day.unshift([
         {
-          text: "\n" + DAYS_TEXT[index],
+          text: "\n" + DAYS[index],
           style: "tableBody",
-          fontSize: 26,
-          lineHeight: 0.4,
+          fontSize: 14,
+          lineHeight: 1.4,
           color: LIGHT_COL,
         },
       ]);
@@ -84,8 +75,26 @@ export const usePdf = () => {
         ? SECONDARY_COL
         : null;
   };
-  const exportAsPdf = (data: Schedule[], docName: string) => {
-    const content: any = [];
+
+  const getFirstRow = (SESSIONS: string[]) => {
+    const res: any[] = SESSIONS.map((text) => ({
+      text: "\n" + text,
+      fontSize: 14,
+      lineHeight: 1.4,
+      color: "white",
+      alignment: "center",
+    }));
+    res.unshift({});
+    return res;
+  };
+  const exportAsPdf = (data: Schedule[], docName: string, template: string) => {
+    const content: any = [],
+      SESSIONS = TEMPLATES[template].labels.sessions,
+      DAYS = TEMPLATES[template].labels.days,
+      CELL_HEIGHT = Math.floor(455 / (DAYS.length + 1)),
+      CELL_WIDTH = new Array(SESSIONS.length + 1).fill("*");
+
+    console.log(CELL_HEIGHT);
 
     data.forEach((schedule, index) => {
       content.push({
@@ -109,18 +118,9 @@ export const usePdf = () => {
         style: "tableExample",
         table: {
           headerRows: 0,
-          widths: ["*", "*", "*", "*", "*"],
-          heights: 65,
-          body: [
-            [
-              {},
-              getSessionObj(SESSIONS_TEXT[0]),
-              getSessionObj(SESSIONS_TEXT[1]),
-              getSessionObj(SESSIONS_TEXT[2]),
-              getSessionObj(SESSIONS_TEXT[3]),
-            ],
-            ...tableData(schedule.schedule),
-          ],
+          widths: CELL_WIDTH,
+          heights: CELL_HEIGHT,
+          body: [getFirstRow(SESSIONS), ...tableData(schedule.schedule, DAYS)],
         },
         layout: {
           fillColor: function (
@@ -135,15 +135,15 @@ export const usePdf = () => {
 
       content.push({
         text: `Group: ${schedule.group}`,
-        fontSize: 18,
+        fontSize: 12,
       });
       content.push({
         text: `TotalHours: ${schedule.totalHours}`,
-        fontSize: 18,
+        fontSize: 12,
       });
       content.push({
         text: `${scheduleIndex + 1}`,
-        fontSize: 22,
+        fontSize: 16,
         pageBreak: "after",
         alignment: "right",
       });

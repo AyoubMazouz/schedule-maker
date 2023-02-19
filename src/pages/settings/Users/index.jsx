@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "../../../components/Button";
 import { Input } from "../../../components/Input";
-import SettingsSideBar from "../../../components/SettingsSideBar";
+import SettingsLayout from "../../Editor/SettingsLayout";
 import { useGlobalContext } from "../../../Contexts/GlobalContext";
 import { IcLogin } from "../../../helpers/icons";
 import { useUser } from "../../../hooks/useUser";
@@ -37,7 +37,7 @@ const Users = () => {
   };
 
   return (
-    <SettingsSideBar>
+    <SettingsLayout>
       <div className="space-y-2 p-2">
         <div className="space-y-3">
           <Input
@@ -94,7 +94,7 @@ const Users = () => {
           />
         </div>
       </div>
-    </SettingsSideBar>
+    </SettingsLayout>
   );
 };
 

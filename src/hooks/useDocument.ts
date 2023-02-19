@@ -12,7 +12,6 @@ import {
   DocumentData,
 } from "firebase/firestore";
 import { db } from "../firebase";
-import { Schedule } from "../helpers/types";
 import { TEMPLATES } from "../helpers/templates";
 
 interface DocExists {
@@ -47,7 +46,7 @@ const useDocument = () => {
       if (snapshot.exists()) resolve(true);
       resolve(false);
     });
-  };
+  }; 
 
   const addNewDocument: AddNewDoc = (username, id, template) => {
     const data = JSON.parse(JSON.stringify([TEMPLATES[template].data]));

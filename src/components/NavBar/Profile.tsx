@@ -1,6 +1,6 @@
 import React from "react";
 import { User } from "../../helpers/types";
-import { IcLogout, IcSettings } from "../../helpers/icons";
+import { IcDown, IcLogout, IcSettings } from "../../helpers/icons";
 import { Link } from "react-router-dom";
 import { useGlobalContext } from "../../Contexts/GlobalContext";
 import { useAuth } from "../../Contexts/AuthContext";
@@ -23,14 +23,19 @@ export const Profile: React.FC<Type> = ({ menuRef, currMenu, setCurrMenu }) => {
   };
 
   return (
-    <div className="relative">
-      <img
-        className={`aspect-1 h-10 cursor-pointer overflow-hidden rounded-full opacity-90 shadow-md transition-all duration-300 focus:outline-none ${
-          currMenu === "PRF_MENU" && "border"
-        }`}
-        src={currUser.img}
+    <div className="relative h-full">
+      <button
         onClick={() => setCurrMenu("PRF_MENU")}
-      />
+        className="flex h-full items-center gap-x-2 px-3 hover:bg-dark/10"
+      >
+        <img
+          className={`aspect-1 h-8 cursor-pointer overflow-hidden rounded-full opacity-90 shadow-md transition-all duration-300 focus:outline-none ${
+            currMenu === "PRF_MENU" && "border"
+          }`}
+          src={currUser.img}
+        />
+        <IcDown />
+      </button>
       {currMenu === "PRF_MENU" && (
         <div ref={menuRef} className="menu top-[110%] right-[0%] w-[12rem]">
           <Link
@@ -43,7 +48,7 @@ export const Profile: React.FC<Type> = ({ menuRef, currMenu, setCurrMenu }) => {
             />
             <div className="-space-y-1 font-semibold">
               <div className="text-lg">@{currUser.username}</div>
-              <div className="text-xs underline text-primary group-hover:text-light">
+              <div className="text-xs text-primary underline group-hover:text-light">
                 Manage profile
               </div>
             </div>
@@ -53,7 +58,7 @@ export const Profile: React.FC<Type> = ({ menuRef, currMenu, setCurrMenu }) => {
             Settings
           </Link>
           <button
-            className="text-red-600 menu-item hover:bg-red-600 hover:text-white"
+            className="menu-item text-red-600 hover:bg-red-600 hover:text-white"
             onClick={logoutHandler}
           >
             <IcLogout className="icon" />
