@@ -71,7 +71,7 @@ const AddTrainer = () => {
     model.type === "ADD_TRAINER"
       ? INITIAL_STATE
       : {
-          trainer: { value: model.trainer.value, error: "" },
+          trainer: { value: model.trainer.id, error: "" },
           desc: { value: model.trainer.desc, error: "" },
           preferredRooms: { value: model.trainer.preferredRooms, error: "" },
         }
@@ -166,8 +166,8 @@ const AddTrainer = () => {
               rooms...
             </option>
             {labelsData.rooms.map((rooms: Room) => (
-              <option key={rooms.value} value={rooms.value}>
-                {rooms.value}
+              <option key={rooms.id} value={rooms.id}>
+                {rooms.id}
               </option>
             ))}
           </select>

@@ -1,17 +1,17 @@
 import React from "react";
-import { IcBin, IcEdit, IcEvent, IcHelp } from "../../../helpers/icons";
+import { IcAbout, IcBin, IcEdit } from "../../../helpers/icons";
 import MoreMenu from "../../../components/MoreMenu";
 import { useGlobalContext } from "../../../Contexts/GlobalContext";
 import useSettings from "../../../hooks/useSettings";
 import { getRelativeDate } from "../../../helpers/util";
-import { Button } from "../../../components/Button";
+import Table from "../../../components/Table";
 
-const Events = ({ currMenu, setCurrMenu, menuRef, setSaved }) => {
+const Events = ({ currMenu, setCurrMenu, menuRef, setSaved, search }) => {
   const { setModel, labelsData, setLabelsData } = useGlobalContext();
   const { deleteEvent } = useSettings();
   const showDetails = (v) => {
     const details = [
-      ["event", v.value],
+      ["event", v.id],
       ["description", v.desc],
       ["modified at", getRelativeDate(v.modifiedAt)],
       ["created at", getRelativeDate(v.createdAt)],
@@ -26,7 +26,7 @@ const Events = ({ currMenu, setCurrMenu, menuRef, setSaved }) => {
     });
   };
   const deleteHandler = (event) => {
-    const res = deleteEvent(labelsData, event.value);
+    const res = deleteEvent(labelsData, event.id);
     if (res) {
       setLabelsData(res);
       setSaved(false);
@@ -34,58 +34,26 @@ const Events = ({ currMenu, setCurrMenu, menuRef, setSaved }) => {
   };
 
   return (
-    <div className="border rounded-lg shadow-lg">
-      <div className="flex items-center pr-1 border-b-2 border-dark/50 bg-primary text-start text-light">
-        <div className="grid w-full grid-cols-12 p-2 font-semibold">
-          <div className="col-span-full sm:col-span-9 md:col-span-6">
-            Events
-          </div>
-          <div className="hidden col-span-3 text-center sm:block">
-            Modified At
-          </div>
-          <div className="hidden col-span-3 text-center md:block">
-            Created At
-          </div>
-        </div>
-        <Button Icon={IcHelp} label={["Events"]} />
-      </div>
-      {labelsData.events.map((event, index) => (
-        <div
-          key={event.value}
-          className={`menu-item group flex justify-between text-center ${
-            index % 2 === 0 && "bg-dark/10"
-          }`}
-        >
-          <button
-            onClick={(e) => showDetails(event)}
-            className="grid w-full grid-cols-12"
-          >
-            <div className="flex text-left col-span-full gap-x-1 group-hover:underline sm:col-span-6">
-              <IcEvent className="inline-block icon" />
-              <div className="overflow-hidden text-ellipsis whitespace-nowrap">
-                {event.value}
-              </div>
-            </div>
-            <div className="hidden col-span-3 text-center md:block">
-              {getRelativeDate(event.modifiedAt)}
-            </div>
-            <div className="hidden col-span-3 text-center sm:block">
-              {getRelativeDate(event.createdAt)}
-            </div>
-          </button>
+    <Table
+      {...{
+        id: "events",
+        documents: labelsData.events,
+        search,
+        goTo: (v) => showDetails(v),
+        moreMenu: (v) => (
           <MoreMenu
-            menuId={`event:${event.value}`}
+            menuId={`event:${v.id}`}
             menuRef={menuRef}
             currMenu={currMenu}
             setCurrMenu={setCurrMenu}
             options={[
-              ["edit", () => editHandler(event), IcEdit],
-              ["delete", () => deleteHandler(event), IcBin],
+              ["edit", () => editHandler(v), IcEdit],
+              ["delete", () => deleteHandler(v), IcBin],
             ]}
           />
-        </div>
-      ))}
-    </div>
+        ),
+      }}
+    />
   );
 };
 

@@ -27,28 +27,28 @@ export const DropdownMenu: React.FC<Type> = ({
         onClick={() => setCurrMenu(text)}
       >
         <span>{text}</span>
-        <IcDown className="mx-2 text-sm icon" />
+        <IcDown className="icon mx-2 text-sm" />
+        {currMenu === text && (
+          <div ref={menuRef} className="menu top-[96%] left-[1%]">
+            {options.map((Option: any, index) => {
+              if (React.isValidElement(Option))
+                return <div key={`text:${index}`}>{Option}</div>;
+              const [text, callback, Icon, disabled] = Option;
+              return (
+                <button
+                  key={text}
+                  disabled={disabled}
+                  className="menu-item"
+                  onClick={(e) => callback(e)}
+                >
+                  <Icon className="icon" />
+                  <span>{text}</span>
+                </button>
+              );
+            })}
+          </div>
+        )}
       </button>
-      {currMenu === text && (
-        <div ref={menuRef} className="menu top-[96%] left-[1%]">
-          {options.map((Option: any, index) => {
-            if (React.isValidElement(Option))
-              return <div key={`text:${index}`}>{Option}</div>;
-            const [text, callback, Icon, disabled] = Option;
-            return (
-              <button
-                key={text}
-                disabled={disabled}
-                className="menu-item"
-                onClick={(e) => callback(e)}
-              >
-                <Icon className="icon" />
-                <span>{text}</span>
-              </button>
-            );
-          })}
-        </div>
-      )}
     </>
   );
 };

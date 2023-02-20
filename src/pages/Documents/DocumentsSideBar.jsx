@@ -1,10 +1,11 @@
 import React from "react";
 import { useGlobalContext } from "../../Contexts/GlobalContext";
 import useEditor from "../../hooks/useEditor";
-import { IcNewDoc, IcImport } from "../../helpers/icons";
+import { IcNewDoc, IcImport, IcSearch } from "../../helpers/icons";
 import { useAuth } from "../../Contexts/AuthContext";
+import { Input } from "../../components/Input";
 
-const DocumentsSideBar = () => {
+const DocumentsSideBar = ({ search, setSearch }) => {
   const { setModel } = useGlobalContext();
   const { importDocumentAsFile } = useEditor();
   const { currUser } = useAuth();
@@ -15,6 +16,16 @@ const DocumentsSideBar = () => {
   };
   return (
     <div className="h-[calc(100vh-3rem)] min-w-[220px] max-w-[300px] border-r-[1px] border-dark/50">
+      <div className="p-2">
+        <Input
+          type="text"
+          Icon={IcSearch}
+          value={search}
+          placeholder="Search..."
+          onChange={(e) => setSearch(e.target.value)}
+          inputStyle="w-full"
+        />
+      </div>
       <button className="menu-item py-2" onClick={newDocHandler}>
         <IcNewDoc className="icon" />
         New

@@ -81,7 +81,7 @@ const useLabels = () => {
     // Generate groups base on level and numOfGrps.
     labelsData.levels.forEach((level) => {
       for (let i = 1; i <= parseInt(level.numOfGrps); i++)
-        groups.push(`${level.value} ${i}`);
+        groups.push(`${level.id} ${i}`);
     });
     // Get unavailable groups.
     const unavailableGroups: string[] = [];
@@ -98,7 +98,7 @@ const useLabels = () => {
 
   const getModules: GetModules = (data, labelsData, selectedCell) => {
     const level = data[selectedCell[0]].group.split(" ")[0];
-    const newLevels = labelsData.levels.filter((l: Level) => l.value === level);
+    const newLevels = labelsData.levels.filter((l: Level) => l.id === level);
     if (!newLevels.length) return [];
     return newLevels[0].modules;
   };
@@ -115,7 +115,7 @@ const useLabels = () => {
     }
     // Get available trainers.
     for (let t = 0; t < labelsData.trainers.length; t++) {
-      const trainer = labelsData.trainers[t].value;
+      const trainer = labelsData.trainers[t].id;
       if (!unavailableTrainers.includes(trainer))
         availableTrainers.push(trainer);
     }
@@ -140,7 +140,7 @@ const useLabels = () => {
     if (currTrainer) {
       for (let p = 0; p < labelsData.trainers.length; p++) {
         const trainer = labelsData.trainers[p];
-        if (currTrainer === trainer.value) {
+        if (currTrainer === trainer.id) {
           const rooms = trainer.preferredRooms.filter(
             (r) => r !== currRoom && !unavailableRooms.includes(r)
           );
@@ -150,7 +150,7 @@ const useLabels = () => {
     }
     // Get available rooms without including unavailable & preferred rooms.
     for (let r = 0; r < labelsData.rooms.length; r++) {
-      const room = labelsData.rooms[r].value;
+      const room = labelsData.rooms[r].id;
       if (!unavailableRooms.includes(room) && !preferredRooms.includes(room))
         availableRooms.push(room);
     }
@@ -159,7 +159,7 @@ const useLabels = () => {
   };
 
   const getEvents: GetEvents = (labelsData) =>
-    labelsData.events.map((e) => e.value);
+    labelsData.events.map((e) => e.id);
   return {
     getLabels,
     setLabels,

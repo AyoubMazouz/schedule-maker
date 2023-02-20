@@ -35,14 +35,14 @@ const AddEvent = () => {
     model.type === "ADD_EVENT"
       ? INITIAL_STATE
       : {
-          event: { value: model.event.value, error: "" },
+          event: { value: model.event.id, error: "" },
           desc: { value: model.event.desc, error: "" },
         }
   );
 
   const submitHandler = () => {
     // Check if event not empty and contains 1 char or more.
-    if (isStrEmpty(state.event.value)) {
+    if (isStrEmpty(state.event.id)) {
       return setAlert({
         type: "warn",
         message: `Event is required, it must be a least one character or more.`,
@@ -71,7 +71,7 @@ const AddEvent = () => {
     } else {
       setAlert({
         type: "warn",
-        message: `event "${state.event.value}" already exists!`,
+        message: `event "${state.event.id}" already exists!`,
       });
       dispatch({ type: "EVENT", payload: "" });
     }

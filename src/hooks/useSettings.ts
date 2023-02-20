@@ -5,22 +5,22 @@ import Resizer from "react-image-file-resizer";
 interface AddLevel {
   (
     data: LabelsType,
-    value: string,
+    id: string,
     numOfGrps: string,
     modules: string[],
     desc: string
   ): boolean | LabelsType;
 }
 interface AddTrainer {
-  (data: LabelsType, value: string, preferredRooms: string[], desc: string):
+  (data: LabelsType, id: string, preferredRooms: string[], desc: string):
     | boolean
     | LabelsType;
 }
 interface AddRoom {
-  (data: LabelsType, value: string, desc: string): boolean | LabelsType;
+  (data: LabelsType, id: string, desc: string): boolean | LabelsType;
 }
 interface AddEvent {
-  (data: LabelsType, value: string, desc: string): boolean | LabelsType;
+  (data: LabelsType, id: string, desc: string): boolean | LabelsType;
 }
 interface Delete {
   (data: LabelsType, id: string): void;
@@ -29,7 +29,7 @@ interface UpdateLevel {
   (
     data: LabelsType,
     level: Level,
-    value: string,
+    id: string,
     numOfGrps: string,
     modules: string[],
     desc: string
@@ -39,18 +39,18 @@ interface UpdateTrainer {
   (
     data: LabelsType,
     trainer: Trainer,
-    value: string,
+    id: string,
     preferredRooms: string[],
     desc: string
   ): boolean | LabelsType;
 }
 interface UpdateRoom {
-  (data: LabelsType, room: Room, value: string, desc: string):
+  (data: LabelsType, room: Room, id: string, desc: string):
     | boolean
     | LabelsType;
 }
 interface UpdateEvent {
-  (data: LabelsType, event: Event, value: string, desc: string):
+  (data: LabelsType, event: Event, id: string, desc: string):
     | boolean
     | LabelsType;
 }
@@ -65,13 +65,13 @@ interface ResizeImg {
 
 const useSettings = () => {
   // Add.
-  const addLevel: AddLevel = (data, value, numOfGrps, modules, desc) => {
+  const addLevel: AddLevel = (data, id, numOfGrps, modules, desc) => {
     const alreadyExists = data.levels.filter(
-      (l: Level) => l.value === value
+      (l: Level) => l.id === id
     ).length;
     if (alreadyExists) return false;
     const newLevel = {
-      value,
+      id,
       numOfGrps,
       modules,
       desc,
@@ -79,7 +79,7 @@ const useSettings = () => {
       modifiedAt: Timestamp.now(),
     };
     const levels = [...data.levels, newLevel].sort((a: Level, b: Level) =>
-      a.value > b.value ? 1 : -1
+      a.id > b.id ? 1 : -1
     );
     const labelsDoc = {
       rooms: data.rooms,
@@ -89,20 +89,20 @@ const useSettings = () => {
     };
     return labelsDoc;
   };
-  const addTrainer: AddTrainer = (data, value, preferredRooms, desc) => {
+  const addTrainer: AddTrainer = (data, id, preferredRooms, desc) => {
     const alreadyExists = data.trainers.filter(
-      (t: Trainer) => t.value === value
+      (t: Trainer) => t.id === id
     ).length;
     if (alreadyExists) return false;
     const newTrainer = {
-      value,
+      id,
       desc,
       preferredRooms,
       createdAt: Timestamp.now(),
       modifiedAt: Timestamp.now(),
     };
     const trainers = [...data.trainers, newTrainer].sort((a, b) =>
-      a.value > b.value ? 1 : -1
+      a.id > b.id ? 1 : -1
     );
     const labelsDoc = {
       rooms: data.rooms,
@@ -112,17 +112,17 @@ const useSettings = () => {
     };
     return labelsDoc;
   };
-  const addRoom: AddRoom = (data, value, desc) => {
-    const alreadyExists = data.rooms.filter((r) => r.value === value).length;
+  const addRoom: AddRoom = (data, id, desc) => {
+    const alreadyExists = data.rooms.filter((r) => r.id === id).length;
     if (alreadyExists) return false;
     const newRoom = {
-      value,
+      id,
       desc,
       createdAt: Timestamp.now(),
       modifiedAt: Timestamp.now(),
     };
     const rooms = [...data.rooms, newRoom].sort((a, b) =>
-      a.value > b.value ? 1 : -1
+      a.id > b.id ? 1 : -1
     );
     const labelsDoc = {
       trainers: data.trainers,
@@ -132,17 +132,17 @@ const useSettings = () => {
     };
     return labelsDoc;
   };
-  const addEvent: AddEvent = (data, value, desc) => {
-    const alreadyExists = data.events.filter((e) => e.value === value).length;
+  const addEvent: AddEvent = (data, id, desc) => {
+    const alreadyExists = data.events.filter((e) => e.id === id).length;
     if (alreadyExists) return false;
     const newEvent = {
       desc,
-      value,
+      id,
       createdAt: Timestamp.now(),
       modifiedAt: Timestamp.now(),
     };
     const events = [...data.events, newEvent].sort((a, b) =>
-      a.value > b.value ? 1 : -1
+      a.id > b.id ? 1 : -1
     );
     const labelsDoc = {
       trainers: data.trainers,
@@ -153,8 +153,8 @@ const useSettings = () => {
     return labelsDoc;
   };
   // Delete
-  const deleteLevel: Delete = (data, value) => {
-    const levels = data.levels.filter((level) => level.value !== value);
+  const deleteLevel: Delete = (data, id) => {
+    const levels = data.levels.filter((level) => level.id !== id);
     const labelsDoc = {
       trainers: data.trainers,
       rooms: data.rooms,
@@ -163,8 +163,8 @@ const useSettings = () => {
     };
     return labelsDoc;
   };
-  const deleteTrainer: Delete = (data, value) => {
-    const trainers = data.trainers.filter((trainer) => trainer.value !== value);
+  const deleteTrainer: Delete = (data, id) => {
+    const trainers = data.trainers.filter((trainer) => trainer.id !== id);
     const labelsDoc = {
       levels: data.levels,
       rooms: data.rooms,
@@ -173,8 +173,8 @@ const useSettings = () => {
     };
     return labelsDoc;
   };
-  const deleteRoom: Delete = (data, value) => {
-    const rooms = data.rooms.filter((room) => room.value !== value);
+  const deleteRoom: Delete = (data, id) => {
+    const rooms = data.rooms.filter((room) => room.id !== id);
     const labelsDoc = {
       trainers: data.trainers,
       levels: data.levels,
@@ -183,8 +183,8 @@ const useSettings = () => {
     };
     return labelsDoc;
   };
-  const deleteEvent: Delete = (data, value) => {
-    const events = data.events.filter((event) => event.value !== value);
+  const deleteEvent: Delete = (data, id) => {
+    const events = data.events.filter((event) => event.id !== id);
     const labelsDoc = {
       trainers: data.trainers,
       levels: data.levels,
@@ -197,20 +197,20 @@ const useSettings = () => {
   const updateLevel: UpdateLevel = (
     data,
     level,
-    value,
+    id,
     numOfGrps,
     modules,
     desc
   ) => {
     let alreadyExists = false;
     const levels = data.levels.filter((l) => {
-      if (l.value === value && l.value !== level.value) alreadyExists = true;
-      return l.value !== level.value;
+      if (l.id === id && l.id !== level.id) alreadyExists = true;
+      return l.id !== level.id;
     });
     if (alreadyExists) return false;
     const newLevel = {
       ...level,
-      value,
+      id,
       numOfGrps,
       modules,
       desc,
@@ -221,7 +221,7 @@ const useSettings = () => {
       events: data.events,
       trainers: data.trainers,
       levels: [...levels, newLevel].sort((a, b) =>
-        a.value > b.value ? 1 : -1
+        a.id > b.id ? 1 : -1
       ),
     };
     return labelsDoc;
@@ -229,18 +229,18 @@ const useSettings = () => {
   const updateTrainer: UpdateTrainer = (
     data,
     trainer,
-    value,
+    id,
     preferredRooms,
     desc
   ) => {
     let alreadyExists = false;
     const trainers = data.trainers.filter((t) => {
-      if (t.value === value && t.value !== trainer.value) alreadyExists = true;
-      return t.value !== trainer.value;
+      if (t.id === id && t.id !== trainer.id) alreadyExists = true;
+      return t.id !== trainer.id;
     });
     if (alreadyExists) return false;
     const newTrainer = {
-      value,
+      id,
       desc,
       preferredRooms,
       createdAt: trainer.createdAt,
@@ -251,20 +251,20 @@ const useSettings = () => {
       events: data.events,
       levels: data.levels,
       trainers: [...trainers, newTrainer].sort((a, b) =>
-        a.value > b.value ? 1 : -1
+        a.id > b.id ? 1 : -1
       ),
     };
     return labelsDoc;
   };
-  const updateRoom: UpdateRoom = (data, room, value, desc) => {
+  const updateRoom: UpdateRoom = (data, room, id, desc) => {
     let alreadyExists = false;
     const rooms = data.rooms.filter((r) => {
-      if (r.value === value && r.value !== room.value) alreadyExists = true;
-      return r.value !== room.value;
+      if (r.id === id && r.id !== room.id) alreadyExists = true;
+      return r.id !== room.id;
     });
     if (alreadyExists) return false;
     const newRoom = {
-      value,
+      id,
       desc,
       createdAt: room.createdAt,
       modifiedAt: Timestamp.now(),
@@ -273,20 +273,20 @@ const useSettings = () => {
       trainers: data.trainers,
       events: data.events,
       levels: data.levels,
-      rooms: [...rooms, newRoom].sort((a, b) => (a.value > b.value ? 1 : -1)),
+      rooms: [...rooms, newRoom].sort((a, b) => (a.id > b.id ? 1 : -1)),
     };
     return labelsDoc;
   };
-  const updateEvent: UpdateEvent = (data, event, value, desc) => {
+  const updateEvent: UpdateEvent = (data, event, id, desc) => {
     let alreadyExists = false;
     const events = data.events.filter((e) => {
-      if (e.value === value && e.value !== event.value) alreadyExists = true;
-      return e.value !== event.value;
+      if (e.id === id && e.id !== event.id) alreadyExists = true;
+      return e.id !== event.id;
     });
     if (alreadyExists) return false;
     const newEvent = {
       ...event,
-      value,
+      id,
       desc,
       modifiedAt: Timestamp.now(),
     };
@@ -295,7 +295,7 @@ const useSettings = () => {
       levels: data.levels,
       rooms: data.rooms,
       events: [...events, newEvent].sort((a, b) =>
-        a.value > b.value ? 1 : -1
+        a.id > b.id ? 1 : -1
       ),
     };
     console.log(newEvent);

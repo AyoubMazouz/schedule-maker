@@ -36,7 +36,7 @@ const AddRoom = () => {
     model.type === "ADD_ROOM"
       ? INITIAL_STATE
       : {
-          room: { value: model.room.value, error: "" },
+          room: { value: model.room.id, error: "" },
           desc: { value: model.room.desc, error: "" },
         }
   );

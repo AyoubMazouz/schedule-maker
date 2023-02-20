@@ -84,7 +84,7 @@ const AddLevel = () => {
     model.type === "ADD_LEVEL"
       ? INITIAL_STATE
       : {
-          level: { value: model.level.value, error: "" },
+          level: { value: model.level.id, error: "" },
           numOfGrps: { value: model.level.numOfGrps, error: "" },
           modules: { value: model.level.modules },
           desc: { value: model.level.desc, error: "" },

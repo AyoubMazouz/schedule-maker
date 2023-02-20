@@ -39,7 +39,6 @@ function App() {
         </Route>
         <Route path="/publish/:username" element={<PublicUserPage />} />
       </Routes>
-      <Footer />
     </div>
   );
 }

@@ -1,5 +1,5 @@
 export interface BaseLabelsTypes {
-  value: string;
+  id: string;
   createdAt: {};
   modifiedAt: {};
 }
@@ -34,7 +34,7 @@ export interface Schedule {
   schedule: string[][][];
 }
 export interface Document {
-  id: number;
+  id: string;
   template: string;
   userId: string;
   data: string;

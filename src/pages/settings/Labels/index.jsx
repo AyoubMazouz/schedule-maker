@@ -1,16 +1,16 @@
 import React from "react";
-import SettingsLayout from "../../Editor/SettingsLayout";
+import SettingsLayout from "../SettingsLayout";
 import { useAuth } from "../../../Contexts/AuthContext";
 import { useGlobalContext } from "../../../Contexts/GlobalContext";
 import Events from "./Events";
 import Levels from "./Levels";
-import OptionBar from "./OptionBar";
+import LabelsNavBar from "./LabelsNavBar";
 import Rooms from "./Rooms";
 import Trainers from "./Trainers";
 import usePageTitle from "../../../hooks/usePageTitle";
 
 const Labels = () => {
-usePageTitle("Labels")
+  usePageTitle("Labels");
 
   const { setAlert, labelsData, loadLabelsData } = useGlobalContext();
   const { currUser } = useAuth();
@@ -18,15 +18,7 @@ usePageTitle("Labels")
   const [currMenu, setCurrMenu] = React.useState(null);
 
   const [saved, setSaved] = React.useState(true);
-
-  React.useEffect(() => {
-    function handleClickOutside(e) {
-      if (menuRef.current && !menuRef.current.contains(e.target))
-        setCurrMenu(null);
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [menuRef]);
+  const [search, setSearch] = React.useState("");
 
   React.useEffect(() => {
     loadLabelsData(currUser.username);
@@ -48,54 +40,54 @@ usePageTitle("Labels")
 
   return (
     <SettingsLayout {...{ saved }}>
-      <div className="p-2 space-y-2">
-        <OptionBar
-          {...{
-            menuRef,
-            currMenu,
-            setCurrMenu,
-            saved,
-            setSaved,
-          }}
-        />
-        <div>levels:</div>
-        <Levels
-          {...{
-            currMenu,
-            setCurrMenu,
-            menuRef,
-            setSaved,
-            labelsData,
-          }}
-        />
-        <div>Rooms:</div>
-        <Rooms
-          {...{
-            currMenu,
-            setCurrMenu,
-            menuRef,
-            setSaved,
-          }}
-        />
-        <div>Trainers:</div>
-        <Trainers
-          {...{
-            currMenu,
-            setCurrMenu,
-            menuRef,
-            setSaved,
-          }}
-        />
-        <div>Events:</div>
-        <Events
-          {...{
-            currMenu,
-            setCurrMenu,
-            menuRef,
-            setSaved,
-          }}
-        />
-      </div>
+      <LabelsNavBar
+        {...{
+          menuRef,
+          currMenu,
+          setCurrMenu,
+          saved,
+          setSaved,
+          search,
+          setSearch,
+        }}
+      />
+      <Levels
+        {...{
+          currMenu,
+          setCurrMenu,
+          menuRef,
+          setSaved,
+          labelsData,
+          search,
+        }}
+      />
+      <Rooms
+        {...{
+          currMenu,
+          setCurrMenu,
+          menuRef,
+          setSaved,
+          search,
+        }}
+      />
+      <Trainers
+        {...{
+          currMenu,
+          setCurrMenu,
+          menuRef,
+          setSaved,
+          search,
+        }}
+      />
+      <Events
+        {...{
+          currMenu,
+          setCurrMenu,
+          menuRef,
+          setSaved,
+          search,
+        }}
+      />
     </SettingsLayout>
   );
 };
