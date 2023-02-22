@@ -26,7 +26,10 @@ import {
   HiOutlineClipboardDocument,
   HiOutlineBuildingOffice2,
   HiOutlineArrowUturnLeft,
-  HiOutlineArrowUturnRight,HiOutlineMagnifyingGlass
+  HiOutlineArrowUturnRight,
+  HiOutlineMagnifyingGlass,
+  HiOutlineStar,
+  HiStar,
 } from "react-icons/hi2";
 import {
   HiOutlineX,
@@ -87,3 +90,5 @@ export const IcHelp = AiOutlineQuestion;
 export const IcUndo = HiOutlineArrowUturnLeft;
 export const IcRedo = HiOutlineArrowUturnRight;
 export const IcSearch = HiOutlineMagnifyingGlass;
+export const IcStar = HiOutlineStar;
+export const IcStarFilled = HiStar;

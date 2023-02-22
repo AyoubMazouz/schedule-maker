@@ -37,6 +37,7 @@ export interface Document {
   id: string;
   template: string;
   userId: string;
+  favorite: boolean;
   data: string;
   createdAt: any;
   modifiedAt: any;
@@ -66,3 +67,12 @@ export interface User {
 }
 
 export type Template = "OFPPT" | "SCHOOL";
+
+export interface Document {
+  id: string;
+  createdAt: any;
+  modifiedAt: any;
+  username: string;
+  template: string;
+  data: string;
+}

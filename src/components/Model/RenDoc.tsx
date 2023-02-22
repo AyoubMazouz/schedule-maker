@@ -8,14 +8,14 @@ import { Input } from "../Input";
 
 const RenDoc = () => {
   const { model, setModel } = useGlobalContext();
-  const { renameDocument } = useDocument();
+  const { setDocumentInfo } = useDocument();
   const { currUser } = useAuth();
 
   const [newId, setNewId] = React.useState(model.value);
 
   const renameHandler = async () => {
     setModel(null);
-    await renameDocument(currUser.username, model.value, newId);
+    await setDocumentInfo(currUser.username, model.value, "id", newId);
   };
   return (
     <>

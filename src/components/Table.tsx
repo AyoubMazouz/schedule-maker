@@ -25,21 +25,6 @@ const Table = ({ id, documents, search, moreMenu, goTo }: any) => {
     if (filter.acs) {
       if (filter.by === "DOCUMENTS")
         setFiltredDocuments(
-          filtredDocuments.sort((a, b) => (a.id > b.id ? 1 : -1))
-        );
-      else if (filter.by === "MODIFIED_AT")
-        setFiltredDocuments(
-          filtredDocuments.sort((a, b) =>
-            a.modifiedAt > b.modifiedAt ? 1 : -1
-          )
-        );
-      else if (filter.by === "CREATED_AT")
-        setFiltredDocuments(
-          filtredDocuments.sort((a, b) => (a.createdAt > b.createdAt ? 1 : -1))
-        );
-    } else {
-      if (filter.by === "DOCUMENTS")
-        setFiltredDocuments(
           filtredDocuments.sort((a, b) => (a.id < b.id ? 1 : -1))
         );
       else if (filter.by === "MODIFIED_AT")
@@ -51,6 +36,21 @@ const Table = ({ id, documents, search, moreMenu, goTo }: any) => {
       else if (filter.by === "CREATED_AT")
         setFiltredDocuments(
           filtredDocuments.sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1))
+        );
+    } else {
+      if (filter.by === "DOCUMENTS")
+        setFiltredDocuments(
+          filtredDocuments.sort((a, b) => (a.id > b.id ? 1 : -1))
+        );
+      else if (filter.by === "MODIFIED_AT")
+        setFiltredDocuments(
+          filtredDocuments.sort((a, b) =>
+            a.modifiedAt > b.modifiedAt ? 1 : -1
+          )
+        );
+      else if (filter.by === "CREATED_AT")
+        setFiltredDocuments(
+          filtredDocuments.sort((a, b) => (a.createdAt > b.createdAt ? 1 : -1))
         );
     }
   }, [filtredDocuments, filter]);

@@ -820,6 +820,10 @@ body{
   right: 0px;
 }
 
+.top-\[calc\(0\%-0\.5rem\)\]{
+  top: calc(0% - 0.5rem);
+}
+
 .bottom-\[0\%\]{
   bottom: 0%;
 }
@@ -830,10 +834,6 @@ body{
 
 .right-\[50\%\]{
   right: 50%;
-}
-
-.top-\[calc\(0\%-0\.5rem\)\]{
-  top: calc(0% - 0.5rem);
 }
 
 .z-50{
@@ -881,17 +881,16 @@ body{
   margin-right: 0.5rem;
 }
 
-.-mx-2{
-  margin-left: -0.5rem;
-  margin-right: -0.5rem;
-}
-
 .mt-auto{
   margin-top: auto;
 }
 
 .ml-auto{
   margin-left: auto;
+}
+
+.mb-2{
+  margin-bottom: 0.5rem;
 }
 
 .mt-4{
@@ -904,14 +903,6 @@ body{
 
 .mt-32{
   margin-top: 8rem;
-}
-
-.mb-2{
-  margin-bottom: 0.5rem;
-}
-
-.-mt-2{
-  margin-top: -0.5rem;
 }
 
 .box-border{
@@ -972,10 +963,6 @@ body{
 
 .h-\[calc\(100vh-3rem\)\]{
   height: calc(100vh - 3rem);
-}
-
-.h-\[75vh\]{
-  height: 75vh;
 }
 
 .h-\[calc\(35vh-6rem\)\]{
@@ -1146,12 +1133,12 @@ body{
   cursor: default;
 }
 
-.grid-cols-2{
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
 .grid-cols-12{
   grid-template-columns: repeat(12, minmax(0, 1fr));
+}
+
+.grid-cols-2{
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .flex-col{
@@ -1182,16 +1169,12 @@ body{
   justify-content: space-between;
 }
 
-.gap-2{
-  gap: 0.5rem;
-}
-
 .gap-3{
   gap: 0.75rem;
 }
 
-.gap-6{
-  gap: 1.5rem;
+.gap-2{
+  gap: 0.5rem;
 }
 
 .gap-x-1{
@@ -1256,12 +1239,6 @@ body{
   margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)));
 }
 
-.space-y-4 > :not([hidden]) ~ :not([hidden]){
-  --tw-space-y-reverse: 0;
-  margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse)));
-  margin-bottom: calc(1rem * var(--tw-space-y-reverse));
-}
-
 .overflow-hidden{
   overflow: hidden;
 }
@@ -1322,10 +1299,6 @@ body{
   border-width: 6px;
 }
 
-.border-0{
-  border-width: 0px;
-}
-
 .border-b-\[1px\]{
   border-bottom-width: 1px;
 }
@@ -1352,6 +1325,10 @@ body{
 
 .border-b-2{
   border-bottom-width: 2px;
+}
+
+.border-t-\[1px\]{
+  border-top-width: 1px;
 }
 
 .border-none{
@@ -1734,12 +1711,6 @@ body{
   box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
 }
 
-.ring-0{
-  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
-  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(0px + var(--tw-ring-offset-width)) var(--tw-ring-color);
-  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
-}
-
 .ring-primary{
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(63 114 175 / var(--tw-ring-opacity));
@@ -2058,10 +2029,6 @@ body{
     grid-column: span 9 / span 9;
   }
 
-  .sm\:col-span-6{
-    grid-column: span 6 / span 6;
-  }
-
   .sm\:block{
     display: block;
   }
@@ -2080,10 +2047,6 @@ body{
     grid-column: span 3 / span 3;
   }
 
-  .md\:col-span-9{
-    grid-column: span 9 / span 9;
-  }
-
   .md\:block{
     display: block;
   }
@@ -2094,10 +2057,6 @@ body{
 
   .md\:grid{
     display: grid;
-  }
-
-  .md\:h-\[calc\(100vh-6\.6rem\)\]{
-    height: calc(100vh - 6.6rem);
   }
 
   .md\:h-\[calc\(100vh-3rem\)\]{

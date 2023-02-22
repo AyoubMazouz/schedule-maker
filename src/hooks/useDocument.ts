@@ -13,6 +13,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase";
 import { TEMPLATES } from "../helpers/templates";
+import { Document } from "../helpers/types";
 
 interface DocExists {
   (username: string, id: string): Promise<boolean>;
@@ -27,13 +28,17 @@ interface GetDoc {
   (username: string, id: string): Promise<boolean | DocumentData>;
 }
 interface GetAllDoc {
-  (username: string, setDocs: React.Dispatch<React.SetStateAction<any>>): void;
+  (
+    username: string,
+    setDocs: React.Dispatch<React.SetStateAction<any>>,
+    setFavDocuments: React.Dispatch<React.SetStateAction<any>>
+  ): void;
 }
 interface DeleteDoc {
   (username: string, id: string): Promise<boolean>;
 }
-interface RenameDoc {
-  (username: string, id: string, newId: string): Promise<boolean>;
+interface DocumentInfo {
+  (username: string, id: string, key: string, value: string): Promise<boolean>;
 }
 
 const useDocument = () => {
@@ -46,7 +51,7 @@ const useDocument = () => {
       if (snapshot.exists()) resolve(true);
       resolve(false);
     });
-  }; 
+  };
 
   const addNewDocument: AddNewDoc = (username, id, template) => {
     const data = JSON.parse(JSON.stringify([TEMPLATES[template].data]));
@@ -70,13 +75,17 @@ const useDocument = () => {
   const updateDocument: UpdateDoc = (data, docInfo) => {
     return new Promise(async (resolve) => {
       setLoading(true);
+
       const docObj = {
         ...docInfo,
         modifiedAt: Timestamp.now(),
         data: JSON.stringify(data),
       };
 
-      await setDoc(doc(db, "documents", docInfo.username + docInfo.id), docObj);
+      await updateDocument(
+        doc(db, "documents", docInfo.username + docInfo.id),
+        docObj
+      );
       setLoading(false);
       resolve(true);
     });
@@ -90,7 +99,7 @@ const useDocument = () => {
     });
   };
 
-  const getAllDocuments: GetAllDoc = (username, setDocs) => {
+  const getAllDocuments: GetAllDoc = (username, setDocs, setFavDocuments) => {
     onSnapshot(
       query(collection(db, "documents"), where("username", "in", [username])),
       (snap) => {
@@ -99,7 +108,9 @@ const useDocument = () => {
           const data: any = doc.data();
           docs.push(data);
         });
+        docs.sort((a, b) => (a.id > b.id ? 1 : -1));
         setDocs(docs);
+        setFavDocuments(docs.filter((d) => d.favorite));
       }
     );
   };
@@ -113,7 +124,7 @@ const useDocument = () => {
     });
   };
 
-  const renameDocument: RenameDoc = (username, id, newDocId) => {
+  const setDocumentInfo: DocumentInfo = (username, id, key, value) => {
     return new Promise(async (reject, resolve) => {
       setLoading(true);
 
@@ -121,9 +132,8 @@ const useDocument = () => {
 
       if (doc) {
         document.modifiedAt = Timestamp.now();
-        document.id = newDocId;
-        await deleteDocument(username, id);
-        await setDoc(doc(db, "documents", username + newDocId), document);
+        document[key] = value;
+        await setDoc(doc(db, "documents", username + id), document);
 
         setLoading(false);
         resolve(true);
@@ -141,8 +151,8 @@ const useDocument = () => {
     getAllDocuments,
     getDocument,
     deleteDocument,
-    renameDocument,
     updateDocument,
+    setDocumentInfo,
   };
 };
 

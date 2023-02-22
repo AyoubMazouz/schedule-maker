@@ -7,6 +7,8 @@ import {
   IcDownload,
   IcEdit,
   IcExport,
+  IcStar,
+  IcStarFilled,
 } from "../../helpers/icons";
 import DocumentsSideBar from "./DocumentsSideBar";
 import useDocument from "../../hooks/useDocument";
@@ -26,17 +28,22 @@ const Documents = () => {
   const { setModel, data, setAlert } = useGlobalContext();
   const { currUser } = useAuth();
   const { exportDocument } = useEditor();
-  const { getAllDocuments } = useDocument();
+  const { getAllDocuments, setDocumentInfo } = useDocument();
   const { exportAsPdf } = usePdf();
 
   const [documents, setDocuments] = React.useState([]);
+  const [favDocuments, setFavDocuments] = React.useState([]);
   const [search, setSearch] = React.useState("");
 
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    getAllDocuments(currUser.username, setDocuments);
+    getAllDocuments(currUser.username, setDocuments, setFavDocuments);
   }, []);
+
+  const handleFavorite = (v) => {
+    setDocumentInfo(currUser.username, v.id, "favorite", !v.favorite);
+  };
 
   const deleteHandler = (name) => {
     setModel({
@@ -81,30 +88,37 @@ const Documents = () => {
     setModel({ type: "showDetails", details });
   };
 
+  const WraperMoreMenu = (v, n = "") => (
+    <MoreMenu
+      menuId={`documents:${v.id}${n}`}
+      menuRef={menuRef}
+      currMenu={currMenu}
+      setCurrMenu={setCurrMenu}
+      options={[
+        v?.favorite
+          ? ["unfavorite", () => handleFavorite(v), IcStarFilled]
+          : ["favorite", () => handleFavorite(v), IcStar],
+        ["rename", () => renameHandler(v.id), IcEdit],
+        ["export", exportHandler, IcExport],
+        ["download", () => downloadHandler(v), IcDownload],
+        ["delete", () => deleteHandler(v.id), IcBin],
+        ["details", () => showDetails(v), IcAbout],
+      ]}
+    />
+  );
+
   return (
     <div className="flex h-full w-full">
-      <DocumentsSideBar {...{ search, setSearch }} />
+      <DocumentsSideBar
+        {...{ search, setSearch, favDocuments, WraperMoreMenu }}
+      />
       <Table
         {...{
           id: "documents",
           documents,
           search,
           goTo: (v) => navigate(`/editor/${v.id}`),
-          moreMenu: (value) => (
-            <MoreMenu
-              menuId={`documents:${value.id}`}
-              menuRef={menuRef}
-              currMenu={currMenu}
-              setCurrMenu={setCurrMenu}
-              options={[
-                ["rename", () => renameHandler(value.id), IcEdit],
-                ["export", exportHandler, IcExport],
-                ["download", () => downloadHandler(value), IcDownload],
-                ["delete", () => deleteHandler(value.id), IcBin],
-                ["details", () => showDetails(value), IcAbout],
-              ]}
-            />
-          ),
+          moreMenu: (v) => WraperMoreMenu(v, "1"),
         }}
       />
     </div>
