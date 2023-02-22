@@ -5,7 +5,12 @@ import { useGlobalContext } from "../../Contexts/GlobalContext";
 // Helpers.
 import { IcLabels, IcPublish, IcAbout, IcUser } from "../../helpers/icons";
 
-const SettingsLayout = ({ saved = true, children = null }) => {
+interface Type {
+  saved?: boolean;
+  children?: any;
+}
+
+const SettingsLayout: React.FC<Type> = ({ saved = true, children = null }) => {
   const { setAlert } = useGlobalContext();
 
   const links = [
@@ -19,7 +24,7 @@ const SettingsLayout = ({ saved = true, children = null }) => {
   return (
     <div className="flex w-full">
       <div className="w-full min-w-[220px] max-w-[300px] border-r-[1px] border-dark/50">
-        {links.map(([label, Icon]) =>
+        {links.map(([label, Icon]: any) =>
           saved ? (
             <Link
               key={label}

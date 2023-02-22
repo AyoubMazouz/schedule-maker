@@ -1,11 +1,16 @@
 import React from "react";
+// Types.
+import { Schedule } from "../../../helpers/types";
 // Contexts.
 import { useGlobalContext } from "../../../Contexts/GlobalContext";
 import { useEditorContext } from "../../../Contexts/EditorContext";
 // Hooks.
-import useEditor from "../../../hooks/useEditor";
 import useUndoRedo from "../EditorNavBar/useUndoRedo";
 import useLabels from "../../../hooks/useLabels";
+// Helpers.
+import { TEMPLATES } from "../../../helpers/templates";
+import { deepClone } from "../../../helpers/util";
+
 const useEditorSideBar = () => {
   const {
     history,
@@ -19,7 +24,6 @@ const useEditorSideBar = () => {
     saved,
   } = useEditorContext();
   const { data, setData, setAlert, labelsData, docInfo } = useGlobalContext();
-  const { addNewSchedule, editScheduleGrp, deleteSchedule } = useEditor();
   const { getGroups } = useLabels();
   const { record } = useUndoRedo();
 
@@ -51,24 +55,27 @@ const useEditorSideBar = () => {
   }, [currSchedule, labelsData]);
 
   const addNewScheduleHandler = () => {
+    // Record for undo and redo.
     record(history, setHistory, hIndex, setHIndex, {
       type: "ADD_SCHEDULE",
       template: docInfo.template,
       setCurrSchedule,
       setSelectedCell,
     });
-    const res = addNewSchedule(data, docInfo.template);
-    if (res) {
-      setCurrSchedule(data.length);
-      setSelectedCell((x: number[]) => (x ? [data.length, x[1], x[2]] : null));
-      setData(res);
-      setSaved(false);
-    } else {
+
+    const newSchedule = deepClone(TEMPLATES[docInfo.template].data);
+    if (data.length === 0) return;
+    if (!data[data.length - 1].group) {
       setAlert(
         "warn",
         "You should finish the previous table or at least fill the 'group' field."
       );
+      return;
     }
+    setData([...data, newSchedule]);
+    setCurrSchedule(data.length);
+    setSelectedCell((x: number[]) => (x ? [data.length, x[1], x[2]] : null));
+    setSaved(false);
   };
 
   const editScheduleGrpHandler = (scheduleIndex: number, value: string) => {
@@ -79,12 +86,17 @@ const useEditorSideBar = () => {
       next: value,
       x: scheduleIndex,
     });
-    const res = editScheduleGrp(data, setData, scheduleIndex, value);
-    if (res) {
-      setSaved(false);
-    } else {
-      setAlert("warn", "You have already created a Schedule for this group");
+
+    const copiedData = deepClone(data);
+    for (let i = 0; i < copiedData.length; i++) {
+      if (copiedData[i].group === value) {
+        setAlert("warn", "You have already created a Schedule for this group");
+        return;
+      }
     }
+
+    copiedData[scheduleIndex].group = value;
+    setData(copiedData);
   };
 
   const deleteScheduleHandler = (scheduleIndex: number) => {
@@ -96,8 +108,12 @@ const useEditorSideBar = () => {
       setCurrSchedule,
       setSelectedCell,
     });
-    const res = deleteSchedule(data, setData, data[scheduleIndex].group);
-    if (res) {
+
+    const copiedData = data.filter(
+      (s: Schedule) => s.group !== data[scheduleIndex].group
+    );
+    if (data.length !== copiedData.length) {
+      setData(copiedData);
       const currSchedule = scheduleIndex === 0 ? 0 : scheduleIndex - 1;
       setCurrSchedule(currSchedule);
       setSaved(false);

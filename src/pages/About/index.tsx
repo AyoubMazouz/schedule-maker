@@ -1,8 +1,11 @@
 import React from "react";
-import { IcMail } from "../../helpers/icons";
-import { ABOUT_APP, MY_EMAIL, VERSION } from "../../helpers/constants";
-import SettingsLayout from "../settings/SettingsLayout";
+// Hooks.
 import usePageTitle from "../../hooks/usePageTitle";
+// Layouts.
+import SettingsLayout from "../settings/SettingsLayout";
+// Helpers.
+import { ABOUT_APP, MY_EMAIL, VERSION } from "../../helpers/constants";
+import { IcMail } from "../../helpers/icons";
 
 const About = () => {
   usePageTitle("About");
@@ -16,7 +19,7 @@ const About = () => {
         <div>{ABOUT_APP}</div>
         <div className="flex gap-x-2 font-semibold text-primary hover:underline">
           <IcMail className="icon" />
-          <a href={`mailto:${MY_EMAIL}`} traget="_blank">
+          <a href={`mailto:${MY_EMAIL}`} target="_blank">
             {MY_EMAIL}
           </a>
         </div>

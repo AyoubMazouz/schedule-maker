@@ -2,15 +2,11 @@ import React from "react";
 import { IcMore } from "../helpers/icons";
 
 interface Type {
-  menuRef: React.MutableRefObject<HTMLDivElement>;
-  currMenu: string;
+  menuRef: React.MutableRefObject<any>;
+  currMenu: string | null;
   setCurrMenu: React.Dispatch<React.SetStateAction<string | null>>;
   menuId: string;
-  options: [
-    string,
-    (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
-    any
-  ];
+  options: any[];
 }
 
 const MoreMenu: React.FC<Type> = ({

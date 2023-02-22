@@ -20,7 +20,7 @@ pdfMake.fonts = {
 
 const DOMAIN_NAME = window.location.href;
 
-export const usePdf = () => {
+const usePdf = () => {
   const getLabel = (session: string[], i: number) => {
     if (i === 1)
       return {
@@ -163,3 +163,5 @@ export const usePdf = () => {
 
   return { exportAsPdf };
 };
+
+export default usePdf;

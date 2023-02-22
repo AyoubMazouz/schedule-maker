@@ -7,9 +7,8 @@ import { TEMPLATES } from "../../../helpers/templates";
 import { deepClone } from "../../../helpers/util";
 import useDataExchange from "../../../hooks/useDataExchange";
 import useDocument from "../../../hooks/useDocument";
-import useEditor from "../../../hooks/useEditor";
 import useLabels from "../../../hooks/useLabels";
-import { usePdf } from "../../../hooks/usePdf";
+import usePdf from "../../../hooks/usePdf";
 import useUndoRedo from "./useUndoRedo";
 
 const useEditorNavBar = () => {

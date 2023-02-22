@@ -10,6 +10,7 @@ import {
   collection,
   deleteDoc,
   DocumentData,
+  updateDoc,
 } from "firebase/firestore";
 import { db } from "../firebase";
 import { TEMPLATES } from "../helpers/templates";
@@ -38,7 +39,7 @@ interface DeleteDoc {
   (username: string, id: string): Promise<boolean>;
 }
 interface DocumentInfo {
-  (username: string, id: string, key: string, value: string): Promise<boolean>;
+  (username: string, id: string, key: string, value: any): Promise<boolean>;
 }
 
 const useDocument = () => {
@@ -61,6 +62,7 @@ const useDocument = () => {
         id,
         username,
         template,
+        favorite: false,
         createdAt: Timestamp.now(),
         modifiedAt: Timestamp.now(),
         data: JSON.stringify(data),
@@ -82,7 +84,7 @@ const useDocument = () => {
         data: JSON.stringify(data),
       };
 
-      await updateDocument(
+      await updateDoc(
         doc(db, "documents", docInfo.username + docInfo.id),
         docObj
       );
@@ -118,7 +120,7 @@ const useDocument = () => {
   const deleteDocument: DeleteDoc = (username, id) => {
     return new Promise(async (resolve, reject) => {
       setLoading(true);
-      const snapshot = await deleteDoc(doc(db, "documents", username + id));
+      await deleteDoc(doc(db, "documents", username + id));
       setLoading(false);
       resolve(true);
     });
@@ -133,7 +135,13 @@ const useDocument = () => {
       if (doc) {
         document.modifiedAt = Timestamp.now();
         document[key] = value;
-        await setDoc(doc(db, "documents", username + id), document);
+
+        if (key === "id") {
+          await deleteDoc(doc(db, "documents", username + id));
+          await setDoc(doc(db, "documents", username + value), document);
+        } else {
+          await updateDoc(doc(db, "documents", username + id), document);
+        }
 
         setLoading(false);
         resolve(true);

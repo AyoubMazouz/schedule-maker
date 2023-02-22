@@ -18,12 +18,9 @@ const DelDoc = () => {
           text="delete"
           type="danger"
           onClick={() => {
-            deleteDocument(currUser.uid, model.name);
+            deleteDocument(currUser.username, model.name);
             setModel(null);
-            setAlert({
-              type: "warn",
-              message: `Document "${model.name}" has been deleted.`,
-            });
+            setAlert("warn", `Document "${model.name}" has been deleted.`);
           }}
           Icon={IcBin}
         />
