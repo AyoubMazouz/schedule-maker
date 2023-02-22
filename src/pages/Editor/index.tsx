@@ -24,12 +24,10 @@ const Editor = () => {
 
   return (
     <EditorContextProvider>
-      <div className="md:grid md:grid-cols-12">
-        <EditorNavBar />
-        <div className="col-span-full h-[calc(35vh-6rem)] overflow-x-hidden overflow-y-scroll border-r-[1px] border-dark/50 md:col-span-3 md:h-[calc(100vh-3rem)]">
-          <EditorSideBar />
-        </div>
-        <div className="relative col-span-9 h-[65vh] overflow-scroll md:h-[calc(100vh-3rem)]">
+      <EditorNavBar />
+      <div className="flex h-full w-full">
+        <EditorSideBar />
+        <div className="relative col-span-9 h-[65vh] w-full overflow-scroll">
           <Table />
         </div>
       </div>

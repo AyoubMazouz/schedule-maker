@@ -13,7 +13,7 @@ interface ButtonType {
 }
 
 const base =
-  "rounded-md shadow-md py-1 capitalize cursor-pointer pr-4 pl-3 disabled:opacity-50 flex gap-x-1 items-center disabled:cursor-not-allowed transition-all duration-400 overflow-hidden group relative max-h-[2.1rem] border-[1px] hover:text-white disabled:line-through focus:outline-none";
+  "rounded-sm shadow-md py-1 capitalize cursor-pointer pr-4 pl-3 disabled:opacity-50 flex gap-x-1 items-center disabled:cursor-not-allowed transition-all duration-400 overflow-hidden group relative max-h-[2.1rem] border-[1px] hover:text-white disabled:line-through focus:outline-none";
 const btn = {
   primary: `${base} text-primary border-primary hover:bg-primary text-white`,
   secondary: `${base} text-dark border-dark hover:border-primary hover:text-primary`,
@@ -36,7 +36,7 @@ export const Button: React.FC<ButtonType> = ({
   if (!text)
     return (
       <button
-        className={`group relative flex h-8 w-8 cursor-pointer items-center justify-center rounded transition-all duration-300 hover:bg-dark/10 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 ${styles} ${
+        className={`group relative flex h-8 w-8 cursor-pointer items-center justify-center rounded-sm transition-all duration-300 hover:bg-dark/10 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 ${styles} ${
           disabled ? "hover:text-dark" : "hover:text-primary"
         } ${trigger ? "bg-dark/10" : ""}`}
         onClick={(e) => onClick(e)}
@@ -68,7 +68,7 @@ export const Button: React.FC<ButtonType> = ({
 
 const Label = ({ label }: { label: any[] }) => {
   return (
-    <div className="absolute bottom-[20%] left-[50%] z-10 h-0 max-w-[300px] translate-x-[-50%] translate-y-[100%] overflow-hidden rounded-md bg-light py-0.5 px-2 text-center text-xs capitalize text-dark opacity-0 shadow-md transition-all duration-500 group-hover:bottom-[-18%] group-hover:h-auto group-hover:opacity-100">
+    <div className="absolute bottom-[20%] left-[50%] z-10 h-0 max-w-[300px] translate-x-[-50%] translate-y-[100%] overflow-hidden rounded-sm bg-light py-0.5 px-2 text-center text-xs capitalize text-dark opacity-0 shadow-md transition-all duration-500 group-hover:bottom-[-18%] group-hover:h-auto group-hover:opacity-100">
       {label.map((t) => (
         <div>{t}</div>
       ))}

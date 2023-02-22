@@ -48,7 +48,7 @@ const DocumentsSideBar = () => {
 
   return (
     <div className="h-[calc(100vh-3rem)] min-w-[220px] max-w-[300px] border-r-[1px] border-dark/50">
-      <div className="border-b-[1px] border-dark/50 p-2">
+      <div className="border-b-[1px] border-dark/50 p-2 shadow-sm">
         <Input
           type="text"
           Icon={IcSearch}
@@ -58,21 +58,23 @@ const DocumentsSideBar = () => {
           inputStyle="w-full"
         />
       </div>
-      <button className="menu-item py-2" onClick={handleNewDoc}>
-        <IcNewDoc className="icon" />
-        New
-      </button>
-      <button className="menu-item py-2">
-        <IcImport className="icon" />
-        import
-        <input
-          type="file"
-          accept=".json"
-          className="absolute top-0 bottom-0 left-0 right-0 cursor-pointer opacity-0"
-          onChange={(e) => handleImport(e)}
-        />
-      </button>
-      <div className="border-t-[1px] border-dark/50">
+      <div className="border-b-[1px] border-dark/50 shadow-sm">
+        <button className="menu-item py-2" onClick={handleNewDoc}>
+          <IcNewDoc className="icon" />
+          New
+        </button>
+        <button className="menu-item py-2">
+          <IcImport className="icon" />
+          import
+          <input
+            type="file"
+            accept=".json"
+            className="absolute top-0 bottom-0 left-0 right-0 cursor-pointer opacity-0"
+            onChange={(e) => handleImport(e)}
+          />
+        </button>
+      </div>
+      <div>
         {favDocuments.map((v: Document) => (
           <div key={v.id} className="menu-item justify-between">
             <div className="flex items-center gap-x-1">
