@@ -20,6 +20,13 @@ export const EditorContextProvider = ({ children }) => {
   // ClipBoard | copy, paste.
   const [clipboard, setClipboard] = React.useState(null);
 
+  // View
+  const [view, setView] = React.useState({
+    zoom: 1,
+    days: true,
+    sessions: true,
+  });
+
   // Close menu when clicking outside of it.
   const menuRef = React.useRef(null);
   const [currMenu, setCurrMenu] = React.useState(null);
@@ -53,6 +60,8 @@ export const EditorContextProvider = ({ children }) => {
         setCurrMenu,
         clipboard,
         setClipboard,
+        view,
+        setView,
       }}
     >
       {children}

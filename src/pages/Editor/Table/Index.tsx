@@ -2,6 +2,7 @@ import React from "react";
 // Contexts.
 import { useEditorContext } from "../../../Contexts/EditorContext";
 import { useGlobalContext } from "../../../Contexts/GlobalContext";
+import { ZOOM } from "../../../helpers/constants";
 // Helpers.
 import { TEMPLATES } from "../../../helpers/templates";
 // Components.
@@ -9,71 +10,77 @@ import Cell from "./Cell";
 
 const Table = () => {
   const { data, docInfo } = useGlobalContext();
-  const { currSchedule } = useEditorContext();
+  const { currSchedule, view } = useEditorContext();
 
   if (data.length === 0) return null;
-  // if (!data[currSchedule].group) return "please select a group first!";
+  if (!data[currSchedule].group) return <div>please select a group first!</div>;
 
   return (
-    <>
+    <div
+      style={{ fontSize: `${ZOOM[view.zoom].fontSize}rem` }}
+      className="relative h-[calc(100vh-3rem)] w-full overflow-scroll p-2"
+    >
       {/* Head */}
-      <div className="flex">
-        <div className="grid min-w-[5.45rem] place-items-center font-semibold">
-          <span className="grid h-8 w-8 place-items-center rounded-full bg-primary text-lg font-bold text-light">
-            {currSchedule + 1}
-          </span>
-          <span className="text-center leading-4">
-            {data[currSchedule].group}
-          </span>
-        </div>
-        <div className="flex w-full">
-          {TEMPLATES[docInfo.template].labels.sessions.map((value: string) => (
-            <div
-              key={value}
-              className="col-span-2 grid w-full min-w-[6rem] place-items-center bg-primary font-semibold text-white"
-            >
-              {value}
-            </div>
-          ))}
-        </div>
+      <div className={`${view.sessions ? "flex" : "hidden"} mb-2 bg-green-100`}>
+        <div style={{ minWidth: `${view.h}rem` }} className="w-full"></div>
+        {TEMPLATES[docInfo.template].labels.sessions.map((value: string) => (
+          <div
+            key={value}
+            style={{
+              minWidth: `${ZOOM[view.zoom].minW}rem`,
+              maxWidth: `${ZOOM[view.zoom].maxW}rem`,
+            }}
+            className="w-full text-center font-semibold"
+          >
+            {value}
+          </div>
+        ))}
       </div>
       {/* Body */}
       <div className="flex">
-        <div className="w-[6rem]">
+        <div
+          style={{ minWidth: `${ZOOM[view.zoom].h}rem` }}
+          className={view.days ? "" : "hidden"}
+        >
           {TEMPLATES[docInfo.template].labels.days.map((value: string) => (
             <div
               key={value}
-              className="flex h-[6rem] items-center justify-between bg-primary p-1 font-semibold text-light"
+              style={{ height: `${ZOOM[view.zoom].h}rem` }}
+              className="flex items-center justify-between font-semibold"
             >
               {value}
             </div>
           ))}
         </div>
-        <div className="w-full">
+        <div
+          style={{
+            maxWidth: `${
+              parseInt(ZOOM[view.zoom].maxW) *
+              TEMPLATES[docInfo.template].labels.sessions.length
+            }rem`,
+          }}
+          className="w-full border-[1px] border-dark/50"
+        >
           {data[currSchedule].schedule.map(
             (day: string[][], dayIndex: number) => (
-              <div key={`day:${dayIndex}`} className="flex">
+              <div key={`day:${dayIndex}`} className="flex w-full">
                 {day.map((session, sessionIndex) => (
-                  <div
-                    key={`${session.join("")}${sessionIndex}`}
-                    className="w-full"
-                  >
-                    <Cell
-                      {...{
-                        session,
-                        scheduleIndex: currSchedule,
-                        dayIndex,
-                        sessionIndex,
-                      }}
-                    />
-                  </div>
+                  <Cell
+                    {...{
+                      session,
+                      scheduleIndex: currSchedule,
+                      dayIndex,
+                      sessionIndex,
+                      view,
+                    }}
+                  />
                 ))}
               </div>
             )
           )}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

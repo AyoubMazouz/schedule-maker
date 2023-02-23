@@ -1,6 +1,8 @@
 import React from "react";
 // Contexts.
 import { useEditorContext } from "../../../Contexts/EditorContext";
+import { ZOOM } from "../../../helpers/constants";
+import { View } from "../../../helpers/types";
 
 interface Type {
   ({
@@ -8,15 +10,23 @@ interface Type {
     scheduleIndex,
     dayIndex,
     sessionIndex,
+    view,
   }: {
     session: string[];
     scheduleIndex: number;
     dayIndex: number;
     sessionIndex: number;
+    view: View;
   }): JSX.Element;
 }
 
-const Cell: Type = ({ session, scheduleIndex, dayIndex, sessionIndex }) => {
+const Cell: Type = ({
+  session,
+  scheduleIndex,
+  dayIndex,
+  sessionIndex,
+  view,
+}) => {
   const { setSelectedCell, selectedCell, fusionMode } = useEditorContext();
 
   const isComplete = () => {
@@ -70,15 +80,30 @@ const Cell: Type = ({ session, scheduleIndex, dayIndex, sessionIndex }) => {
   return (
     <div
       onClick={(e) => setSelectedCell([scheduleIndex, dayIndex, sessionIndex])}
-      className={`${getBorder()} ${isComplete()} relative box-border h-[6rem] w-full min-w-[6rem] cursor-pointer overflow-hidden px-2 text-start`}
+      style={{
+        maxWidth: `${ZOOM[view.zoom].maxW}rem`,
+        minWidth: `${ZOOM[view.zoom].minW}rem`,
+        height: `${ZOOM[view.zoom].h}rem`,
+      }}
+      className={`${getBorder()} ${isComplete()} relative box-border flex w-full cursor-pointer flex-col justify-between overflow-hidden p-2 text-start`}
     >
-      <div className="text-lg font-semibold">{session[0]}</div>
-      <div className="">
+      <span
+        style={{ fontSize: `${ZOOM[view.zoom].fontSize}rem` }}
+        className="font-semibold"
+      >
+        {session[0]}
+      </span>
+      <span className="">
         <span>{session[1] + " "}</span>
         <span className="font-semibold text-primary">{session[3]}</span>
-      </div>
+      </span>
       {session[2] && (
-        <div className="text-right text-lg font-semibold">{session[2]}</div>
+        <span
+          style={{ fontSize: `${ZOOM[view.zoom].fontSize}rem` }}
+          className="text-right font-semibold"
+        >
+          {session[2]}
+        </span>
       )}
     </div>
   );

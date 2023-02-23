@@ -27,9 +27,7 @@ const Editor = () => {
       <EditorNavBar />
       <div className="flex h-full w-full">
         <EditorSideBar />
-        <div className="relative col-span-9 h-[65vh] w-full overflow-scroll">
-          <Table />
-        </div>
+        <Table />
       </div>
     </EditorContextProvider>
   );

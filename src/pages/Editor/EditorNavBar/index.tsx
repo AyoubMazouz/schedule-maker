@@ -22,6 +22,8 @@ import {
   IcSelectionNone,
   IcSettings,
   IcUndo,
+  IcZoomIn,
+  IcZoomOut,
 } from "../../../helpers/icons";
 
 const EditorNavBar = () => {
@@ -37,6 +39,7 @@ const EditorNavBar = () => {
     currMenu,
     setCurrMenu,
     clipboard,
+    view,
   } = useEditorContext();
   const { data } = useGlobalContext();
   const {
@@ -60,23 +63,27 @@ const EditorNavBar = () => {
     handlePaste,
     handleSave,
     handleImport,
+    handleZoomIn,
+    handleZoomOut,
+    handleShowDays,
+    handleShowSessions,
   } = useEditorNavBar();
 
   const SaveMenuItem = () => (
     <button
       disabled={saved}
-      className={`menu-item relative ${
+      className={`menu-item ${
         !saved &&
         "after:absolute after:top-[38%] after:left-[0%] after:h-3 after:w-3 after:translate-x-[50%] after:translate-y-[-50%] after:animate-pulse after:rounded-full after:bg-emerald-500"
       }`}
       onClick={handleSave}
     >
       <IcSave className="icon" />
-      <span>Save</span>
+      Save
     </button>
   );
   const ImportMenuItem = () => (
-    <div className="menu-item relative overflow-hidden">
+    <div className="menu-item">
       <input
         type="file"
         accept=".json,.xls,.xlsm"
@@ -84,7 +91,39 @@ const EditorNavBar = () => {
         onChange={handleImport}
       />
       <IcImport className="icon" />
-      <span>Import</span>
+      Import
+    </div>
+  );
+
+  const ZoomInMenuItem = () => (
+    <button className="menu-item" onClick={handleZoomIn}>
+      <IcZoomIn className="icon" />
+      zoom in
+    </button>
+  );
+
+  const ZoomOutMenuItem = () => (
+    <button className="menu-item" onClick={handleZoomOut}>
+      <IcZoomOut className="icon" />
+      zoom out
+    </button>
+  );
+
+  const ShowSessionsMenuItem = () => (
+    <div className="menu-item">
+      <input
+        type="checkbox"
+        checked={view.sessions}
+        onChange={handleShowSessions}
+      />
+      show sessions
+    </div>
+  );
+
+  const ShowDaysMenuItem = () => (
+    <div className="menu-item">
+      <input type="checkbox" checked={view.days} onChange={handleShowDays} />
+      show days
     </div>
   );
 
@@ -105,6 +144,19 @@ const EditorNavBar = () => {
             ["Export as pdf", handleDownload, IcExport, false],
             ["Settings", handleGoToSettings, IcSettings, false],
             ["exit", handleExit, IcLogout, false],
+          ]}
+        />
+        <DropdownMenu
+          text="view"
+          menuRef={menuRef}
+          currMenu={currMenu}
+          setCurrMenu={setCurrMenu}
+          styles="h-full"
+          options={[
+            <ZoomInMenuItem />,
+            <ZoomOutMenuItem />,
+            <ShowSessionsMenuItem />,
+            <ShowDaysMenuItem />,
           ]}
         />
         <Button

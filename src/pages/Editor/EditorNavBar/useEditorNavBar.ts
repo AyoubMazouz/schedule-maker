@@ -3,7 +3,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../../../Contexts/AuthContext";
 import { useEditorContext } from "../../../Contexts/EditorContext";
 import { useGlobalContext } from "../../../Contexts/GlobalContext";
+import { ZOOM } from "../../../helpers/constants";
 import { TEMPLATES } from "../../../helpers/templates";
+import { View } from "../../../helpers/types";
 import { deepClone } from "../../../helpers/util";
 import useDataExchange from "../../../hooks/useDataExchange";
 import useDocument from "../../../hooks/useDocument";
@@ -33,6 +35,8 @@ const useEditorNavBar = () => {
     setCurrMenu,
     clipboard,
     setClipboard,
+    view,
+    setView,
   } = useEditorContext();
   const { getModules, getTrainers, getRooms, getEvents } = useLabels();
   const { importDocument, exportDocument } = useDataExchange();
@@ -328,6 +332,22 @@ const useEditorNavBar = () => {
     setSaved(false);
   };
 
+  const handleZoomIn = () => {
+    const zoom = view.zoom < ZOOM.length - 1 ? view.zoom + 1 : view.zoom;
+    setView((x: View) => ({ ...x, zoom }));
+  };
+  const handleZoomOut = () => {
+    const zoom = view.zoom > 0 ? view.zoom - 1 : view.zoom;
+    setView((x: View) => ({ ...x, zoom }));
+    console.log(zoom);
+  };
+  const handleShowDays = () => {
+    setView((x: View) => ({ ...x, days: !x.days }));
+  };
+  const handleShowSessions = () => {
+    setView((x: View) => ({ ...x, sessions: !x.sessions }));
+  };
+
   return {
     availableTrainers,
     unavailableTrainers,
@@ -349,6 +369,10 @@ const useEditorNavBar = () => {
     handlePaste,
     handleSave,
     handleImport,
+    handleZoomIn,
+    handleZoomOut,
+    handleShowDays,
+    handleShowSessions,
   };
 };
 

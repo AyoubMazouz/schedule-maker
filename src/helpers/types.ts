@@ -76,3 +76,10 @@ export interface Document {
   template: string;
   data: string;
 }
+
+export interface View {
+  zoom: number;
+  fontSize: string;
+  days: boolean;
+  sessions: boolean;
+}

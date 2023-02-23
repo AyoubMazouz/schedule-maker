@@ -21,3 +21,10 @@ export const ABOUT_APP = (
   </p>
 );
 export const MY_EMAIL = "ayoub2000mazouz@gmail.com";
+
+export const ZOOM = [
+  { maxW: "6", minW: "4", h: "4", fontSize: "0.7" },
+  { maxW: "8", minW: "5", h: "5", fontSize: "1" },
+  { maxW: "10", minW: "6", h: "6", fontSize: "1.2" },
+  { maxW: "12", minW: "7", h: "7", fontSize: "1.4" },
+];

@@ -30,6 +30,8 @@ import {
   HiOutlineMagnifyingGlass,
   HiOutlineStar,
   HiStar,
+  HiOutlineMagnifyingGlassPlus,
+  HiOutlineMagnifyingGlassMinus,
 } from "react-icons/hi2";
 import {
   HiOutlineX,
@@ -92,3 +94,5 @@ export const IcRedo = HiOutlineArrowUturnRight;
 export const IcSearch = HiOutlineMagnifyingGlass;
 export const IcStar = HiOutlineStar;
 export const IcStarFilled = HiStar;
+export const IcZoomIn = HiOutlineMagnifyingGlassPlus;
+export const IcZoomOut = HiOutlineMagnifyingGlassMinus;
