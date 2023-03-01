@@ -820,14 +820,6 @@ body{
   right: 0px;
 }
 
-.bottom-2{
-  bottom: 0.5rem;
-}
-
-.left-2{
-  left: 0.5rem;
-}
-
 .top-\[calc\(0\%-0\.5rem\)\]{
   top: calc(0% - 0.5rem);
 }
@@ -842,6 +834,14 @@ body{
 
 .right-\[50\%\]{
   right: 50%;
+}
+
+.bottom-2{
+  bottom: 0.5rem;
+}
+
+.left-2{
+  left: 0.5rem;
 }
 
 .z-50{
@@ -1147,10 +1147,6 @@ body{
 
 .items-center{
   align-items: center;
-}
-
-.justify-start{
-  justify-content: flex-start;
 }
 
 .justify-end{
@@ -1596,6 +1592,11 @@ body{
   line-height: 2rem;
 }
 
+.text-base{
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
 .font-semibold{
   font-weight: 600;
 }
@@ -1614,10 +1615,6 @@ body{
 
 .leading-3{
   line-height: .75rem;
-}
-
-.leading-4{
-  line-height: 1rem;
 }
 
 .text-white{

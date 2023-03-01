@@ -1,4 +1,5 @@
 import React from "react";
+import { ZOOM } from "../helpers/constants";
 
 const EditorContext = React.createContext();
 
@@ -22,7 +23,7 @@ export const EditorContextProvider = ({ children }) => {
 
   // View
   const [view, setView] = React.useState({
-    zoom: 1,
+    zoom: Math.floor(ZOOM.length / 2),
     days: true,
     sessions: true,
   });

@@ -18,6 +18,7 @@ import {
   IcNewDoc,
   IcPaste,
   IcRedo,
+  IcReset,
   IcSave,
   IcSelectionNone,
   IcSettings,
@@ -25,6 +26,7 @@ import {
   IcZoomIn,
   IcZoomOut,
 } from "../../../helpers/icons";
+import { ZOOM } from "../../../helpers/constants";
 
 const EditorNavBar = () => {
   const {
@@ -40,6 +42,7 @@ const EditorNavBar = () => {
     setCurrMenu,
     clipboard,
     view,
+    setView,
   } = useEditorContext();
   const { data } = useGlobalContext();
   const {
@@ -67,6 +70,7 @@ const EditorNavBar = () => {
     handleZoomOut,
     handleShowDays,
     handleShowSessions,
+    handleResetZoom,
   } = useEditorNavBar();
 
   const SaveMenuItem = () => (
@@ -93,20 +97,6 @@ const EditorNavBar = () => {
       <IcImport className="icon" />
       Import
     </div>
-  );
-
-  const ZoomInMenuItem = () => (
-    <button className="menu-item" onClick={handleZoomIn}>
-      <IcZoomIn className="icon" />
-      zoom in
-    </button>
-  );
-
-  const ZoomOutMenuItem = () => (
-    <button className="menu-item" onClick={handleZoomOut}>
-      <IcZoomOut className="icon" />
-      zoom out
-    </button>
   );
 
   const ShowSessionsMenuItem = () => (
@@ -153,8 +143,14 @@ const EditorNavBar = () => {
           setCurrMenu={setCurrMenu}
           styles="h-full"
           options={[
-            <ZoomInMenuItem />,
-            <ZoomOutMenuItem />,
+            ["zoom in", handleZoomIn, IcZoomIn, view.zoom === ZOOM.length - 1],
+            ["zoom out", handleZoomOut, IcZoomOut, view.zoom === 0],
+            [
+              "reset zoom",
+              handleResetZoom,
+              IcReset,
+              view.zoom === Math.floor(ZOOM.length / 2),
+            ],
             <ShowSessionsMenuItem />,
             <ShowDaysMenuItem />,
           ]}

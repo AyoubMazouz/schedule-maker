@@ -10,10 +10,15 @@ import Cell from "./Cell";
 
 const Table = () => {
   const { data, docInfo } = useGlobalContext();
-  const { currSchedule, view } = useEditorContext();
+  const { currSchedule, view, setView } = useEditorContext();
 
   if (data.length === 0) return null;
   if (!data[currSchedule].group) return <div>please select a group first!</div>;
+
+  const handleZoomSlider = (e: any) => {
+    setView((x: any) => ({ ...x, zoom: parseInt(e.target.value) }));
+    console.log(view);
+  };
 
   return (
     <div
@@ -21,8 +26,11 @@ const Table = () => {
       className="relative h-[calc(100vh-3rem)] w-full overflow-scroll p-2"
     >
       {/* Head */}
-      <div className={`${view.sessions ? "flex" : "hidden"} mb-2 bg-green-100`}>
-        <div style={{ minWidth: `${view.h}rem` }} className="w-full"></div>
+      <div className={`${view.sessions ? "flex" : "hidden"} mb-2`}>
+        <div
+          style={{ minWidth: `${ZOOM[view.zoom].minW}rem` }}
+          className=""
+        ></div>
         {TEMPLATES[docInfo.template].labels.sessions.map((value: string) => (
           <div
             key={value}
@@ -79,6 +87,19 @@ const Table = () => {
             )
           )}
         </div>
+      </div>
+
+      {/* Zoom */}
+      <div className="absolute bottom-2 left-2 text-base">
+        <div>{Math.fround(parseFloat(ZOOM[view.zoom].fontSize) * 100)}%</div>
+        <input
+          type="range"
+          min="0"
+          max={ZOOM.length - 1}
+          step="1"
+          value={view.zoom}
+          onChange={handleZoomSlider}
+        />
       </div>
     </div>
   );

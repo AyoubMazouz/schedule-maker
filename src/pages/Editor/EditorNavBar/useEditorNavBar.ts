@@ -347,6 +347,9 @@ const useEditorNavBar = () => {
   const handleShowSessions = () => {
     setView((x: View) => ({ ...x, sessions: !x.sessions }));
   };
+  const handleResetZoom = () => {
+    setView((x: any) => ({ ...x, zoom: Math.floor(ZOOM.length / 2) }));
+  };
 
   return {
     availableTrainers,
@@ -373,6 +376,7 @@ const useEditorNavBar = () => {
     handleZoomOut,
     handleShowDays,
     handleShowSessions,
+    handleResetZoom,
   };
 };
 

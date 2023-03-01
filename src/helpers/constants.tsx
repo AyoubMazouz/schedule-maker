@@ -13,7 +13,7 @@ export const EVENT_COL = "#BAB8B8";
 export const PROFILE_IMG_SIZE = 256;
 export const BANNER_SIZE = 1200;
 
-export const VERSION = "1.7.1";
+export const VERSION = "1.7.8";
 export const ABOUT_APP = (
   <p>
     <b>Schedule Maker</b> is a Web App made with react.<br></br>This App helps
@@ -24,7 +24,8 @@ export const MY_EMAIL = "ayoub2000mazouz@gmail.com";
 
 export const ZOOM = [
   { maxW: "6", minW: "4", h: "4", fontSize: "0.7" },
-  { maxW: "8", minW: "5", h: "5", fontSize: "1" },
-  { maxW: "10", minW: "6", h: "6", fontSize: "1.2" },
-  { maxW: "12", minW: "7", h: "7", fontSize: "1.4" },
+  { maxW: "7", minW: "5", h: "5", fontSize: "0.85" },
+  { maxW: "8", minW: "6", h: "6", fontSize: "1" },
+  { maxW: "10", minW: "7", h: "7", fontSize: "1.15" },
+  { maxW: "11", minW: "8", h: "8", fontSize: "1.30" },
 ];
