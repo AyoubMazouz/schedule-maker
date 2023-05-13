@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -26,7 +26,7 @@
     @apply absolute z-30 flex w-[11rem] flex-col rounded-sm bg-light text-dark shadow-lg border-[1px] border-dark/50;
   }
   .menu-item {
-    @apply flex items-center w-full px-2 py-1 capitalize transition-all duration-100 ease-in-out cursor-pointer gap-x-2 text-start hover:bg-primary hover:text-light disabled:cursor-not-allowed disabled:text-dark/50 disabled:line-through relative;
+    @apply relative flex items-center w-full px-2 py-1 capitalize transition-all duration-100 ease-in-out cursor-pointer gap-x-2 text-start hover:bg-primary hover:text-light disabled:cursor-not-allowed disabled:text-dark/50 disabled:line-through;
   }
 
   .model-btn-container {

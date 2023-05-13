@@ -9,61 +9,67 @@ import { IcCancel, IcLogin, IcMail, IcPwd } from "../../helpers/icons";
 import { useAuth } from "../../Contexts/AuthContext";
 import { Input } from "../Input";
 import { useNavigate } from "react-router-dom";
+import { User } from "../../helpers/types";
 
-const Login = () => {
+const Signin = () => {
 	const { setModel, setAlert } = useGlobalContext();
 	const { currUser } = useAuth();
-	const { signIn } = useUser();
+	const { signUp } = useUser();
 
 	const navigate = useNavigate();
 
+	const [username, setUsername] = React.useState("");
 	const [email, setEmail] = React.useState("");
 	const [password, setPassword] = React.useState("");
 
-	const submitHandler = async () => {
-		const res = await signIn(email, password);
-
-		if (res === "success") setAlert("success", `Welcome back "${currUser.username}!"`);
-		else
-			setAlert(
-				"danger",
-				"Something went wrong, make sure you have the correct credentials and try again.",
-			);
-
-		setModel(null);
-		navigate("/documents");
+	const handleSubmit = async () => {
+		try {
+			const user: any = await signUp(username, email, password);
+			setAlert("success", `user "${user.displayName}" has been created successfully`);
+			setModel(null);
+			navigate("/documents");
+		} catch (e: any) {
+			if (e.message === "name_taken")
+				setAlert("warn", `the username ${username} is already taken, try another one!`);
+			else setAlert("danger", "something went wrong, please try again");
+		}
 	};
 
 	return (
 		<>
 			<div className="space-y-6">
 				<div className="text-center">
-					<div className="text-xl text-primary">LogIn</div>
-					<div>Log Into Your Account.</div>
+					<div className="text-xl text-primary">SignIn</div>
+					<div>Create Your Account Now By Filling The Form Below</div>
 				</div>
 				<Input
+					type="text"
+					placeholder="username..."
+					label="username"
+					value={username}
+					onChange={(e) => setUsername(e.target.value)}
+				/>
+				<Input
 					type="email"
+					placeholder="email..."
 					label="email"
-					Icon={IcMail}
-					placeholder="Email address..."
 					value={email}
 					onChange={(e) => setEmail(e.target.value)}
 				/>
 				<Input
 					type="password"
-					label="password"
-					Icon={IcPwd}
 					placeholder="password..."
+					label="password"
 					value={password}
 					onChange={(e) => setPassword(e.target.value)}
 				/>
 			</div>
 			<div className="model-btn-container">
-				<Button text="Log In" type="success" onClick={submitHandler} Icon={IcLogin} />
+				<Button text="Sign In" type="success" onClick={handleSubmit} Icon={IcLogin} />
 				<Button text="Cancel" onClick={() => setModel(null)} Icon={IcCancel} />
 			</div>
 		</>
 	);
 };
 
-export default Login;
+export default Signin;

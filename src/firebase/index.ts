@@ -5,12 +5,12 @@ import { getAuth } from "firebase/auth";
 
 // Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyCRJggoc9K_8WnJOFeoUxTDnBqYJwREzhY",
-    authDomain: "schedual-maker.firebaseapp.com",
-    projectId: "schedual-maker",
-    storageBucket: "schedual-maker.appspot.com",
-    messagingSenderId: "607352000255",
-    appId: "1:607352000255:web:39c9d7bf3cc66b5d1146ca",
+  apiKey: "AIzaSyCRJggoc9K_8WnJOFeoUxTDnBqYJwREzhY",
+  authDomain: "schedual-maker.firebaseapp.com",
+  projectId: "schedual-maker",
+  storageBucket: "schedual-maker.appspot.com",
+  messagingSenderId: "607352000255",
+  appId: "1:607352000255:web:39c9d7bf3cc66b5d1146ca",
 };
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
