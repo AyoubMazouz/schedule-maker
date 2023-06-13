@@ -166,7 +166,7 @@ const AddLevel = () => {
   return (
     <>
       <div className="space-y-6">
-        <div className="text-xl text-center text-primary">
+        <div className="text-center text-xl text-primary">
           {model.type === "ADD_LEVEL" ? "Add New Level" : "Update Level"}
         </div>
         <div className="flex flex-col items-center gap-3">
@@ -230,7 +230,7 @@ const AddLevel = () => {
         </div>
         <div className="model-btn-container">
           <Button
-            text={model.type === "ADD_Level" ? "Add" : "Update"}
+            text={model.type === "ADD_LEVEL" ? "Add" : "Update"}
             type="success"
             onClick={submitHandler}
             Icon={IcLogin}

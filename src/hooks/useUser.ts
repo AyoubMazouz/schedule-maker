@@ -61,12 +61,12 @@ export const useUser = () => {
   const signIn = async (email: string, password: string) => {
     setLoading(true);
     try {
-      const snapshot = await signInWithEmailAndPassword(auth, email, password);
+      await signInWithEmailAndPassword(auth, email, password);
       setLoading(false);
-      return snapshot.user.displayName;
+      return true;
     } catch (e) {
       setLoading(false);
-      return "failed";
+      return false;
     }
   };
 

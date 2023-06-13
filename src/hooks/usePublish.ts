@@ -82,6 +82,7 @@ const usePublish = () => {
   ) => {
     setLoading(true);
     return new Promise(async (resolve, reject) => {
+      console.log(`publish/${username}/${id}`);
       try {
         await deleteObject(ref(storage, `publish/${username}/${id}`));
         const newDocs = documents.filter((doc) => doc.id !== id);
